@@ -309,29 +309,30 @@ class RepairEquipment extends Component
 
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
-        if (Auth::user()->isAdmin == 'Y') {
-            $searchResult = DB::table('VW_EQUIPMENT')
-                ->where(function ($query) use ($searchEQUIPMENT) {
-                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-                })
-                // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
-                ->get();
-        } else {
-            $searchResult = DB::table('VW_EQUIPMENT')
-                ->where(function ($query) use ($searchEQUIPMENT) {
-                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-                })
-                ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
-                ->get();
-        }
+        // if (Auth::user()->isAdmin == 'Y') {
+        //     $searchResult = DB::table('VW_EQUIPMENT')
+        //         ->where(function ($query) use ($searchEQUIPMENT) {
+        //             $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+        //                 ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+        //         })
+        //         // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
+        //         ->get();
+        // } else {
+        $searchResult = DB::table('VW_EQUIPMENT')
+            ->where(function ($query) use ($searchEQUIPMENT) {
+                $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                    ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+            })
+            // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
+            ->get();
+        // }
 
 
         $this->VW_EQUIPMENT = $searchResult->isEmpty() ? null : $searchResult;
         $this->loading = false;
         $this->searchPerformed = true;
     }
+
 
 
     public function render()

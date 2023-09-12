@@ -287,7 +287,6 @@
              if (selectedValue !== "") {
                  table.column(11).search("^" + selectedValue + "$", true, false).draw();
 
-
              } else {
                  table.column(11).search("").draw();
 

@@ -131,44 +131,42 @@
                             <input class="form-control @error('quant') is-invalid @enderror" wire:model.defer="quant"
                                 min="1" id="quant" type="number" style="width: 100%;"
                                 autocomplete="off" aria-labelledby="quant">
-                                @error('quant')
-                                                                <span class="text-danger error">โปรดใส่จำนวน</span>
-
+                            @error('quant')
+                                <span class="text-danger error">โปรดใส่จำนวน</span>
                             @enderror
-                                </div>
-                            <div class="col-md-3">
-                                <span id="package"><i class="fa-solid fa-tag fa-sm"></i> ชื่อหน่วยนับ</span>
-                                <input class="form-control @error('package') is-invalid @enderror"
-                                    wire:model.defer="package" id="package" type="text" style="width: 100%;"
-                                    maxlength="250" autocomplete="off" placeholder="หน่วย"
-                                    aria-labelledby="package">
-                                @error('package')
-                                    <span class="text-danger error">โปรดใส่ชื่อหน่วยนับและห้ามใส่ตัวเลข</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                <span id="reason"><i class="fa-regular fa-comment fa-sm"></i>
-                                    เหตุผลและความจำเป็น</span>
-                                <textarea class="form-control @error('reason') is-invalid @enderror" wire:model.defer="reason" id="reason"
-                                    style="width: 100%;" col-md-3s="50" rows="2" maxlength="250" autocomplete="off" aria-labelledby="reason"
-                                    placeholder="เหตุผลและความจำเป็น"></textarea>
-                                @error('reason')
-                                    <span class="text-danger error">โปรดพิมพ์เหตุผลและความจำเป็น</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                <span id="remark"><i class="fa-solid fa-quote-left fa-sm"></i> หมายเหตุ</span>
-                                <input class="form-control" wire:model.defer="remark" id="remark" type="text"
-                                    style="width: 100%;" maxlength="250" autocomplete="off" aria-labelledby="remark"
-                                    placeholder="หมายเหตุ(ถ้ามี)">
-                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <span id="package"><i class="fa-solid fa-tag fa-sm"></i> ชื่อหน่วยนับ</span>
+                            <input class="form-control @error('package') is-invalid @enderror"
+                                wire:model.defer="package" id="package" type="text" style="width: 100%;"
+                                maxlength="250" autocomplete="off" placeholder="หน่วย" aria-labelledby="package">
+                            @error('package')
+                                <span class="text-danger error">โปรดใส่ชื่อหน่วยนับและห้ามใส่ตัวเลข</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            <span id="reason"><i class="fa-regular fa-comment fa-sm"></i>
+                                เหตุผลและความจำเป็น</span>
+                            <textarea class="form-control @error('reason') is-invalid @enderror" wire:model.defer="reason" id="reason"
+                                style="width: 100%;" col-md-3s="50" rows="2" maxlength="250" autocomplete="off" aria-labelledby="reason"
+                                placeholder="เหตุผลและความจำเป็น"></textarea>
+                            @error('reason')
+                                <span class="text-danger error">โปรดพิมพ์เหตุผลและความจำเป็น</span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            <span id="remark"><i class="fa-solid fa-quote-left fa-sm"></i> หมายเหตุ</span>
+                            <input class="form-control" wire:model.defer="remark" id="remark" type="text"
+                                style="width: 100%;" maxlength="250" autocomplete="off" aria-labelledby="remark"
+                                placeholder="หมายเหตุ(ถ้ามี)">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            wire:click="closeModal">ปิด</button>
-                        <input type="submit" class="btn btn-success" value="แก้ไขข้อมูล">
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        wire:click="closeModal">ปิด</button>
+                    <input type="submit" class="btn btn-success" value="แก้ไขข้อมูล">
+                </div>
             </form>
         </div>
     </div>
