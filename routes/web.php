@@ -6,6 +6,7 @@ use App\Http\Controllers\{
     MainPageController,
     AdministratorController,
     ErrorController,
+    PDFController,
 };
 use App\Http\Middleware\isAdmin;
 
@@ -36,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('deptmanagement', [AdministratorController::class, 'deptmanagement'])->name('deptmanagement');
     });
 });
+// Generate-PDF Zone
+Route::get('/generate-pdf', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
 
 //Error Zone
 Route::get('/400', [ErrorController::class, 'page400'])->name('page400');
