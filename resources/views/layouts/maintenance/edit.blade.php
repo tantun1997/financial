@@ -71,6 +71,7 @@
                                         @endphp
                                     @endif
                                 @endforeach
+                                 <option value="02" >ซ่อมแซม</option>
                             </select>
                             @error('objectTypeId')
                                 <span class="text-danger error">โปรดเลือกประเภท</span>

@@ -319,7 +319,6 @@ class ContractServices extends Component
         //             $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
         //                 ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
         //         })
-        //         // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
         //         ->get();
         // } else {
         $searchResult = DB::table('VW_EQUIPMENT')

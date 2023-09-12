@@ -16,6 +16,8 @@ class MaintenancePlan extends Component
     protected $listeners = ['deleteConfirmed', 'descriptionChanged' => 'updateDescription'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+
+
     public function updateFieldsFromDescription()
     {
         $selectedPlan = DB::table('VW_NEW_MAINPLAN')->where('Description', trim($this->description))->first();
@@ -332,6 +334,7 @@ class MaintenancePlan extends Component
             // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
             ->get();
         // }
+
 
 
         $this->VW_EQUIPMENT = $searchResult->isEmpty() ? null : $searchResult;

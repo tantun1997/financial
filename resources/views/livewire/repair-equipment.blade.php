@@ -59,12 +59,18 @@
                                      $query->procurementType == 1 &&
                                      ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
                                  <tr style="cursor: pointer;">
-                                     <td class="table-cell"> <button type="button"
-                                             wire:click.prevent="add_detail({{ $query->id }})"
-                                             class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
-                                             data-bs-target="#exampleModal2">
-                                             + เพิ่มครุภัณฑ์
-                                         </button></td>
+                                     @if ($query->levelNo != 2)
+                                         <td class="table-cell">
+                                             <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
+                                                 class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
+                                                 data-bs-target="#exampleModal2">
+                                                 + เพิ่มครุภัณฑ์
+                                             </button>
+                                         </td>
+                                     @else
+                                         <td></td>
+                                     @endif
+
                                      <td class="table-cell" style="display: none;">{{ $query->id }}</td>
                                      <td class="table-cell">{{ $query->budget }}</td>
                                      <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
@@ -178,37 +184,34 @@
 
                              $('#modalContent').html(
                                  '<table class="table">' +
-                                 '<tr><td>ID</td><td class="text-success">' + rowData[1] +
+                                 '<tr><td>ID</td><td class="text-primary">' + rowData[1] +
                                  '</td></tr>' +
-                                 '<tr><td>ปี</td><td class="text-success">' + rowData[2] +
+                                 '<tr><td>ปี</td><td class="text-primary">' + rowData[2] +
                                  '</td></tr>' +
-                                 '<tr><td>ลำดับความสำคัญ</td><td class="text-success">' + rowData[
+                                 '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[
                                      3] + '</td></tr>' +
-                                 '<tr><td>แผนฯ</td><td class="text-warning">' + rowData[4] +
+                                 '<tr><td>แผนฯ</td><td class="text-success">' + rowData[4] +
                                  '</td></tr>' +
-                                 '<tr><td>ประเภท</td><td class="text-success">' + rowData[5] +
+                                 '<tr><td>ประเภท</td><td class="text-primary">' + rowData[5] +
                                  '</td></tr>' +
-                                 '<tr><td>รายการ</td><td class="text-success">' + rowData[6] +
+                                 '<tr><td>รายการ</td><td class="text-primary">' + rowData[6] +
                                  '</td></tr>' +
-                                 '<tr><td>ราคา</td><td class="text-success">' + rowData[7] +
+                                 '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[7] +
                                  ' บาท</td></tr>' +
-                                 '<tr><td>จำนวน</td><td class="text-success">' + rowData[8] +
+                                 '<tr><td>จำนวน</td><td class="text-primary">' + rowData[8] +
                                  '</td></tr>' +
-                                 '<tr><td>รวมทั้งหมด</td><td class="text-success">' + rowData[9] +
+                                 '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[9] +
                                  ' บาท</td></tr>' +
-                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-success">' +
+                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
                                  rowData[10] + '</td></tr>' +
-                                 '<tr><td>หน่วยงานที่เบิก</td><td class="text-info">' + rowData[
+                                 '<tr><td>หน่วยงานที่เบิก</td><td class="text-success">' + rowData[
                                      11] + '</td></tr>' +
                                  '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[12] +
                                  '</td></tr>' +
                                  '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
                                  rowData[13] + '</td></tr>' +
                                  '</table>'
-
-
                              );
-
 
                          }
                      });
@@ -221,8 +224,8 @@
                  scrollCollapse: true,
                  ordering: true,
                  lengthMenu: [
-                     [20, 30, 50, -1],
-                     ['20', '30', '50', 'ทั้งหมด']
+                     [-1, 20, 30, 50],
+                     ['ทั้งหมด', '20', '30', '50']
                  ],
                  //  dom: 'Bfrtip',
                  buttons: [{
@@ -244,7 +247,7 @@
                  ]
              });
 
-             
+
          }
          var excelButton = table.buttons(); // 0 คือ index ของปุ่ม "Export to Excel"
          excelButton.container().appendTo(
