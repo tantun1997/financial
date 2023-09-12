@@ -302,36 +302,48 @@ class RepairEquipment extends Component
     public $loading = false;
     public $searchPerformed = false;
 
+
     public function searchEquipment()
     {
+        $deptId = Auth::user()->deptId;
 
         $this->loading = true;
 
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
-        // if (Auth::user()->isAdmin == 'Y') {
-        //     $searchResult = DB::table('VW_EQUIPMENT')
-        //         ->where(function ($query) use ($searchEQUIPMENT) {
-        //             $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-        //                 ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-        //         })
-        //         // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
-        //         ->get();
-        // } else {
-        $searchResult = DB::table('VW_EQUIPMENT')
-            ->where(function ($query) use ($searchEQUIPMENT) {
-                $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                    ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-            })
-            // ->where('TCHN_LOCAT_ID', Auth::user()->deptId)
-            ->get();
-        // }
+        if (Auth::user()->isAdmin == 'Y') {
+            $searchResult = DB::table('VW_EQUIPMENT')
+                ->where(function ($query) use ($searchEQUIPMENT) {
+                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+                })
+                ->get();
+        } elseif ($deptId == 168 || $deptId == 330) {
+            $searchResult = DB::table('VW_EQUIPMENT')
+                ->where(function ($query) use ($searchEQUIPMENT) {
+                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+                })
+                ->whereIn('TCHN_LOCAT_ID', [$deptId, 130])
+                ->get();
+
+        } else {
+            $searchResult = DB::table('VW_EQUIPMENT')
+                ->where(function ($query) use ($searchEQUIPMENT) {
+                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+                })
+                ->where('TCHN_LOCAT_ID', $deptId)
+                ->get();
+        }
+
 
 
         $this->VW_EQUIPMENT = $searchResult->isEmpty() ? null : $searchResult;
         $this->loading = false;
         $this->searchPerformed = true;
     }
+
 
 
 
