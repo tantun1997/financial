@@ -102,7 +102,7 @@
                                 <a class="nav-link" href="{{ route('repair_equip') }}">ซ่อม วัสดุ-ครุภัณฑ์</a>
                                 <a class="nav-link" href="{{ route('contract_services') }}">จ้างเหมาบริการ</a>
                                 {{-- <a class="nav-link" href="{{ route('equipment') }}">ครุภัณฑ์</a>
-                                <a class="nav-link" href="{{ route('page404') }}">วัสดุ</a> --}}
+                                 <a class="nav-link" href="{{ route('page404') }}">วัสดุ</a> --}}
                             </nav>
                         </div>
                         {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

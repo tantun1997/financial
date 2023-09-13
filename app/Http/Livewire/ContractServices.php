@@ -111,7 +111,7 @@ class ContractServices extends Component
         $this->priorityNo = '001';
         $this->quant = '1';
         $this->remark = '';
-        $this->procurementType = '1';
+        $this->procurementType = '2';
         $this->enable = '1';
         $this->created_at = now();
         $this->updated_at = now();
@@ -130,7 +130,7 @@ class ContractServices extends Component
         $this->deptId = Auth::user()->deptId;
         $this->remark = '';
         $this->userId = Auth::user()->id;
-        $this->procurementType = '1';
+        $this->procurementType = '2';
         $this->enable = '1';
         $this->levelNo = '';
         $this->created_at = now();
@@ -361,7 +361,6 @@ class ContractServices extends Component
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             // ->where('objectTypeId', '01')
             ->where('procurementType', '2')
-
             ->orderBy('updated_at', 'DESC')
             ->get();
 

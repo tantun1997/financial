@@ -15,12 +15,12 @@ class PDFController extends Controller
 
     public function generateProcurement()
     {
-
+        $this->pdfService->default_font('THSarabunIT9');
         $data = [
             'title' => 'Sample PDF',
             // Add any other data you want to pass to the view
         ];
 
-        return $this->pdfService->generatePdf('pdf.procurementTemplate', $data);
+        return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
     }
 }

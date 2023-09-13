@@ -28,7 +28,7 @@
                         {{ session()->get('warning') }}
                     </div>
                 @endif
-                <table class="nowrap table table-bordered table-hover" style="width: 100%; text-align: center;">
+                <table class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
                             <th style="text-align: center;">รหัส</th>
@@ -47,17 +47,17 @@
                             @foreach ($procurements_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
-                                        <td class="table-cell">{{ $query->EQUP_ID }}</td>
-                                        <td class="table-cell">{{ $query->EQUP_NAME }}</td>
-                                        <td class="table-cell">{{ number_format($query->EQUP_PRICE) }}</td>
-                                        <td>
+                                        <td style="text-align: left;">{{ $query->EQUP_ID }}</td>
+                                        <td style="text-align: left;">{{ $query->EQUP_NAME }}</td>
+                                        <td style="text-align: right;">{{ number_format($query->EQUP_PRICE) }}</td>
+                                        <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
                                                     <span class="badge bg-success">ใช้งาน</span>
                                                 @break
                                             @endswitch
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <button type="button" wire:click="deleteRow({{ $query->id }})"
                                                 class="btn btn-outline-danger btn-sm">-</button>
                                         </td>
@@ -87,8 +87,8 @@
                 <div wire:loading.remove>
                     @if ($searchPerformed)
                         @if (!empty($VW_EQUIPMENT))
-                            <table id='equipmentTable' class="nowrap table table-bordered table-hover"
-                                style="width: 100%; text-align: center;">
+                            <table class="table table-bordered table-hover table-sm" style="width: 100%;">
+
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -102,19 +102,23 @@
                                 <tbody>
                                     @foreach ($VW_EQUIPMENT as $query)
                                         <tr>
-                                            <td>
+                                            <td style="text-align: center;">
                                                 <button type="button" class="btn btn-outline-success btn-sm"
                                                     wire:click.prevent="selectRow({{ isset($query->EQUP_LINK_NO) ? $query->EQUP_LINK_NO : '' }})">
                                                     +
                                                 </button>
                                             </td>
-                                            <td class="table-cell">{{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
-                                            <td class="table-cell">{{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
-                                            <td class="table-cell">{{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                            <td style="text-align: center;">
+                                                {{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
+                                            <td style="text-align: left;">
+                                                {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
+                                            <td style="text-align: right;">
+                                                {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
                                             </td>
-                                            <td class="table-cell">{{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
+                                            <td style="text-align: center;">
+                                                {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
                                             </td>
-                                            <td>
+                                            <td style="text-align: center;">
                                                 @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
                                                     @case('ใช้งาน')
                                                         <span class="badge bg-success">ใช้งาน</span>

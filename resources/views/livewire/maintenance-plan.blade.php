@@ -1,5 +1,5 @@
  <div class="container-fluid px-4">
-@include('layouts.loading')
+     @include('layouts.loading')
 
 
      <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯบำรุงรักษา</h3>
@@ -32,8 +32,7 @@
          </div>
          <div class="card-body">
              <div wire:ignore.self>
-                 <table id='dataTable' class="table table-bordered table-hover "
-                     style="width: 100%; border-top: solid 1px #DDDDDD; ">
+                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                      <thead>
                          <tr>
                              <th class="text-center table-cell"></th>
@@ -47,8 +46,8 @@
                              <th class="text-center table-cell">จำนวน</th>
                              <th class="text-center table-cell">รวมทั้งหมด</th>
                              <th class="text-left table-cell">เหตุผลและความจำเป็น</th>
-                             <th class="text-center table-cell">หน่วยงานที่เบิก</th>
-                             <th class="text-center table-cell">หมายเหตุ</th>
+                             <th class="text-left table-cell">หน่วยงานที่เบิก</th>
+                             <th class="text-left table-cell">หมายเหตุ</th>
                              <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                              <th class="text-center table-cell">action</th>
                          </tr>
@@ -134,12 +133,12 @@
      <style>
          .table-cell {
              white-space: nowrap;
-             max-width: 300px;
-             /* text-align: center; */
+             max-width: 250px;
+             /* ปรับขนาดตามที่ต้องการ */
              overflow: hidden;
              text-overflow: ellipsis;
-
          }
+
 
          .breadcrumb a {
              text-decoration: none;
@@ -216,7 +215,7 @@
                          }
                      });
                  },
-
+                 order: [],
                  autoWidth: true,
                  searching: true,
                  responsive: true,
