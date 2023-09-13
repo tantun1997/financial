@@ -325,15 +325,13 @@ class MaintenancePlan extends Component
                         ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
                 })
                 ->get();
-        }
-      elseif ($deptId == 168 || $deptId == 330) {
-    $searchResult = DB::table('VW_EQUIPMENT')
-        ->where(function ($query) use ($searchEQUIPMENT) {
-            $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-        })
-        ->whereIn('TCHN_LOCAT_ID', [$deptId, 130])
-        ->get();
+      } elseif ($deptId == 168 || $deptId == 150) {
+            $searchResult = DB::table('VW_EQUIPMENT')
+                ->where(function ($query) use ($searchEQUIPMENT) {
+                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+                })
+                ->get();
 
         }else {
         $searchResult = DB::table('VW_EQUIPMENT')
