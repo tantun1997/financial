@@ -11,11 +11,13 @@
                     wire:click="closeModal"></button>
             </div>
             <div class="modal-body">
-                <h4> ID:
+                {{-- <h4> ID:
                     {{ $edit_id }}
+                </h4> --}}
+                <h4> รายการ
+                    {{ $description }}
                 </h4>
-                <h5> รายการ
-                    {{ $description }} ราคา {{ $price }} จำนวน {{ $quant }} {{ $package }}
+                <h5> ราคา {{ $price }} จำนวน {{ $quant }} {{ $package }}
                 </h5>
                 @if (session()->has('success'))
                     <div class="alert alert-success" role="alert">
@@ -69,8 +71,9 @@
                 <form wire:submit.prevent="searchEquipment">
                     <div class="row mb-3">
                         <div class="col-md-4">
-                             <input class="form-control" wire:model.defer="searchEQUIPMENT" type="text"
-                                    style="width: 100%;" autocomplete="off" placeholder="ค้นหา" id="searchEQUIPMENT" required>
+                            <input class="form-control" wire:model.defer="searchEQUIPMENT" type="text"
+                                style="width: 100%;" autocomplete="off" placeholder="ค้นหา" id="searchEQUIPMENT"
+                                required>
                         </div>
                         <div class="col-md-4">
                             <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
@@ -92,6 +95,7 @@
                                         <th style="text-align: center;">รหัส</th>
                                         <th style="text-align: center;">ชื่อรายการ</th>
                                         <th style="text-align: center;">ราคา</th>
+                                        <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">สถานะ</th>
                                     </tr>
                                 </thead>
@@ -108,6 +112,7 @@
                                             <td>{{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
                                             <td>{{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
                                             </td>
+                                            <td>{{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}</td>
                                             <td>
                                                 @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
                                                     @case('ใช้งาน')

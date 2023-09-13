@@ -11,11 +11,13 @@
                     wire:click="closeModal"></button>
             </div>
             <div class="modal-body">
-                <h4> ID:
+                {{-- <h4> ID:
                     {{ $edit_id }}
+                </h4> --}}
+                <h4> รายการ
+                    {{ $description }}
                 </h4>
-                <h5> รายการ
-                    {{ $description }} ราคา {{ $price }} จำนวน {{ $quant }} {{ $package }}
+                <h5> ราคา {{ $price }} จำนวน {{ $quant }} {{ $package }}
                 </h5>
                 @if (session()->has('success'))
                     <div class="alert alert-success" role="alert">
@@ -86,12 +88,13 @@
                         @if (!empty($VW_EQUIPMENT))
                             <table id='equipmentTable' class="nowrap table table-bordered table-hover"
                                 style="width: 100%; text-align: center;">
-                                <thead>
+                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th style="text-align: center;">รหัส</th>
                                         <th style="text-align: center;">ชื่อรายการ</th>
                                         <th style="text-align: center;">ราคา</th>
+                                        <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">สถานะ</th>
                                     </tr>
                                 </thead>
@@ -108,6 +111,7 @@
                                             <td>{{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
                                             <td>{{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
                                             </td>
+                                            <td>{{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}</td>
                                             <td>
                                                 @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
                                                     @case('ใช้งาน')
