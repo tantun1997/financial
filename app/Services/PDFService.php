@@ -10,13 +10,15 @@ class PDFService
 
     public function __construct()
     {
-        $this->mpdf = new Mpdf();
-        $this->mpdf->mode = 'utf-8';
-        $this->mpdf->format = 'A4';
-        $this->mpdf->fontDir = base_path('resources/fonts/');
-        $this->mpdf->fontdata = 'utf-8';
-            [
-            'mode' => 'utf-8',
+        // $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+        // $fontDirs = $defaultConfig['fontDir'];
+
+        // $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+        // $fontData = $defaultFontConfig['fontdata'];
+
+
+        $this->mpdf = new Mpdf([
+            'mode' => 'utf-8', // Set character encoding here
             'format' => 'A4',
             'fontDir' => base_path('resources/fonts/'),
             'fontdata' => [
@@ -25,9 +27,21 @@ class PDFService
                     'I' => 'THSarabunIT9_Italic.ttf',
                     'B' => 'THSarabunIT9_Bold.ttf',
                     'BI' => 'THSarabunIT9_BoldItalic.ttf',
-                ],
+                ]
             ]
-        ]
+
+
+            // Add other configuration options here
+        ]);
+        // $this->mpdf->mode('utf-8');
+        // $this->mpdf->format('A4');
+        // $this->mpdf->fontDir(base_path('resources/fonts/'));
+        // $this->mpdf->fontdata['THSarabunIT9'] = [
+        //     'R' => 'THSarabunIT9.ttf',
+        //     'I' => 'THSarabunIT9_Italic.ttf',
+        //     'B' => 'THSarabunIT9_Bold.ttf',
+        //     'BI' => 'THSarabunIT9_BoldItalic.ttf',
+        // ];
     }
 
     public function default_font($font)

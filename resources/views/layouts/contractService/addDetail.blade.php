@@ -28,7 +28,7 @@
                         {{ session()->get('warning') }}
                     </div>
                 @endif
-                <table class="table table-bordered table-hover table-sm" style="width: 100%;">
+                <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
                             <th style="text-align: center;">รหัส</th>
@@ -47,9 +47,9 @@
                             @foreach ($procurements_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
-                                        <td style="text-align: left;">{{ $query->EQUP_ID }}</td>
-                                        <td style="text-align: left;">{{ $query->EQUP_NAME }}</td>
-                                        <td style="text-align: right;">{{ number_format($query->EQUP_PRICE) }}</td>
+                                        <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
+                                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
+                                        <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
                                         <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
@@ -87,8 +87,7 @@
                 <div wire:loading.remove>
                     @if ($searchPerformed)
                         @if (!empty($VW_EQUIPMENT))
-                            <table class="table table-bordered table-hover table-sm" style="width: 100%;">
-
+                            <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -110,9 +109,9 @@
                                             </td>
                                             <td style="text-align: center;">
                                                 {{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
-                                            <td style="text-align: left;">
+                                            <td style="text-align: center;">
                                                 {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
-                                            <td style="text-align: right;">
+                                            <td style="text-align: center;">
                                                 {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
                                             </td>
                                             <td style="text-align: center;">

@@ -304,52 +304,39 @@ class MaintenancePlan extends Component
             session()->flash('error', "ไม่สามารถลบข้อมูลได้!!");
         }
     }
-    public $searchEQUIPMENT;
-    public $VW_EQUIPMENT;
 
+    public $searchEQUIPMENT,$VW_EQUIPMENT;
     public $loading = false;
     public $searchPerformed = false;
 
     public function searchEquipment()
     {
-            $deptId = Auth::user()->deptId;
+        $deptId = Auth::user()->deptId;
 
         $this->loading = true;
 
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
-        if (Auth::user()->isAdmin == 'Y') {
-            $searchResult = DB::table('VW_EQUIPMENT')
-                ->where(function ($query) use ($searchEQUIPMENT) {
-                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-                })
-                ->get();
-      } elseif ($deptId == 168 || $deptId == 150) {
-            $searchResult = DB::table('VW_EQUIPMENT')
-                ->where(function ($query) use ($searchEQUIPMENT) {
-                    $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                        ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-                })
-                ->get();
-
-        }else {
         $searchResult = DB::table('VW_EQUIPMENT')
-            ->where(function ($query) use ($searchEQUIPMENT) {
+            ->where(function ($query) use ($searchEQUIPMENT, $deptId) {
                 $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
                     ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+
+                if (!(Auth::user()->isAdmin == 'Y' || $deptId == 168 || $deptId == 150)) {
+                    $query->where('TCHN_LOCAT_ID', $deptId);
+                }
             })
-            ->where('TCHN_LOCAT_ID',  $deptId)
             ->get();
+
+
+        if ($searchResult->isEmpty()) {
+            $this->VW_EQUIPMENT = null;
+        } else {
+            $this->VW_EQUIPMENT = $searchResult;
         }
-
-
-
-        $this->VW_EQUIPMENT = $searchResult->isEmpty() ? null : $searchResult;
         $this->loading = false;
         $this->searchPerformed = true;
     }
-
 
     public function render()
     {
