@@ -1,4 +1,5 @@
  <div class="container-fluid px-4">
+     @include('layouts.loading')
 
 
      <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯซ่อม</h3>
@@ -29,7 +30,7 @@
                  <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
              </div>
          </div>
-         <div class="card-body">
+          <div class="card-body">
              <div wire:ignore.self>
                  <table id='dataTable' class="table table-bordered table-hover "
                      style="width: 100%; border-top: solid 1px #DDDDDD; ">
@@ -39,7 +40,7 @@
                              <th class="text-center table-cell" style="display: none;">รหัส</th>
                              <th class="text-center table-cell">ปี</th>
                              <th class="text-center table-cell" style="display: none;">ความสำคัญ</th>
-                             <th class="text-center table-cell" style="display: none;">แผนฯ</th>
+                             <th class="text-center table-cell">แผนฯ</th>
                              <th class="text-center table-cell">ประเภท</th>
                              <th class="text-left table-cell">รายละเอียด</th>
                              <th class="text-center table-cell">ราคาต่อหน่วย</th>
@@ -64,21 +65,20 @@
                                              <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
                                                  class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
                                                  data-bs-target="#exampleModal2">
-                                                 + เพิ่มครุภัณฑ์
+                                                 + ครุภัณฑ์
                                              </button>
                                          </td>
                                      @else
                                          <td></td>
                                      @endif
-
                                      <td class="table-cell" style="display: none;">{{ $query->id }}</td>
                                      <td class="table-cell">{{ $query->budget }}</td>
                                      <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                     <td class="table-cell" style="display: none;">
+                                     <td class="table-cell text-center">
                                          @if ($query->levelNo == 1)
-                                             จริง
+                                             <span class="badge bg-success">จริง</span>
                                          @elseif($query->levelNo == 2)
-                                             สำรอง
+                                             <span class="badge bg-secondary">สำรอง</span>
                                          @endif
                                      </td>
                                      <td class="table-cell">{{ $query->objectName }}</td>
@@ -91,7 +91,7 @@
                                      <td class="table-cell" style="text-align: right;">
                                          {{ number_format($query->price * $query->quant) }}</td>
 
-                                     <td class="table-cell text-left">{{ $query->reason }}</td>
+                                     <td class="table-cell">{{ $query->reason }}</td>
                                      <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
                                      <td class="table-cell">{{ $query->remark }}</td>
                                      <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
@@ -184,8 +184,6 @@
 
                              $('#modalContent').html(
                                  '<table class="table">' +
-                                 '<tr><td>ID</td><td class="text-primary">' + rowData[1] +
-                                 '</td></tr>' +
                                  '<tr><td>ปี</td><td class="text-primary">' + rowData[2] +
                                  '</td></tr>' +
                                  '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[

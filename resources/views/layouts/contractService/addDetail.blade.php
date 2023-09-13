@@ -47,9 +47,9 @@
                             @foreach ($procurements_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
-                                        <td>{{ $query->EQUP_ID }}</td>
-                                        <td>{{ $query->EQUP_NAME }}</td>
-                                        <td>{{ number_format($query->EQUP_PRICE) }}</td>
+                                        <td class="table-cell">{{ $query->EQUP_ID }}</td>
+                                        <td class="table-cell">{{ $query->EQUP_NAME }}</td>
+                                        <td class="table-cell">{{ number_format($query->EQUP_PRICE) }}</td>
                                         <td>
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
@@ -71,24 +71,25 @@
                 <form wire:submit.prevent="searchEquipment">
                     <div class="row mb-3">
                         <div class="col-md-4">
-                               <input class="form-control" wire:model.defer="searchEQUIPMENT" type="text"
-                                    style="width: 100%;" autocomplete="off" placeholder="ค้นหา" id="searchEQUIPMENT" required>
+                            <input class="form-control" wire:model.defer="searchEQUIPMENT" type="text"
+                                style="width: 100%;" autocomplete="off" placeholder="ค้นหา" id="searchEQUIPMENT"
+                                required>
                         </div>
                         <div class="col-md-4">
                             <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
                             <div wire:loading>
-                                Loading...
+                                กำลังโหลด...
                             </div>
                         </div>
                     </div>
                 </form>
 
-                <div>
+                <div wire:loading.remove>
                     @if ($searchPerformed)
                         @if (!empty($VW_EQUIPMENT))
                             <table id='equipmentTable' class="nowrap table table-bordered table-hover"
                                 style="width: 100%; text-align: center;">
-                                 <thead>
+                                <thead>
                                     <tr>
                                         <th></th>
                                         <th style="text-align: center;">รหัส</th>
@@ -107,11 +108,16 @@
                                                     +
                                                 </button>
                                             </td>
-                                            <td>{{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
-                                            <td>{{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
-                                            <td>{{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                            <td class="table-cell">{{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}
                                             </td>
-                                            <td>{{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}</td>
+                                            <td class="table-cell">
+                                                {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
+                                            <td class="table-cell">
+                                                {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                            </td>
+                                            <td class="table-cell">
+                                                {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
+                                            </td>
                                             <td>
                                                 @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
                                                     @case('ใช้งาน')

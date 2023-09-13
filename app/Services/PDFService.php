@@ -6,15 +6,9 @@ use Mpdf\Mpdf;
 
 class PDFService
 {
-    protected $mpdf;
-
-    public function __construct()
+    public function generatePdf($view, $data = [])
     {
-        $this->mpdf = new Mpdf();
-    }
-
-    public function generateFromView($view, $data = [])
-    {
+        $mpdf = new Mpdf();
         $html = view($view, $data)->render();
         $this->mpdf->WriteHTML($html);
         $this->mpdf->Output();

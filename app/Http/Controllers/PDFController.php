@@ -15,11 +15,12 @@ class PDFController extends Controller
 
     public function generateProcurement()
     {
+
         $data = [
             'title' => 'Sample PDF',
             // Add any other data you want to pass to the view
         ];
 
-        return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
+        return $this->pdfService->generatePdf('pdf.procurementTemplate', $data);
     }
 }

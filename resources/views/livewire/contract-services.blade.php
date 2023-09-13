@@ -1,10 +1,5 @@
  <div class="container-fluid px-4">
-
-     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
-
+     @include('layouts.loading')
      <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> บันทึกแผนฯจ้างเหมาบริการ</h3>
      <ol class="breadcrumb mb-4">
          <li class="breadcrumb-item "><a
@@ -43,7 +38,7 @@
                              <th class="text-center table-cell" style="display: none;">รหัส</th>
                              <th class="text-center table-cell">ปี</th>
                              <th class="text-center table-cell" style="display: none;">ความสำคัญ</th>
-                             <th class="text-center table-cell" style="display: none;">แผนฯ</th>
+                             <th class="text-center table-cell">แผนฯ</th>
                              <th class="text-center table-cell">ประเภท</th>
                              <th class="text-left table-cell">รายละเอียด</th>
                              <th class="text-center table-cell">ราคาต่อหน่วย</th>
@@ -68,7 +63,7 @@
                                              <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
                                                  class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
                                                  data-bs-target="#exampleModal2">
-                                                 + เพิ่มครุภัณฑ์
+                                                 + ครุภัณฑ์
                                              </button>
                                          </td>
                                      @else
@@ -77,13 +72,14 @@
                                      <td class="table-cell" style="display: none;">{{ $query->id }}</td>
                                      <td class="table-cell">{{ $query->budget }}</td>
                                      <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                     <td class="table-cell" style="display: none;">
+                                     <td class="table-cell text-center">
                                          @if ($query->levelNo == 1)
-                                             จริง
+                                             <span class="badge bg-success">จริง</span>
                                          @elseif($query->levelNo == 2)
-                                             สำรอง
+                                             <span class="badge bg-secondary">สำรอง</span>
                                          @endif
                                      </td>
+
                                      <td class="table-cell">{{ $query->objectName }}</td>
                                      <td class="table-cell">{{ $query->description }}</td>
                                      <td class="table-cell" style="text-align: right;">
@@ -187,8 +183,7 @@
 
                              $('#modalContent').html(
                                  '<table class="table">' +
-                                 '<tr><td>ID</td><td class="text-primary">' + rowData[1] +
-                                 '</td></tr>' +
+
                                  '<tr><td>ปี</td><td class="text-primary">' + rowData[2] +
                                  '</td></tr>' +
                                  '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[
@@ -339,6 +334,17 @@
                  window.location.href = event.detail.urls;
              });
          });
+
+         window.addEventListener('DOMContentLoaded', event => {
+             // Simple-DataTables
+             // https://github.com/fiduswriter/Simple-DataTables/wiki
+
+             const datatablesSimple = document.getElementById('datatablesSimple');
+             if (datatablesSimple) {
+                 new simpleDatatables.DataTable(datatablesSimple);
+             }
+         });
      </script>
+
 
  </div>
