@@ -10,7 +10,6 @@ function initializeDataTable() {
             [1, "asc"],
             [2, "asc"],
         ],
-        bLengthChange: false,
         searching: true,
         columnDefs: [
             {
@@ -18,17 +17,39 @@ function initializeDataTable() {
                 targets: [0, 1, 2],
             },
         ],
-        dom: "lrtip",
+        lengthMenu: [
+            [-1, 20, 50,100],
+            ["ทั้งหมด", "20", "50", "100"],
+        ],
+        pageLength: 20,
+        language: {
+            sProcessing: "กำลังดำเนินการ...",
+            sLengthMenu: "แสดง _MENU_ รายการ",
+            sZeroRecords: "ไม่พบข้อมูลในตาราง",
+            sEmptyTable: "ไม่มีข้อมูลในตาราง",
+            sInfo: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
+            sInfoEmpty: "แสดง 0 ถึง 0 จาก 0 รายการ",
+            sInfoFiltered: "(กรองข้อมูลทั้งหมด _MAX_ รายการ)",
+            sSearch: "ค้นหา:",
+            sInfoThousands: ",",
+            sLoadingRecords: "กำลังโหลด...",
+            oPaginate: {
+                sFirst: "หน้าแรก",
+                sLast: "หน้าสุดท้าย",
+                sNext: "ถัดไป",
+                sPrevious: "ก่อนหน้า",
+            },
+        },
     });
 
-    $("#LengthMenu").on("change", function () {
-        var length = $(this).val();
-        table.page.len(length).draw();
-    });
-    $("#SearchMenu").on("keyup", function () {
-        table.search(this.value).draw();
-        console.log(this.value);
-    });
+    // $("#LengthMenu").on("change", function () {
+    //     var length = $(this).val();
+    //     table.page.len(length).draw();
+    // });
+    // $("#SearchMenu").on("keyup", function () {
+    //     table.search(this.value).draw();
+    //     console.log(this.value);
+    // });
 }
 
 initializeDataTable();

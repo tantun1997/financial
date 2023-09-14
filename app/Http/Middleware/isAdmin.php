@@ -15,10 +15,10 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth()->user()->isAdmin == 1) {
+        if(auth()->user()->isAdmin == 'Y') {
             return $next($request);
         }
-        
+
         return redirect('/401')->with('error', 'You don\'t have admin access.');
     }
 }

@@ -99,23 +99,21 @@ class Usermanagement extends Component
 
     public function render()
     {
-        $datatablesUserManagementQuery = DB::table('VW_Users')
+        $datatablesUserManagementQuery = DB::table('vwUsersAuthen')
             ->select(
-                'userId',
-                'name',
+                'id',
+                'fullName',
                 'username',
-                'enable',
+                'isStatus',
                 'isAdmin',
-                'managerId',
-                'managerName',
+                // 'managerId',
+                // 'managerName',
                 'deptName',
-                'updatedAt',
+                // 'updatedAt',
             )
-            ->orderBy('enable', 'desc')
+            ->orderBy('isStatus', 'desc')
             ->orderBy('isAdmin', 'desc')
-            ->orderBy('name')
-            ->orderBy('username')
-            ->get();
+             ->get();
         return view('livewire.administrator.usermanagement', [
             'datatablesUserManagementQuery' => $datatablesUserManagementQuery
         ]);

@@ -1,158 +1,161 @@
- <div class="container-fluid px-4">
-     @include('layouts.loading')
+<div class="container-fluid px-4">
+    @include('layouts.loading')
 
 
-     <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯซ่อม</h3>
-     <ol class="breadcrumb mb-4">
-         <li class="breadcrumb-item "><a
-                 href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
-            <li class="breadcrumb-item active">
-                 บันทึกแผนฯซ่อม</li>
-     </ol>
-     <hr>
-     <div class="mb-3">
-         @include('layouts.repair.addDetail')
-         @include('layouts.repair.edit')
-         @include('layouts.repair.create')
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯซ่อม</h3>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item "><a href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
+        <li class="breadcrumb-item active">
+            บันทึกแผนฯซ่อม</li>
+    </ol>
+    <hr>
+    <div class="mb-3">
+        @include('layouts.repair.addDetail')
+        @include('layouts.repair.edit')
+        @include('layouts.repair.create')
 
-     </div>
-     @if (session()->has('success'))
-         <div class="alert alert-success" role="alert">
-             {{ session()->get('success') }}
-         </div>
-     @endif
+    </div>
+    @if (session()->has('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session()->get('success') }}
+    </div>
+    @endif
 
-     <div class="card mb-4">
-         <div class="card-header">
-             @include('layouts.repair.search')
+    <div class="card mb-4">
+        <div class="card-header">
+            @include('layouts.repair.search')
 
-             <div class="mt-4" id="newButtonContainer" wire:ignore>
-                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
-             </div>
-         </div>
-         <div class="card-body">
-             <div wire:ignore.self>
-                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
+            <div class="mt-4" id="newButtonContainer" wire:ignore>
+                <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
+            </div>
+        </div>
+        <div class="card-body">
+            <div wire:ignore.self>
+                <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
 
-                     <thead>
-                         <tr>
-                             <th class="text-center table-cell"></th>
-                             <th class="text-center table-cell" style="display: none;">รหัส</th>
-                             <th class="text-center table-cell">ปี</th>
-                             <th class="text-center table-cell" style="display: none;">ความสำคัญ</th>
-                             <th class="text-center table-cell">แผนฯ</th>
-                             <th class="text-center table-cell">ประเภท</th>
-                             <th class="text-left table-cell">รายละเอียด</th>
-                             <th class="text-center table-cell">ราคาต่อหน่วย</th>
-                             <th class="text-center table-cell">จำนวน</th>
-                             <th class="text-center table-cell">รวมทั้งหมด</th>
-                             <th class="text-left table-cell">เหตุผลและความจำเป็น</th>
-                             <th class="text-left table-cell">หน่วยงานที่เบิก</th>
-                             <th class="text-left table-cell">หมายเหตุ</th>
-                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
-                             <th class="text-center table-cell">action</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         @foreach ($VW_NEW_MAINPLAN as $query)
-                             @if (
-                                 $query->enable == 1 &&
-                                     $query->procurementType == 1 &&
-                                     ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
-                                 <tr style="cursor: pointer;">
-                                     @if ($query->levelNo != 2)
-                                         <td class="table-cell">
-                                             <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
-                                                 class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
-                                                 data-bs-target="#exampleModal2">
-                                                 + ครุภัณฑ์
-                                             </button>
-                                         </td>
-                                     @else
-                                         <td></td>
-                                     @endif
-                                     <td class="table-cell" style="display: none;">{{ $query->id }}</td>
-                                     <td class="table-cell">{{ $query->budget }}</td>
-                                     <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                     <td class="table-cell text-center">
-                                         @if ($query->levelNo == 1)
-                                             <span class="badge bg-success">จริง</span>
-                                         @elseif($query->levelNo == 2)
-                                             <span class="badge bg-secondary">สำรอง</span>
-                                         @endif
-                                     </td>
-                                     <td class="table-cell">{{ $query->objectName }}</td>
-                                     <td class="table-cell">{{ $query->description }}</td>
-                                     <td class="table-cell" style="text-align: right;">
-                                         {{ number_format($query->price) }}
-                                     </td>
-                                     <td class="table-cell" style="text-align: right;">{{ $query->quant }}
-                                         {{ $query->package }}</td>
-                                     <td class="table-cell" style="text-align: right;">
-                                         {{ number_format($query->price * $query->quant) }}</td>
+                    <thead>
+                        <tr>
+                            <th class="text-center table-cell"></th>
+                            <th class="text-center table-cell" style="display: none;">รหัส</th>
+                            <th class="text-center table-cell">ปี</th>
+                            <th class="text-center table-cell" style="display: none;">ความสำคัญ</th>
+                            <th class="text-center table-cell">แผนฯ</th>
+                            <th class="text-center table-cell">ประเภท</th>
+                            <th class="text-left table-cell">รายละเอียด</th>
+                            <th class="text-center table-cell">ราคาต่อหน่วย</th>
+                            <th class="text-center table-cell">จำนวน</th>
+                            <th class="text-center table-cell">รวมทั้งหมด</th>
+                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th>
+                            <th class="text-left table-cell">หน่วยงานที่เบิก</th>
+                            <th class="text-left table-cell">หมายเหตุ</th>
+                            <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
+                            <th class="text-center table-cell">action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($VW_NEW_MAINPLAN as $query)
+                        @if (
+                        $query->enable == 1 &&
+                        $query->procurementType == 1 &&
+                        ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
+                        <tr style="cursor: pointer;">
+                            @if ($query->levelNo != 2)
+                            <td class="table-cell">
+                                <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
+                                    class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal2">
+                                    + ครุภัณฑ์
+                                      @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                                    <span class="badge bg-danger ">
+                                                        {{ $vwCountDetail->where('PROC_ID', $query->id)->count() }}
+                                                    </span>
+                                                @endif
+                                </button>
+                            </td>
+                            @else
+                            <td></td>
+                            @endif
+                            <td class="table-cell" style="display: none;">{{ $query->id }}</td>
+                            <td class="table-cell">{{ $query->budget }}</td>
+                            <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
+                            <td class="table-cell text-center">
+                                @if ($query->levelNo == 1)
+                                <span class="badge bg-success">จริง</span>
+                                @elseif($query->levelNo == 2)
+                                <span class="badge bg-secondary">สำรอง</span>
+                                @endif
+                            </td>
+                            <td class="table-cell">{{ $query->objectName }}</td>
+                            <td class="table-cell">{{ $query->description }}</td>
+                            <td class="table-cell" style="text-align: right;">
+                                {{ number_format($query->price) }}
+                            </td>
+                            <td class="table-cell" style="text-align: right;">{{ $query->quant }}
+                                {{ $query->package }}</td>
+                            <td class="table-cell" style="text-align: right;">
+                                {{ number_format($query->price * $query->quant) }}</td>
 
-                                     <td class="table-cell">{{ $query->reason }}</td>
-                                     <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                     <td class="table-cell">{{ $query->remark }}</td>
-                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                     <td class="table-cell">
-                                         <button type="button" wire:click.prevent="edit({{ $query->id }})"
-                                             class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                             data-bs-target="#exampleModal1">
-                                             แก้ไข
-                                         </button>
-                                         <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
-                                             class="btn btn-outline-danger btn-sm">ลบ</button>
-                                     </td>
-                                 </tr>
-                             @endif
-                         @endforeach
-                     </tbody>
-                 </table>
-             </div>
-         </div>
-     </div>
-     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-         <div class="modal-dialog" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title" id="modalTitle">รายละเอียดข้อมูล</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                 </div>
-                 <div class="modal-body" id="modalContent">
-                     <!-- แสดงข้อมูลที่คุณต้องการใน Modal ที่นี่ -->
+                            <td class="table-cell">{{ $query->reason }}</td>
+                            <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
+                            <td class="table-cell">{{ $query->remark }}</td>
+                            <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
+                            <td class="table-cell">
+                                <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                    class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1">
+                                    แก้ไข
+                                </button>
+                                <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
+                                    class="btn btn-outline-danger btn-sm">ลบ</button>
+                            </td>
+                        </tr>
+                        @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">รายละเอียดข้อมูล</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalContent">
+                    <!-- แสดงข้อมูลที่คุณต้องการใน Modal ที่นี่ -->
 
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-     <style>
-         .table-cell {
-             white-space: nowrap;
-             max-width: 250px;
-             /* ปรับขนาดตามที่ต้องการ */
-             overflow: hidden;
-             text-overflow: ellipsis;
-         }
+    <style>
+        .table-cell {
+            white-space: nowrap;
+            max-width: 250px;
+            /* ปรับขนาดตามที่ต้องการ */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
 
-         .breadcrumb a {
-             text-decoration: none;
-             color: #000000;
-         }
+        .breadcrumb a {
+            text-decoration: none;
+            color: #000000;
+        }
 
-         /* .dataTables_filter label {
+        /* .dataTables_filter label {
              display: none;
          } */
-     </style>
+    </style>
 
-     <script>
-         initializeDataTable()
+    <script>
+        initializeDataTable()
          var table
 
          function initializeDataTable() {
@@ -337,6 +340,6 @@
                  window.location.href = event.detail.urls;
              });
          });
-     </script>
+    </script>
 
- </div>
+</div>

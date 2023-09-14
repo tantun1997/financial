@@ -39,11 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($procurements_detail) === 0)
-                            <tr>
-                                <td colspan="5">ยังไม่ได้เพิ่มข้อมูล</td>
-                            </tr>
-                        @else
+                        @if (count($procurements_detail) > 0)
                             @foreach ($procurements_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
@@ -64,6 +60,10 @@
                                     </tr>
                                 @endif
                             @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5">ยังไม่ได้เพิ่มข้อมูล</td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>

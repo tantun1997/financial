@@ -39,32 +39,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($procurements_detail) === 0)
-                            <tr>
-                                <td colspan="5">ยังไม่ได้เพิ่มข้อมูล</td>
-                            </tr>
-                        @else
-                            @foreach ($procurements_detail as $query)
-                                @if ($query->PROC_ID == $edit_id)
-                                    <tr>
-                                        <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
-                                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
-                                        <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
-                                        <td style="text-align: center;">
-                                            @switch($query->EQUP_STS_DESC)
-                                                @case('ใช้งาน')
-                                                    <span class="badge bg-success">ใช้งาน</span>
-                                                @break
-                                            @endswitch
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <button type="button" wire:click="deleteRow({{ $query->id }})"
-                                                class="btn btn-outline-danger btn-sm">-</button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        @endif
+                      @if (count($procurements_detail) > 0)
+            @foreach ($procurements_detail as $query)
+                @if ($query->PROC_ID == $edit_id)
+                    <tr>
+                        <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
+                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
+                        <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
+                        <td style="text-align: center;">
+                            @switch($query->EQUP_STS_DESC)
+                                @case('ใช้งาน')
+                                    <span class="badge bg-success">ใช้งาน</span>
+                                @break
+                            @endswitch
+                        </td>
+                        <td style="text-align: center;">
+                            <button type="button" wire:click="deleteRow({{ $query->id }})"
+                                class="btn btn-outline-danger btn-sm">-</button>
+                        </td>
+                    </tr>
+                @endif
+            @endforeach
+        @else
+            <tr>
+                <td colspan="5">ยังไม่ได้เพิ่มข้อมูล</td>
+            </tr>
+        @endif
                     </tbody>
                 </table>
 

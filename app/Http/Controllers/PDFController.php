@@ -11,16 +11,16 @@ class PDFController extends Controller
     public function __construct(PDFService $pdfService)
     {
         $this->pdfService = $pdfService;
+        $this->pdfService->setDefaultFont('garuda');
     }
 
     public function generateProcurement()
     {
-        $this->pdfService->default_font('THSarabunIT9');
         $data = [
-            'title' => 'Sample PDF',
+            'title' => 'บันทึกข้อความ',
             // Add any other data you want to pass to the view
         ];
-
+        // return view('pdf.procurementTemplate', $data);
         return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
     }
 }

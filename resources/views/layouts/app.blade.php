@@ -145,7 +145,7 @@
                             </nav>
                         </div>
 
-                        @if (Auth::user()->isAdmin == '1')
+                        @if (Auth::user()->isAdmin == 'Y')
                             <div class="sb-sidenav-menu-heading">Setting</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                 data-bs-target="#collapseSettings" aria-expanded="false"
@@ -159,9 +159,9 @@
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link {{ Request::is('administrator/usermanagement') ? 'active' : '' }}"
-                                        href="{{ asset('administrator/usermanagement') }}">ผู้ใช้งาน</a>
+                                        href="{{ route('usermanagement') }}">ผู้ใช้งาน</a>
                                     <a class="nav-link {{ Request::is('administrator/deptmanagement') ? 'active' : '' }}"
-                                        href="{{ asset('administrator/deptmanagement') }}">แผนก</a>
+                                        href="{{ route('deptmanagement') }}">แผนก</a>
                                 </nav>
                             </div>
                         @endif
