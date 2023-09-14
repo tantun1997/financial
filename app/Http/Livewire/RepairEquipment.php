@@ -331,6 +331,8 @@ class RepairEquipment extends Component
 
     public function render()
     {
+        $vwCountDetail = DB::table('vwCountDetail')->get();
+
         $procurements_detail = DB::table('procurements_detail')->select(['id','PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
@@ -367,6 +369,8 @@ class RepairEquipment extends Component
             'deptName' => $deptName,
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
+            'vwCountDetail' => $vwCountDetail
+
         ]);
     }
 }

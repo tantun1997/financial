@@ -65,10 +65,12 @@
                                     class="btn btn-outline-success btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#exampleModal2">
                                     + ครุภัณฑ์
-                                      @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
-                                                    <span class="badge bg-danger ">
-                                                        {{ $vwCountDetail->where('PROC_ID', $query->id)->count() }}
-                                                    </span>
+                                     @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            {{ $item->count_detail }}
+                                                        </span>
+                                                    @endforeach
                                                 @endif
                                 </button>
                             </td>

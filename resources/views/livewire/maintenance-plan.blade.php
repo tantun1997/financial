@@ -55,20 +55,21 @@
                     <tbody>
                         @foreach ($VW_NEW_MAINPLAN as $query)
                             @if (
-                                $query->enable == 1 &&
-                                    $query->procurementType == 1 &&
+                                $query->enable == 1 && $query->procurementType == 1 &&
                                     ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
                                 <tr style="cursor: pointer;">
                                     @if ($query->levelNo != 2)
                                         <td class="table-cell">
                                             <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
-                                                class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal2">
+                                                class="btn btn-outline-success btn-sm position-relative"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                 + ครุภัณฑ์
                                                 @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
-                                                    <span class="badge bg-danger ">
-                                                        {{ $vwCountDetail->where('PROC_ID', $query->id)->count() }}
-                                                    </span>
+                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            {{ $item->count_detail }}
+                                                        </span>
+                                                    @endforeach
                                                 @endif
                                             </button>
                                         </td>

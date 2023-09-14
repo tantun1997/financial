@@ -304,7 +304,7 @@ class ContractServices extends Component
             session()->flash('error', "ไม่สามารถลบข้อมูลได้!!");
         }
     }
-    public $searchEQUIPMENT,$VW_EQUIPMENT;
+    public $searchEQUIPMENT, $VW_EQUIPMENT;
     public $loading = false;
     public $searchPerformed = false;
 
@@ -316,7 +316,7 @@ class ContractServices extends Component
 
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
-        $searchResult = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO','EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC'])
+        $searchResult = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC'])
             ->where(function ($query) use ($searchEQUIPMENT, $deptId) {
                 $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
                     ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
@@ -340,7 +340,8 @@ class ContractServices extends Component
     public function render()
     {
 
-        $procurements_detail = DB::table('procurements_detail')->select(['id','PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
+        $procurements_detail = DB::table('procurements_detail')->select(['id', 'PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
+        $vwCountDetail = DB::table('vwCountDetail')->get();
 
 
 
@@ -378,6 +379,8 @@ class ContractServices extends Component
             'deptName' => $deptName,
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
+            'vwCountDetail' => $vwCountDetail
+
         ]);
     }
 }
