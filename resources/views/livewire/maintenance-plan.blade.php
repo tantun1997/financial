@@ -31,54 +31,60 @@
             </div>
         </div>
         <div class="card-body">
-            <div wire:ignore.self>
+            <div>
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-center table-cell"></th>
-                            <th class="text-center table-cell" style="display: none;">รหัส</th>
-                            <th class="text-center table-cell">ปี</th>
-                            <th class="text-center table-cell" style="display: none;">ความสำคัญ</th>
-                            <th class="text-center table-cell">แผนฯ</th>
-                            <th class="text-center table-cell">ประเภท</th>
-                            <th class="text-left table-cell">รายละเอียด</th>
-                            <th class="text-center table-cell">ราคาต่อหน่วย</th>
-                            <th class="text-center table-cell">จำนวน</th>
-                            <th class="text-center table-cell">รวมทั้งหมด</th>
-                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th>
-                            <th class="text-left table-cell">หน่วยงานที่เบิก</th>
-                            <th class="text-left table-cell">หมายเหตุ</th>
+                            <th class="text-center table-cell">อนุมัติแผนฯ</th> <!-- 0 -->
+                            <th class="text-center table-cell">แผนฯ</th><!-- 1 -->
+                            <th class="text-center table-cell">ครุภัณฑ์</th><!-- 2 -->
+                            <th class="text-center table-cell" style="display: none;">รหัส</th><!-- 3 -->
+                            <th class="text-center table-cell" style="display: none;">ปี</th><!-- 4 -->
+                            <th class="text-center table-cell" style="display: none;">ความสำคัญ</th><!-- 5 -->
+                            <th class="text-center table-cell">ประเภท</th><!-- 6 -->
+                            <th class="text-left table-cell">รายการ</th><!-- 7 -->
+                            <th class="text-center table-cell">ราคาต่อหน่วย</th><!-- 8 -->
+                            <th class="text-center table-cell">จำนวน</th><!-- 9 -->
+                            <th class="text-center table-cell">รวมทั้งหมด</th><!-- 10 -->
+                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th><!-- 11 -->
+                            <th class="text-left table-cell">หน่วยงานที่เบิก</th><!-- 12 -->
+                            <th class="text-left table-cell">หมายเหตุ</th><!-- 13 -->
                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
-                            <th class="text-center table-cell">action</th>
+                            <!-- 14 -->
+                            <th class="text-center table-cell">action</th><!-- 15 -->
                         </tr>
                     </thead>
-                    <tbody>
+                <tbody>
                         @foreach ($VW_NEW_MAINPLAN as $query)
                             @if (
-                                $query->enable == 1 && $query->procurementType == 1 &&
+                                $query->enable == 1 &&
+                                    $query->procurementType == 1 &&
                                     ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
                                 <tr style="cursor: pointer;">
-                                    @if ($query->levelNo != 2)
-                                        <td class="table-cell">
-                                            <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
-                                                class="btn btn-outline-success btn-sm"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                + ครุภัณฑ์
-                                                @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
-                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
-                                                        <span class="badge rounded-pill bg-danger">
-                                                            {{ $item->count_detail }}
-                                                        </span>
-                                                    @endforeach
-                                                @endif
-                                            </button>
-                                        </td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                    <td class="table-cell" style="display: none;">{{ $query->id }}</td>
-                                    <td class="table-cell">{{ $query->budget }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
+                                    <td class="table-cell text-center">
+                                        @if ($query->levelNo != 2 && Auth::user()->isAdmin == 'Y')
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    id="approvalSwitch({{ $query->id }})"
+                                                    aria-labelledby="approvalSwitch({{ $query->id }})"
+                                                    wire:click="Approval({{ $query->id }})"
+                                                    @if ($query->approved == '1') checked @endif>
+                                                <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
+                                                    @if ($query->approved == '1')
+                                                        <span class="badge bg-success">อนุมัติแล้ว</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        @else
+                                            @if ($query->approved == '1')
+                                                <span class="badge bg-success">อนุมัติแล้ว</span>
+                                            @else
+                                                <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="table-cell text-center">
                                         @if ($query->levelNo == 1)
                                             <span class="badge bg-success">จริง</span>
@@ -86,6 +92,35 @@
                                             <span class="badge bg-secondary">สำรอง</span>
                                         @endif
                                     </td>
+                                    @if ($query->levelNo != 2)
+                                        <td class="table-cell">
+                                            @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                                <button type="button"
+                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                    class="btn btn-outline-success btn-sm position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                                     @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            {{ $item->count_detail }}
+                                                        </span>
+                                                    @endforeach ครุภัณฑ์
+                                                </button>
+                                            @else
+                                                <button type="button"
+                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                    class="btn btn-outline-success btn-sm position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                                    + ครุภัณฑ์
+                                                </button>
+                                            @endif
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
+
+                                    <td class="table-cell" style="display: none;">{{ $query->id }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->budget }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
                                     <td class="table-cell">{{ $query->objectName }}</td>
                                     <td class="table-cell">{{ $query->description }}</td>
                                     <td class="table-cell" style="text-align: right;">
@@ -139,7 +174,7 @@
     <style>
         .table-cell {
             white-space: nowrap;
-            max-width: 250px;
+            max-width: 200px;
             /* ปรับขนาดตามที่ต้องการ */
             overflow: hidden;
             text-overflow: ellipsis;
@@ -155,9 +190,9 @@
              display: none;
          } */
     </style>
-
     <script>
         initializeDataTable()
+
         var table
 
         function initializeDataTable() {
@@ -181,7 +216,7 @@
                     }
                 },
                 "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [0, 14];
+                    var columnIndexToExclude = [0, 2, 15];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
@@ -190,30 +225,30 @@
 
                             $('#modalContent').html(
                                 '<table class="table">' +
-                                '<tr><td>ปี</td><td class="text-primary">' + rowData[2] +
+                                '<tr><td>ปี</td><td class="text-primary">' + rowData[4] +
                                 '</td></tr>' +
                                 '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[
-                                    3] + '</td></tr>' +
-                                '<tr><td>แผนฯ</td><td class="text-success">' + rowData[4] +
+                                    5] + '</td></tr>' +
+                                '<tr><td>แผนฯ</td><td class="text-success">' + rowData[1] +
                                 '</td></tr>' +
-                                '<tr><td>ประเภท</td><td class="text-primary">' + rowData[5] +
+                                '<tr><td>ประเภท</td><td class="text-primary">' + rowData[6] +
                                 '</td></tr>' +
-                                '<tr><td>รายการ</td><td class="text-primary">' + rowData[6] +
+                                '<tr><td>รายการ</td><td class="text-primary">' + rowData[7] +
                                 '</td></tr>' +
-                                '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[7] +
+                                '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[8] +
                                 ' บาท</td></tr>' +
-                                '<tr><td>จำนวน</td><td class="text-primary">' + rowData[8] +
+                                '<tr><td>จำนวน</td><td class="text-primary">' + rowData[9] +
                                 '</td></tr>' +
-                                '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[9] +
+                                '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[10] +
                                 ' บาท</td></tr>' +
                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
-                                rowData[10] + '</td></tr>' +
+                                rowData[11] + '</td></tr>' +
                                 '<tr><td>หน่วยงานที่เบิก</td><td class="text-success">' + rowData[
-                                    11] + '</td></tr>' +
-                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[12] +
+                                    12] + '</td></tr>' +
+                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[13] +
                                 '</td></tr>' +
                                 '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
-                                rowData[13] + '</td></tr>' +
+                                rowData[14] + '</td></tr>' +
                                 '</table>'
                             );
 
@@ -242,7 +277,7 @@
                     title: `รายงานแผนบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] // ไม่ส่งออกคอลัมน์ "action"
+                        columns: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
@@ -259,23 +294,23 @@
 
         $('#resetBtn').click(function() {
             $("#filterSelectyear").val("").trigger("change");
-            table.column(2).search("").draw();
+            table.column(4).search("").draw();
 
             $("#filterSelectdeptId").val("").trigger("change");
-            table.column(11).search("").draw();
+            table.column(12).search("").draw();
 
             $("#filterSelectobjectTypeId").val("").trigger("change");
-            table.column(5).search("").draw();
+            table.column(6).search("").draw();
 
         });
         $("#filterSelectyear").on("change", function() {
             var selectedValue = $(this).val();
 
             if (selectedValue !== "") {
-                table.column(2).search("^" + selectedValue + "$", true, false).draw();
+                table.column(4).search("^" + selectedValue + "$", true, false).draw();
 
             } else {
-                table.column(2).search("").draw();
+                table.column(4).search("").draw();
 
             }
         });
@@ -285,9 +320,9 @@
             var escapedValue = selectedValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Escape special characters
 
             if (selectedValue !== "") {
-                table.column(5).search("^" + escapedValue + "$", true, false).draw();
+                table.column(6).search("^" + escapedValue + "$", true, false).draw();
             } else {
-                table.column(5).search("").draw();
+                table.column(6).search("").draw();
             }
         });
 
@@ -295,10 +330,10 @@
             var selectedValue = $(this).val();
 
             if (selectedValue !== "") {
-                table.column(11).search("^" + selectedValue + "$", true, false).draw();
+                table.column(12).search("^" + selectedValue + "$", true, false).draw();
 
             } else {
-                table.column(11).search("").draw();
+                table.column(12).search("").draw();
 
             }
         });

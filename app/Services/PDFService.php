@@ -11,14 +11,20 @@ class PDFService
     public function __construct()
     {
         $this->mpdf = new Mpdf([
+            // 'autoPageBreak' => true,
+            // 'autoScriptToLang' => true,
+            // 'autoLangToFont' => true,
             'mode' => 'utf-8',
             'format' => 'A4',
-            'margin_top' => 11,
-            'margin_left' => 22,
-            'margin_right' => 16,
-            'margin-bottom' => 5,
+            'margin_top' => 9,
+            'margin_left' => 20,
+            'margin_right' => 14,
+            'margin-bottom' => 3,
+
             // 'tabSpaces' => 4
         ]);
+        $this->mpdf->useSubstitutions = true;
+        $this->mpdf->SetDisplayMode('fullwidth');
     }
     public function setDefaultFont($font)
     {

@@ -12,9 +12,38 @@ class RepairEquipment extends Component
 {
     public $procurementType, $priorityNo, $description, $price, $package, $quant,
     $objectTypeId, $reason, $deptId, $budget, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
-    protected $listeners = ['deleteConfirmed', 'descriptionChanged' => 'updateDescription'];
+    protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+    public function Approval($id)
+    {
+        $query = DB::table('procurements')->where('id', $id)->first();
+
+        if ($query->approved == '0' || $query->approved === null) {
+            $newApproved = '1';
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'success',
+                'message' => 'อนุมัติแล้ว!!',
+                'urls' => 'repair_equip'
+            ]);
+        } else {
+            $newApproved = '0';
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'error',
+                'message' => 'ไม่อนุมัติ!!',
+                'urls' => 'repair_equip'
+            ]);
+        }
+
+        DB::table('procurements')
+        ->where('id', $id)
+            ->update([
+                'approved' => $newApproved,
+                'approved_at' => now(),
+                'approved_deptId' => Auth::user()->deptId
+            ]);
+    }
+
     public function updateFieldsFromDescription()
     {
         $selectedPlan = DB::table('VW_NEW_MAINPLAN')->where('Description', trim($this->description))->first();
@@ -106,10 +135,9 @@ class RepairEquipment extends Component
     {
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
-        $this->budget = '2567';
+        $this->budget = date('Y');
         $this->priorityNo = '001';
         $this->quant = '1';
-        $this->remark = '';
         $this->procurementType = '1';
         $this->enable = '1';
         $this->created_at = now();
@@ -118,7 +146,7 @@ class RepairEquipment extends Component
 
     public function resetFields()
     {
-        $this->budget = '2567';
+        $this->budget = date('Y');
         $this->priorityNo = '001';
         $this->description = '';
         $this->price = '';
