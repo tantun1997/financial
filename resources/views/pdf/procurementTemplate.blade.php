@@ -94,7 +94,7 @@
                         <td class="table_doted_left">&nbsp; ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง &nbsp;</td>
                     </tr>
                 </table>
-                <table width="100%" border="0" class="header" style="vertical-align: bottom; padding-bottom: 10px;">
+                <table width="100%" border="0" class="header" style="vertical-align: bottom;">
                     <tr>
                         <td width="1px">เรียน</td>
                         <td>ผู้อำนวยการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า &nbsp;</td>
@@ -102,10 +102,11 @@
                 </table>
                 <table width="100%" border="0" style="vertical-align: bottom;">
                     <tr>
-                        <td><span style="text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน&nbsp;กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก&nbsp;ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี 2567 โดยมีรายละเอียดดังนี้</span></td>
+                        <td style="text-align: justify;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-align: justify;">{{ $text }}</span></span></td>
                     </tr>
                 </table>
-
+                {{-- <span style="text-align: justify;">{{ $text }}</span> --}}
+{{-- 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 --}}
 
                 {{-- <table width="100%" border="0" style="vertical-align: bottom;">
                     <tr>

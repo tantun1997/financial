@@ -139,7 +139,7 @@ class ContractServices extends Component
     {
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
-        $this->budget = date('Y');
+        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
         $this->priorityNo = '001';
         $this->quant = '1';
         $this->procurementType = '2';
@@ -150,7 +150,7 @@ class ContractServices extends Component
 
     public function resetFields()
     {
-        $this->budget = date('Y');
+        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
         $this->priorityNo = '001';
         $this->description = '';
         $this->price = '';
@@ -319,7 +319,8 @@ class ContractServices extends Component
                 ->where('id', $id)
                 ->update([
                     'enable' => '0',
-                    'updated_at' => now()
+                    'deleted_at' => now(),
+                    'deleted_deptId' => Auth::user()->deptId
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',

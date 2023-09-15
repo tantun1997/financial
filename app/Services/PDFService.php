@@ -24,7 +24,7 @@ class PDFService
             // 'tabSpaces' => 4
         ]);
         $this->mpdf->useSubstitutions = true;
-        $this->mpdf->SetDisplayMode('fullwidth');
+        $this->mpdf->SetDisplayMode('fullpage', 'single');
     }
     public function setDefaultFont($font)
     {

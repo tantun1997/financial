@@ -32,7 +32,7 @@
             <div>
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
-                       <tr>
+                        <tr>
                             <th class="text-center table-cell">อนุมัติแผนฯ</th> <!-- 0 -->
                             <th class="text-center table-cell">แผนฯ</th><!-- 1 -->
                             <th class="text-center table-cell">ครุภัณฑ์</th><!-- 2 -->
@@ -43,13 +43,14 @@
                             <th class="text-left table-cell">รายการ</th><!-- 7 -->
                             <th class="text-center table-cell">ราคาต่อหน่วย</th><!-- 8 -->
                             <th class="text-center table-cell">จำนวน</th><!-- 9 -->
-                            <th class="text-center table-cell">รวมทั้งหมด</th><!-- 10 -->
-                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th><!-- 11 -->
-                            <th class="text-left table-cell">หน่วยงานที่เบิก</th><!-- 12 -->
-                            <th class="text-left table-cell">หมายเหตุ</th><!-- 13 -->
+                            <th class="text-center table-cell" style="display: none;">หน่วยนับ</th><!-- 10 -->
+                            <th class="text-center table-cell">รวมทั้งหมด</th><!-- 11 -->
+                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th><!-- 12 -->
+                            <th class="text-left table-cell">หน่วยงานที่เบิก</th><!-- 13 -->
+                            <th class="text-left table-cell">หมายเหตุ</th><!-- 14 -->
                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
-                            <!-- 14 -->
-                            <th class="text-center table-cell">action</th><!-- 15 -->
+                            <!-- 15 -->
+                            <th class="text-center table-cell">action</th><!-- 16 -->
                         </tr>
                     </thead>
                     <tbody>
@@ -91,13 +92,13 @@
                                         @endif
                                     </td>
                                     @if ($query->levelNo != 2)
-                                       <td class="table-cell">
+                                        <td class="table-cell">
                                             @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
                                                 <button type="button"
                                                     wire:click.prevent="add_detail({{ $query->id }})"
                                                     class="btn btn-outline-success btn-sm position-relative"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                     @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
                                                         <span class="badge rounded-pill bg-danger">
                                                             {{ $item->count_detail }}
                                                         </span>
@@ -126,6 +127,8 @@
                                     </td>
                                     <td class="table-cell" style="text-align: right;">{{ $query->quant }}
                                         {{ $query->package }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->package }}</td>
+
                                     <td class="table-cell" style="text-align: right;">
                                         {{ number_format($query->price * $query->quant) }}</td>
 
@@ -212,15 +215,14 @@
                         "sPrevious": "ก่อนหน้า"
                     }
                 },
-              "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [0, 2, 15];
+                "rowCallback": function(row, data) {
+                    var columnIndexToExclude = [0, 2, 16];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
                             var rowData = table.row($(this).closest('tr')).data();
                             $('#myModal').modal('show');
-
-                            $('#modalContent').html(
+  $('#modalContent').html(
                                 '<table class="table">' +
                                 '<tr><td>ปี</td><td class="text-primary">' + rowData[4] +
                                 '</td></tr>' +
@@ -236,16 +238,16 @@
                                 ' บาท</td></tr>' +
                                 '<tr><td>จำนวน</td><td class="text-primary">' + rowData[9] +
                                 '</td></tr>' +
-                                '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[10] +
+                                '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[11] +
                                 ' บาท</td></tr>' +
                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
-                                rowData[11] + '</td></tr>' +
+                                rowData[12] + '</td></tr>' +
                                 '<tr><td>หน่วยงานที่เบิก</td><td class="text-success">' + rowData[
-                                    12] + '</td></tr>' +
-                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[13] +
+                                    13] + '</td></tr>' +
+                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[14] +
                                 '</td></tr>' +
                                 '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
-                                rowData[14] + '</td></tr>' +
+                                rowData[15] + '</td></tr>' +
                                 '</table>'
                             );
 
@@ -274,7 +276,7 @@
                     title: `รายงานแผนบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                        columns: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
@@ -294,7 +296,7 @@
             table.column(4).search("").draw();
 
             $("#filterSelectdeptId").val("").trigger("change");
-            table.column(12).search("").draw();
+            table.column(13).search("").draw();
 
             $("#filterSelectobjectTypeId").val("").trigger("change");
             table.column(6).search("").draw();
@@ -327,10 +329,10 @@
             var selectedValue = $(this).val();
 
             if (selectedValue !== "") {
-                table.column(12).search("^" + selectedValue + "$", true, false).draw();
+                table.column(13).search("^" + selectedValue + "$", true, false).draw();
 
             } else {
-                table.column(12).search("").draw();
+                table.column(13).search("").draw();
 
             }
         });

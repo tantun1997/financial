@@ -26,26 +26,24 @@ class MaintenancePlan extends Component
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'message' => 'อนุมัติแล้ว!!',
-                         'urls' => 'maintenance_equip'
+                'urls' => 'maintenance_equip'
             ]);
         } else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
-                'type' =>'error',
+                'type' => 'error',
                 'message' => 'ไม่อนุมัติ!!',
                 'urls' => 'maintenance_equip'
             ]);
         }
 
         DB::table('procurements')
-        ->where('id', $id)
+            ->where('id', $id)
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
-            'approved_deptId' => Auth::user()->deptId
+                'approved_deptId' => Auth::user()->deptId
             ]);
-
-
     }
 
     public function updateFieldsFromDescription()
@@ -139,7 +137,7 @@ class MaintenancePlan extends Component
     {
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
-        $this->budget = date('Y');
+        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
         $this->priorityNo = '001';
         $this->quant = '1';
         $this->procurementType = '1';
@@ -150,7 +148,7 @@ class MaintenancePlan extends Component
 
     public function resetFields()
     {
-        $this->budget = date('Y');
+        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
         $this->priorityNo = '001';
         $this->description = '';
         $this->price = '';
@@ -319,7 +317,8 @@ class MaintenancePlan extends Component
                 ->where('id', $id)
                 ->update([
                     'enable' => '0',
-                    'updated_at' => now()
+                    'deleted_at' => now(),
+                'deleted_deptId' => Auth::user()->deptId
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
