@@ -55,10 +55,7 @@
                     </thead>
                     <tbody>
                         @foreach ($VW_NEW_MAINPLAN as $query)
-                            @if (
-                                $query->enable == 1 &&
-                                    $query->procurementType == 2 &&
-                                    ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
+                            @if (  ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
                                 <tr style="cursor: pointer;">
                                     <td class="table-cell text-center">
                                         @if ($query->levelNo != 2 && Auth::user()->isAdmin == 'Y')

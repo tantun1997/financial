@@ -43,26 +43,26 @@
                 class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         {{-- <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"> --}}
-        <div class="input-group">
-            {{-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                    aria-describedby="btnNavbarSearch" autocomplete="off"/>
+            <div class="input-group">
+                {{-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                    aria-describedby="btnNavbarSearch" autocomplete="off" />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
                         class="fas fa-search"></i></button> --}}
-        </div>
-        {{-- </form> --}}
+            </div>
+            {{--
+        </form> --}}
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
+                    <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                           document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
@@ -86,7 +86,6 @@
                             Dashboard
                         </a> --}}
 
-
                         <div class="sb-sidenav-menu-heading">Interface</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -105,9 +104,19 @@
                                 <a class="nav-link {{ Request::is('contract_services') ? 'active' : '' }}"
                                     href="{{ route('contract_services') }}">จ้างเหมาบริการ</a>
                                 {{-- <a class="nav-link" href="{{ route('equipment') }}">ครุภัณฑ์</a>
-                                 <a class="nav-link" href="{{ route('page404') }}">วัสดุ</a> --}}
+                                <a class="nav-link" href="{{ route('page404') }}">วัสดุ</a> --}}
                             </nav>
                         </div>
+
+                        @if (Auth::user()->isAdmin == 'Y' && Auth::user()->deptId == '140')
+                        <a class="nav-link {{ Request::is('approval_plans') ? 'active' : '' }} collapsed"
+                            href="{{ route('approval_plans') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
+                            การจัดอนุมัติแผนงาน
+                        </a>
+                        @endif
+
+
                         {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -147,27 +156,25 @@
                                 </div>
                             </nav>
                         </div>
-
+                        {{--
                         @if (Auth::user()->isAdmin == 'Y')
-                            <div class="sb-sidenav-menu-heading">Setting</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                data-bs-target="#collapseSettings" aria-expanded="false"
-                                aria-controls="collapseSettings">
-                                <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
-                                จัดการระบบ
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse {{ Request::is('administrator/usermanagement') || Request::is('administrator/deptmanagement') ? 'show' : '' }}"
-                                id="collapseSettings" aria-labelledby="headingOne"
-                                data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link {{ Request::is('administrator/usermanagement') ? 'active' : '' }}"
-                                        href="{{ route('usermanagement') }}">ผู้ใช้งาน</a>
-                                    <a class="nav-link {{ Request::is('administrator/deptmanagement') ? 'active' : '' }}"
-                                        href="{{ route('deptmanagement') }}">แผนก</a>
-                                </nav>
-                            </div>
-                        @endif
+                        <div class="sb-sidenav-menu-heading">Setting</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSettings" aria-expanded="false" aria-controls="collapseSettings">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
+                            จัดการระบบ
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse {{ Request::is('administrator/usermanagement') || Request::is('administrator/deptmanagement') ? 'show' : '' }}"
+                            id="collapseSettings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link {{ Request::is('administrator/usermanagement') ? 'active' : '' }}"
+                                    href="{{ route('usermanagement') }}">ผู้ใช้งาน</a>
+                                <a class="nav-link {{ Request::is('administrator/deptmanagement') ? 'active' : '' }}"
+                                    href="{{ route('deptmanagement') }}">แผนก</a>
+                            </nav>
+                        </div>
+                        @endif --}}
 
                     </div>
                 </div>

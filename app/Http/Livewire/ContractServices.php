@@ -376,6 +376,7 @@ class ContractServices extends Component
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('procurementType', '2')
+            ->where('enable', '1')
             ->orderBy('updated_at', 'DESC')
             ->get();
 

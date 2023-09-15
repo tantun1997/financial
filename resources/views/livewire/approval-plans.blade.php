@@ -2,29 +2,22 @@
     @include('layouts.loading')
 
 
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯบำรุงรักษา</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> การจัดอนุมัติแผนงาน</h3>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item "><a
-                href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
         <li class="breadcrumb-item active">
-                บันทึกแผนฯบำรุงรักษา</li>
+            การจัดอนุมัติแผนงาน</li>
     </ol>
     <hr>
-    <div class="mb-3">
-        @include('layouts.maintenance.addDetail')
-        @include('layouts.maintenance.edit')
-        @include('layouts.maintenance.create')
 
-    </div>
     @if (session()->has('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session()->get('success') }}
-        </div>
+    <div class="alert alert-success" role="alert">
+        {{ session()->get('success') }}
+    </div>
     @endif
 
     <div class="card mb-4">
         <div class="card-header">
-            @include('layouts.maintenance.search')
+            {{-- @include('layouts.maintenance.search') --}}
 
             <div class="mt-4" id="newButtonContainer" wire:ignore>
                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
@@ -57,104 +50,99 @@
                     </thead>
                     <tbody>
                         @foreach ($VW_NEW_MAINPLAN as $query)
-                            @if (                                    ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
-                                <tr style="cursor: pointer;">
-                                    <td class="table-cell text-center">
-                                        @if ($query->levelNo != 2 && Auth::user()->isAdmin == 'Y')
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox"
-                                                    id="approvalSwitch({{ $query->id }})"
-                                                    aria-labelledby="approvalSwitch({{ $query->id }})"
-                                                    wire:click="Approval({{ $query->id }})"
-                                                    @if ($query->approved == '1') checked @endif>
-                                                <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
-                                                    @if ($query->approved == '1')
-                                                        <span class="badge bg-success">อนุมัติแล้ว</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
-                                                    @endif
-                                                </span>
-                                            </div>
+                        <tr style="cursor: pointer;">
+                            <td class="table-cell text-center">
+                                @if ($query->levelNo != 2 && Auth::user()->isAdmin == 'Y')
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="approvalSwitch({{ $query->id }})"
+                                        aria-labelledby="approvalSwitch({{ $query->id }})"
+                                        wire:click="Approval({{ $query->id }})" @if ($query->approved == '1') checked
+                                    @endif>
+                                    <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
+                                        @if ($query->approved == '1')
+                                        <span class="badge bg-success">อนุมัติแล้ว</span>
                                         @else
-                                            @if ($query->approved == '1')
-                                                <span class="badge bg-success">อนุมัติแล้ว</span>
-                                            @else
-                                                <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
-                                            @endif
+                                        <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
                                         @endif
-                                    </td>
-                                    <td class="table-cell text-center">
-                                        @if ($query->levelNo == 1)
-                                            <span class="badge bg-success">จริง</span>
-                                        @elseif($query->levelNo == 2)
-                                            <span class="badge bg-secondary">สำรอง</span>
-                                        @endif
-                                    </td>
-                                    @if ($query->levelNo != 2)
-                                        <td class="table-cell">
-                                            @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
-                                                <button type="button"
-                                                    wire:click.prevent="add_detail({{ $query->id }})"
-                                                    class="btn btn-outline-success btn-sm position-relative"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
-                                                        <span class="badge rounded-pill bg-danger">
-                                                            {{ $item->count_detail }}
-                                                        </span>
-                                                    @endforeach ครุภัณฑ์
-                                                </button>
-                                            @else
-                                                <button type="button"
-                                                    wire:click.prevent="add_detail({{ $query->id }})"
-                                                    class="btn btn-outline-success btn-sm position-relative"
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                    + ครุภัณฑ์
-                                                </button>
-                                            @endif
-                                        </td>
-                                    @else
-                                        <td></td>
-                                    @endif
-
-                                    <td class="table-cell" style="display: none;">{{ $query->id }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->budget }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                    <td class="table-cell">{{ $query->objectName }}</td>
-                                    <td class="table-cell">{{ $query->description }}</td>
-                                    <td class="table-cell" style="text-align: right;">
-                                        {{ number_format($query->price) }}
-                                    </td>
-                                    <td class="table-cell" style="text-align: right;">{{ $query->quant }}
-                                        {{ $query->package }}</td>
-
-                                    <td class="table-cell" style="display: none;">{{ $query->package }}</td>
-
-                                    <td class="table-cell" style="text-align: right;">
-                                        {{ number_format($query->price * $query->quant) }}</td>
-
-                                    <td class="table-cell">{{ $query->reason }}</td>
-                                    <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                    <td class="table-cell">{{ $query->remark }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                    <td class="table-cell">
-                                        <button type="button" wire:click.prevent="edit({{ $query->id }})"
-                                            class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal1">
-                                            แก้ไข
-                                        </button>
-                                        <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
-                                            class="btn btn-outline-danger btn-sm">ลบ</button>
-                                    </td>
-                                </tr>
+                                    </span>
+                                </div>
+                                @else
+                                @if ($query->approved == '1')
+                                <span class="badge bg-success">อนุมัติแล้ว</span>
+                                @else
+                                <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                @endif
+                                @endif
+                            </td>
+                            <td class="table-cell text-center">
+                                @if ($query->levelNo == 1)
+                                <span class="badge bg-success">จริง</span>
+                                @elseif($query->levelNo == 2)
+                                <span class="badge bg-secondary">สำรอง</span>
+                                @endif
+                            </td>
+                            @if ($query->levelNo != 2)
+                            <td class="table-cell">
+                                @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
+                                    class="btn btn-outline-success btn-sm position-relative" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal2">
+                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                    <span class="badge rounded-pill bg-danger">
+                                        {{ $item->count_detail }}
+                                    </span>
+                                    @endforeach ครุภัณฑ์
+                                </button>
+                                @else
+                                <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
+                                    class="btn btn-outline-success btn-sm position-relative" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal2">
+                                    + ครุภัณฑ์
+                                </button>
+                                @endif
+                            </td>
+                            @else
+                            <td></td>
                             @endif
+
+                            <td class="table-cell" style="display: none;">{{ $query->id }}</td>
+                            <td class="table-cell" style="display: none;">{{ $query->budget }}</td>
+                            <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
+                            <td class="table-cell">{{ $query->objectName }}</td>
+                            <td class="table-cell">{{ $query->description }}</td>
+                            <td class="table-cell" style="text-align: right;">
+                                {{ number_format($query->price) }}
+                            </td>
+                            <td class="table-cell" style="text-align: right;">{{ $query->quant }}
+                                {{ $query->package }}</td>
+
+                            <td class="table-cell" style="display: none;">{{ $query->package }}</td>
+
+                            <td class="table-cell" style="text-align: right;">
+                                {{ number_format($query->price * $query->quant) }}</td>
+
+                            <td class="table-cell">{{ $query->reason }}</td>
+                            <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
+                            <td class="table-cell">{{ $query->remark }}</td>
+                            <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
+                            <td class="table-cell">
+                                <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                    class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1">
+                                    แก้ไข
+                                </button>
+                                <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
+                                    class="btn btn-outline-danger btn-sm">ลบ</button>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -181,15 +169,10 @@
             text-overflow: ellipsis;
         }
 
-
         .breadcrumb a {
             text-decoration: none;
             color: #000000;
         }
-
-        /* .dataTables_filter label {
-             display: none;
-         } */
     </style>
     <script>
         initializeDataTable()
@@ -291,53 +274,6 @@
         var excelButton = table.buttons(); // 0 คือ index ของปุ่ม "Export to Excel"
         excelButton.container().appendTo(
             '#newButtonContainer'); // เปลี่ยน #newButtonContainer เป็น selector ของตำแหน่งที่ต้องการ
-
-
-        $('#resetBtn').click(function() {
-            $("#filterSelectyear").val("").trigger("change");
-            table.column(4).search("").draw();
-
-            $("#filterSelectdeptId").val("").trigger("change");
-            table.column(13).search("").draw();
-
-            $("#filterSelectobjectTypeId").val("").trigger("change");
-            table.column(6).search("").draw();
-
-        });
-        $("#filterSelectyear").on("change", function() {
-            var selectedValue = $(this).val();
-
-            if (selectedValue !== "") {
-                table.column(4).search("^" + selectedValue + "$", true, false).draw();
-
-            } else {
-                table.column(4).search("").draw();
-
-            }
-        });
-
-        $("#filterSelectobjectTypeId").on("change", function() {
-            var selectedValue = $(this).val();
-            var escapedValue = selectedValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Escape special characters
-
-            if (selectedValue !== "") {
-                table.column(6).search("^" + escapedValue + "$", true, false).draw();
-            } else {
-                table.column(6).search("").draw();
-            }
-        });
-
-        $("#filterSelectdeptId").on("change", function() {
-            var selectedValue = $(this).val();
-
-            if (selectedValue !== "") {
-                table.column(13).search("^" + selectedValue + "$", true, false).draw();
-
-            } else {
-                table.column(13).search("").draw();
-
-            }
-        });
 
         window.addEventListener('swal:modal', event => {
             swal({

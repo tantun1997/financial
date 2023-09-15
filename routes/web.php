@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('maintenance_equip', [MainPageController::class, 'maintenanceEquipment'])->name('maintenance_equip');
     Route::get('repair_equip', [MainPageController::class, 'repairEquipment'])->name('repair_equip');
     Route::get('contract_services', [MainPageController::class, 'contractServices'])->name('contract_services');
+    Route::get('approval_plans', [MainPageController::class, 'approvalPlans'])->name('approval_plans');
 
     Route::get('/home', [MainPageController::class, 'home'])->name('home');
 

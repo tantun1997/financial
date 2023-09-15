@@ -367,6 +367,7 @@ $this->budget = Carbon::now()->addYear()->format('Y') + 543;
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->whereNotIn('objectTypeId', ['01'])
             ->where('procurementType', '1')
+            ->where('enable', '1')
             ->orderBy('updated_at', 'DESC')
             ->get();
 

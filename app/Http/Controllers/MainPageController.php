@@ -38,6 +38,9 @@ class MainPageController extends Controller
     {
         return view('vw_contract-services');
     }
-
+    public function approvalPlans()
+    {
+        return view('vw_approval-plans');
+    }
 
 }

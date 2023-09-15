@@ -374,6 +374,7 @@ class MaintenancePlan extends Component
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('objectTypeId', '01')
             ->where('procurementType', '1')
+            ->where('enable', '1')
             ->orderByDesc('updated_at')
             ->get();
 

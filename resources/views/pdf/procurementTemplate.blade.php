@@ -68,7 +68,7 @@
                         <td>
                             <table width="100%" class="header" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td class="table_doted_left">กลุ่มงาน/ฝ่าย/งาน&nbsp;กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก &nbsp;</td>
+                                    <td class="table_doted_left">กลุ่มงาน/ฝ่าย/งาน&nbsp;{{ $department }} &nbsp;</td>
                                 </tr>
                             </table>
                         </td>
@@ -76,7 +76,7 @@
                             <table width="100%" class="header" border="0" cellspacing="0" cellpadding="0" style="vertical-align: top;">
                                 <tr>
                                     <td width="1px">โทร</td>
-                                    <td class="table_doted_left">&nbsp; 2703 &nbsp;</td>
+                                    <td class="table_doted_left">&nbsp; {{ $tel }} &nbsp;</td>
                                 </tr>
                         </table>
                     </td>
@@ -90,7 +90,7 @@
                             <table width="100%" class="header" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td width="1px"><p class="headerText">วันที่</p></td>
-                                    <td class="table_doted_center">&nbsp; 12 พฤศจิกายน 2566 &nbsp;</td>
+                                    <td class="table_doted_center">&nbsp; {{ $dateExport }} &nbsp;</td>
                                 </tr>
                             </table>
                         </td>
@@ -99,7 +99,7 @@
                 <table width="100%" border="0" class="header" style="vertical-align: top; padding-bottom: 10px;">
                     <tr>
                         <td width="1px"><p class="headerText">เรื่อง</p></td>
-                        <td class="table_doted_left">&nbsp; ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง &nbsp;</td>
+                        <td class="table_doted_left">&nbsp; {{ $subject }} &nbsp;</td>
                     </tr>
                 </table>
                 <table width="100%" border="0" class="header" style="vertical-align: bottom;">
@@ -108,9 +108,17 @@
                         <td>ผู้อำนวยการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า &nbsp;</td>
                     </tr>
                 </table>
-                <table width="100%" border="0" style="vertical-align: bottom;">
+                <table width="100%" border="0" style="vertical-align: top;">
                     <tr>
-                        <td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="textecho">ด้วยกลุ่มงาน/ฝ่าย/งาน ศูนย์คอมพิวเตอร์ ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี 2567 โดยมีรายละเอียดดังนี้</span></td>
+                        <td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="textecho">ด้วยกลุ่มงาน/ฝ่าย/งาน {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี 2567 โดยมีรายละเอียดดังนี้</span></td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" style="vertical-align: top;">
+                    <tr>
+                        <td width="11%"></td>
+                        <td width="3%">1.</td>
+                        <td width="11%">ชื่อแผนงาน</td>
+                        <td><span class="textecho">{{ $department }}</span></td>
                     </tr>
                 </table>
                 {{-- <span style="text-align: justify;">{{ $text }}</span> --}}
