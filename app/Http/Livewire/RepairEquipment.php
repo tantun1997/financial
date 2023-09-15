@@ -40,7 +40,7 @@ class RepairEquipment extends Component
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
-                'approved_deptId' => Auth::user()->deptId
+            'approved_userId' => Auth::user()->id
             ]);
     }
 
@@ -312,7 +312,7 @@ $this->budget = Carbon::now()->addYear()->format('Y') + 543;
                 ->update([
                     'enable' => '0',
                     'deleted_at' => now(),
-                    'deleted_deptId' => Auth::user()->deptId
+                'deleted_userId' => Auth::user()->id
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',

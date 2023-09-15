@@ -16,11 +16,16 @@ class PDFController extends Controller
 
     public function generateProcurement()
     {
-        $str = '          ด้วยกลุ่มงาน/ฝ่าย/งาน กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี 2567 โดยมีรายละเอียดดังนี้';
-        $text = wordwrap($str,50,"\n");
+        $department = 'กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก';
+        $tel = '2703';
+        $dateExport = '12 พฤศจิกายน 2566';
+        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
         $data = [
             'title' => 'บันทึกข้อความ',
-            'text' => $text,
+            'department' => $department,
+            'tel' => $tel,
+            'dateExport' => $dateExport,
+            'subject' => $subject,
         ];
         // return view('pdf.procurementTemplate', $data);
         return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);

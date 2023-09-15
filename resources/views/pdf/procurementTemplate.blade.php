@@ -42,6 +42,14 @@
             text-align: center;
             text-decoration: none;
         }
+        .textecho {
+            overflow: auto;
+            text-align: justify;
+            letter-spacing: normal;
+            word-spacing: normal;
+            white-space: normal;
+            text-indent: 50px;
+        }
         </style>
 </head>
 <body>
@@ -102,7 +110,7 @@
                 </table>
                 <table width="100%" border="0" style="vertical-align: bottom;">
                     <tr>
-                        <td style="text-align: justify;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-align: justify;">{{ $text }}</span></span></td>
+                        <td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="textecho">ด้วยกลุ่มงาน/ฝ่าย/งาน ศูนย์คอมพิวเตอร์ ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี 2567 โดยมีรายละเอียดดังนี้</span></td>
                     </tr>
                 </table>
                 {{-- <span style="text-align: justify;">{{ $text }}</span> --}}

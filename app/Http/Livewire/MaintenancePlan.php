@@ -42,7 +42,7 @@ class MaintenancePlan extends Component
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
-                'approved_deptId' => Auth::user()->deptId
+            'approved_userId' => Auth::user()->id
             ]);
     }
 
@@ -318,7 +318,7 @@ class MaintenancePlan extends Component
                 ->update([
                     'enable' => '0',
                     'deleted_at' => now(),
-                'deleted_deptId' => Auth::user()->deptId
+                'deleted_userId' => Auth::user()->id
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
