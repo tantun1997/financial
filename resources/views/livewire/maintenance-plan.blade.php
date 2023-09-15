@@ -61,7 +61,7 @@
                                     @if ($query->levelNo != 2)
                                         <td class="table-cell">
                                             <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
-                                                class="btn btn-outline-success btn-sm position-relative"
+                                                class="btn btn-outline-success btn-sm"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                 + ครุภัณฑ์
                                                 @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)

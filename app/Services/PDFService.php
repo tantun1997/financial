@@ -16,7 +16,8 @@ class PDFService
             'margin_top' => 11,
             'margin_left' => 22,
             'margin_right' => 16,
-            'margin-bottom' => 5
+            'margin-bottom' => 5,
+            // 'tabSpaces' => 4
         ]);
     }
     public function setDefaultFont($font)
