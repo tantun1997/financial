@@ -8,6 +8,7 @@
             font-size: 16pt;
             color: #000;
             direction: ltr;
+            font-family: "garuda", sans-serif;
         }
         td {
             line-height: 23px;

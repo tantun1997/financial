@@ -14,13 +14,6 @@ class PDFController extends Controller
     {
         // $data = new Segment();
         // $data->get_segment_array('sss');
-        $text = "คำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัด";
-
-        // ใช้ Regular Expression เพื่อตัดคำ
-        preg_match_all('/./u', $text, $matches);
-        $result = $matches[0];
-
-        // dd($result);
 
         $this->pdfService = $pdfService;
         $this->pdfService->setDefaultFont('garuda');
@@ -48,13 +41,9 @@ class PDFController extends Controller
             'planName' => $planName,
             'projectName' => $projectName,
             'reason' => $reason,
-            // 'subject' => $subject,
-            // 'subject' => $subject,
-            // 'subject' => $subject,
-            // 'subject' => $subject,
-            // 'subject' => $subject,
-            // 'subject' => $subject,
+
         ];
+
         // return view('pdf.procurementTemplate', $data);
         return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
         // Pdf::setOption(['dpi' => 150, 'defaultFont' => 'TH SarabunIT๙']);

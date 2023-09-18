@@ -20,8 +20,13 @@ class PDFService
             'margin_left' => 20,
             'margin_right' => 14,
             'margin-bottom' => 3,
+            'orientation' => 'P',
+            'debug' => true,
         ]);
-        $this->mpdf->text_input_as_HTML = true;
+        // $this->mpdf->text_input_as_HTML = true;
+        $this->mpdf->allow_charset_conversion = true;
+        $this->mpdf->charset_in = 'utf-8';
+        $this->mpdf->useDictionaryLBR = true;
     }
     public function setDefaultFont($font)
     {
