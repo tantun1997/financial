@@ -74,8 +74,7 @@ class MaintenancePlan extends Component
 
     public function selectRow($equipmentId)
     {
-
-        $selected = DB::table('VW_EQUIPMENT')
+           $selected = DB::table('VW_EQUIPMENT')
             ->select([
                 'EQUP_LINK_NO',
                 'EQUP_ID',
@@ -115,7 +114,8 @@ class MaintenancePlan extends Component
             ]);
 
             session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
-        } else {
+        }
+        else {
             // ถ้ามีข้อมูลอยู่แล้ว ให้แสดง Flash Message
             session()->flash('warning', 'มีข้อมูลนี้อยู่แล้ว');
         }

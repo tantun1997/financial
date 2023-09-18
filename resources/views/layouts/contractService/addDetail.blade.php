@@ -33,7 +33,7 @@
                         <tr>
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
-                            <th style="text-align: center;">ราคา</th>
+                            <th style="text-align: center;">ราคาของวัสดุ</th>
                             <th style="text-align: center;">สถานะ</th>
                             <th></th>
                         </tr>
@@ -49,7 +49,7 @@
                         <td style="text-align: center;">
                             @switch($query->EQUP_STS_DESC)
                                 @case('ใช้งาน')
-                                    <span class="badge bg-success">ใช้งาน</span>
+                                    <span class="badge bg-primary">ยังใช้งาน</span>
                                 @break
                             @endswitch
                         </td>
@@ -93,7 +93,7 @@
                                         <th></th>
                                         <th style="text-align: center;">รหัส</th>
                                         <th style="text-align: center;">ชื่อรายการ</th>
-                                        <th style="text-align: center;">ราคา</th>
+                                        <th style="text-align: center;">ราคาของวัสดุ</th>
                                         <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">สถานะ</th>
                                     </tr>
@@ -120,7 +120,7 @@
                                             <td style="text-align: center;">
                                                 @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
                                                     @case('ใช้งาน')
-                                                        <span class="badge bg-success">ใช้งาน</span>
+                                                        <span class="badge bg-primary">ยังใช้งาน</span>
                                                     @break
                                                 @endswitch
                                             </td>

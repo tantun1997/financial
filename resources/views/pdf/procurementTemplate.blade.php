@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <title>{{ $title }}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         body {
             font-size: 16pt;
@@ -10,7 +10,7 @@
             direction: ltr;
         }
         td {
-            line-height: 26px;
+            line-height: 23px;
         }
         .header td {
             line-height: 26px;
@@ -44,6 +44,7 @@
         }
         .textecho {
             overflow: auto;
+            word-break: keep-all;
             text-align: justify;
             letter-spacing: normal;
             word-spacing: normal;
@@ -115,12 +116,26 @@
                 </table>
                 <table width="100%" border="0" style="vertical-align: top;">
                     <tr>
-                        <td width="11%"></td>
+                        <td width="11%">&nbsp;</td>
                         <td width="3%">1.</td>
                         <td width="11%">ชื่อแผนงาน</td>
                         <td><span class="textecho">{{ $department }}</span></td>
                     </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>โครงการ</td>
+                        <td><span class="textecho">{{ $department }}</span></td>
+                    </tr>
                 </table>
+                <table width="100%" border="0" style="vertical-align: top;">
+                    <tr>
+                        <td width="11%">&nbsp;</td>
+                        <td width="3%">2.</td>
+                        <td><span class="textecho">เหตุผลความจำเป็นที่ต้องจัดซื้อ/จัดจ้าง คือ {{ $reason }}</span></td>
+                    </tr>
+                </table>
+
                 {{-- <span style="text-align: justify;">{{ $text }}</span> --}}
 {{-- 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 --}}
 
@@ -155,6 +170,5 @@
             </td>
         </tr>
     </table>
-
 </body>
 </html>
