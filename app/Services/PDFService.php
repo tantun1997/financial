@@ -20,11 +20,8 @@ class PDFService
             'margin_left' => 20,
             'margin_right' => 14,
             'margin-bottom' => 3,
-
-            // 'tabSpaces' => 4
         ]);
-        $this->mpdf->useSubstitutions = true;
-        $this->mpdf->SetDisplayMode('fullpage', 'single');
+        $this->mpdf->text_input_as_HTML = true;
     }
     public function setDefaultFont($font)
     {

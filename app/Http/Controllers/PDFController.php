@@ -1,22 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Services\PDFService;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+// use thsplitlib\Segment;
 
 class PDFController extends Controller
 {
-    // protected $pdfService;
+    protected $pdfService;
 
-    // public function __construct(PDFService $pdfService)
-    // {
-    //     $this->pdfService = $pdfService;
-    //     $this->pdfService->setDefaultFont('garuda');
-    // }
+    public function __construct(PDFService $pdfService)
+    {
+        // $data = new Segment();
+        // $data->get_segment_array('sss');
+        $text = "คำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัดคำที่ต้องการตัด";
+
+        // ใช้ Regular Expression เพื่อตัดคำ
+        preg_match_all('/./u', $text, $matches);
+        $result = $matches[0];
+
+        // dd($result);
+
+        $this->pdfService = $pdfService;
+        $this->pdfService->setDefaultFont('garuda');
+    }
 
     public function generateProcurement()
     {
+
         $department = 'กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก';
         $tel = '2703';
         $dateExport = '12 พฤศจิกายน 2566';
@@ -24,7 +36,9 @@ class PDFController extends Controller
         $planName = 'จัดซื้อวัสดุคอมพิวเตอร์ประจำปี 2564';
         $projectName = 'โครงการประจำปี 2564';
         $reason = 'เพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งาน';
-        $reasons = wordwrap($reason, 75, "\n", TRUE);
+
+        // $reasons = $this->splitThaiWords($reason);
+        // $reasons = wordwrap($reason, 75, "\n", TRUE);
         $data = [
             'title' => 'บันทึกข้อความ',
             'department' => $department,
@@ -33,7 +47,7 @@ class PDFController extends Controller
             'subject' => $subject,
             'planName' => $planName,
             'projectName' => $projectName,
-            'reason' => $reasons,
+            'reason' => $reason,
             // 'subject' => $subject,
             // 'subject' => $subject,
             // 'subject' => $subject,
@@ -42,9 +56,9 @@ class PDFController extends Controller
             // 'subject' => $subject,
         ];
         // return view('pdf.procurementTemplate', $data);
-        // return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
-        Pdf::setOption(['dpi' => 150, 'defaultFont' => 'TH SarabunIT๙']);
-        $pdf = Pdf::loadView('pdf.procurementTemplate', $data);
-        return $pdf->stream();
+        return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
+        // Pdf::setOption(['dpi' => 150, 'defaultFont' => 'TH SarabunIT๙']);
+        // $pdf = Pdf::loadView('pdf.procurementTemplate', $data);
+        // return $pdf->stream();
     }
 }

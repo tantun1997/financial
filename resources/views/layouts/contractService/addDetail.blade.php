@@ -11,14 +11,16 @@
                     wire:click="closeModal"></button>
             </div>
             <div class="modal-body">
-                {{-- <h4> ID:
-                    {{ $edit_id }}
-                </h4> --}}
-                <h4> รายการ
-                    {{ $description }}
-                </h4>
-                <h5> ราคา {{ $price }} จำนวน {{ $quant }} {{ $package }}
-                </h5>
+                @foreach ($VW_NEW_MAINPLAN as $query)
+                    @if ($query->id == $edit_id)
+                        <h5> รายการ
+                            {{ $query->description }}
+                        </h5>
+                        <p>ค่า{{ $query->objectName }} ราคา {{ number_format($query->price) }} บาท จำนวน {{ $query->quant }}
+                            {{ $query->package }} รวมทั้งหมด {{ number_format($query->price * $query->quant) }} บาท
+                        </p>
+                    @endif
+                @endforeach
                 @if (session()->has('success'))
                     <div class="alert alert-success" role="alert">
                         {{ session()->get('success') }}

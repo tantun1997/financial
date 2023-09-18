@@ -132,7 +132,7 @@
                     <tr>
                         <td width="11%">&nbsp;</td>
                         <td width="3%">2.</td>
-                        <td><span class="textecho">เหตุผลความจำเป็นที่ต้องจัดซื้อ/จัดจ้าง คือ {{ $reason }}</span></td>
+                        <td><textcircle style="font-size: 16pt;"><span class="textecho" >เหตุผลความจำเป็นที่ต้องจัดซื้อ/จัดจ้าง คือ {{ $reason }}</span></textcircle></td>
                     </tr>
                 </table>
 
