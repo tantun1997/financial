@@ -58,12 +58,12 @@
                             @if (  ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y'))
                                 <tr style="cursor: pointer;">
                                     <td class="table-cell text-center">
-                                        @if ($query->levelNo != 2 &&Auth::user()->id == '114000041')
+                                        @if ($query->levelNo != 2 && Auth::user()->id == '114000041')
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
                                                     id="approvalSwitch({{ $query->id }})"
                                                     aria-labelledby="approvalSwitch({{ $query->id }})"
-                                                    wire:click="Approval({{ $query->id }})"
+                                                    wire:click.prevent="Approval({{ $query->id }})"
                                                     @if ($query->approved == '1') checked @endif>
                                                 <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
                                                     @if ($query->approved == '1')

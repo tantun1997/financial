@@ -64,7 +64,7 @@
                                     <input class="form-check-input" type="checkbox"
                                         id="approvalSwitch({{ $query->id }})"
                                         aria-labelledby="approvalSwitch({{ $query->id }})"
-                                        wire:click="Approval({{ $query->id }})" @if ($query->approved == '1') checked
+                                        wire:click.prevent="Approval({{ $query->id }})" @if ($query->approved == '1') checked
                                     @endif>
                                     <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
                                         @if ($query->approved == '1')
