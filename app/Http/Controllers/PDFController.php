@@ -21,7 +21,7 @@ class PDFController extends Controller
 
     public function generateProcurement()
     {
-
+        $title = 'บันทึกข้อความ';
         $department = 'กลุ่มงานเทคนิคการแพทย์และพยาธิวิทยาคลินิก';
         $tel = '2703';
         $dateExport = '12 พฤศจิกายน 2566';
@@ -29,11 +29,14 @@ class PDFController extends Controller
         $planName = 'จัดซื้อวัสดุคอมพิวเตอร์ประจำปี 2564';
         $projectName = 'โครงการประจำปี 2564';
         $reason = 'เพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งานเพื่อใช้สำหรับสำรองการใช้งาน';
-
-        // $reasons = $this->splitThaiWords($reason);
-        // $reasons = wordwrap($reason, 75, "\n", TRUE);
+        $totalQuant = '20';
+        $quant = '20';
+        $price = '1500';
+        $sumprice = $quant * $price;
+        $totalPrice = '156000';
+        $totalPriceText = 'สามหมื่นห้าพันพันเก้าร้อยบาทถ้วน';
         $data = [
-            'title' => 'บันทึกข้อความ',
+            'title' => $title,
             'department' => $department,
             'tel' => $tel,
             'dateExport' => $dateExport,
@@ -41,13 +44,16 @@ class PDFController extends Controller
             'planName' => $planName,
             'projectName' => $projectName,
             'reason' => $reason,
+            'totalQuant' => $totalQuant,
+            'quant' => $quant,
+            'price' => $price,
+            'sumprice' => $sumprice,
+            'totalPrice' => $totalPrice,
+            'totalPriceText' => $totalPriceText,
 
         ];
 
-        // return view('pdf.procurementTemplate', $data);
-        return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
-        // Pdf::setOption(['dpi' => 150, 'defaultFont' => 'TH SarabunIT๙']);
-        // $pdf = Pdf::loadView('pdf.procurementTemplate', $data);
-        // return $pdf->stream();
+        return view('pdf.procurementTemplate', $data);
+        // return $this->pdfService->generateFromView('pdf.procurementTemplate', $data);
     }
 }

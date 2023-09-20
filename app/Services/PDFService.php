@@ -24,8 +24,8 @@ class PDFService
             'debug' => true,
         ]);
         // $this->mpdf->text_input_as_HTML = true;
-        $this->mpdf->allow_charset_conversion = true;
-        $this->mpdf->charset_in = 'utf-8';
+        // $this->mpdf->allow_charset_conversion = true;
+        // $this->mpdf->charset_in = 'utf-8';
         $this->mpdf->useDictionaryLBR = true;
     }
     public function setDefaultFont($font)
