@@ -256,7 +256,7 @@
                     });
                 },
                 order: [],
-                autoWidth: true,
+                autoWidth: false,
                 searching: true,
                 responsive: true,
                 scrollX: true,

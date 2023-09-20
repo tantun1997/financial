@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 // Generate-PDF Zone
-Route::get('/generate-pdf', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
+Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
 
 //Error Zone
 Route::get('/400', [ErrorController::class, 'page400'])->name('page400');

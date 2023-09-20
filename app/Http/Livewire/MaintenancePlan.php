@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
 
 class MaintenancePlan extends Component
 {
@@ -16,6 +15,7 @@ class MaintenancePlan extends Component
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+
 
     public function Approval($id)
     {
@@ -42,7 +42,7 @@ class MaintenancePlan extends Component
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
-            'approved_userId' => Auth::user()->id
+                'approved_userId' => Auth::user()->id
             ]);
     }
 
@@ -74,7 +74,7 @@ class MaintenancePlan extends Component
 
     public function selectRow($equipmentId)
     {
-           $selected = DB::table('VW_EQUIPMENT')
+        $selected = DB::table('VW_EQUIPMENT')
             ->select([
                 'EQUP_LINK_NO',
                 'EQUP_ID',
@@ -114,8 +114,7 @@ class MaintenancePlan extends Component
             ]);
 
             session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
-        }
-        else {
+        } else {
             // ถ้ามีข้อมูลอยู่แล้ว ให้แสดง Flash Message
             session()->flash('warning', 'มีข้อมูลนี้อยู่แล้ว');
         }
@@ -144,6 +143,8 @@ class MaintenancePlan extends Component
         $this->enable = '1';
         $this->created_at = now();
         $this->updated_at = now();
+
+
     }
 
     public function resetFields()
@@ -318,7 +319,7 @@ class MaintenancePlan extends Component
                 ->update([
                     'enable' => '0',
                     'deleted_at' => now(),
-                'deleted_userId' => Auth::user()->id
+                    'deleted_userId' => Auth::user()->id
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
