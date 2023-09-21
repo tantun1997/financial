@@ -30,6 +30,7 @@ class PDFController extends Controller
         $department = $query->TCHN_LOCAT_NAME;
         $tel = '';
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $timeExport = Carbon::now()->format('H:i:s');
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
         $planName = $query->description . ' ประจำปี ' . $query->budget;
         $projectName = '';
@@ -44,6 +45,9 @@ class PDFController extends Controller
         $vwCountDetail = $vwCountDetail->count_detail;
 
         $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
+        $totalSum = DB::table('vwEquipDetail')->where('PROC_ID', $id)->sum('SUM')->get();
+        dd($totalSum);
+
         $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
 
         $data = [
@@ -69,7 +73,7 @@ class PDFController extends Controller
         $this->pdfService->addContent('pdf.procurementTemplate', $data);
         $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
         $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
-        $this->pdfService->setFooter('||วันที่พิมพ์ : {DATE d/m/Y}');
+        $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
         $this->pdfService->addContent('pdf.procurementTemplatePage2', $data);
         return $this->pdfService->generateFromView();
     }

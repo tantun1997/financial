@@ -55,6 +55,8 @@
                             <th class="text-center table-cell">action</th><!-- 16 -->
                             <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
                             <th class="text-center table-cell" style="display: none;">Count</th><!-- 18 -->
+                                                        <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 19 -->
+
                         </tr>
                     </thead>
                     <tbody>
@@ -171,6 +173,8 @@
                                     @else
                                         <td></td>
                                     @endif
+                                    <td class="table-cell" style="display: none;">{{ $query->quant }}
+                                </td>
                                 </tr>
                             @endif
                         @endforeach
@@ -315,10 +319,10 @@
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel"></i> Export to Excel',
                     filename: 'บันทึกแผนฯบำรุงรักษา',
-                    title: `รายงานแผนบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
+                    title: `รายงานแผนฯบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+                        columns: [0, 1, 4, 5, 6, 7, 8, 19, 10, 11, 12, 13, 14, 15]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {

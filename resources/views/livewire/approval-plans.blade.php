@@ -47,8 +47,10 @@
                             <th class="text-left table-cell">หมายเหตุ</th><!-- 14 -->
                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                             <!-- 15 -->
-                            <th class="text-center table-cell">action</th><!-- 16 -->
+                            <th class="text-center table-cell" style="display: none;">action</th><!-- 16 -->
                             <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
+                            <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 18 -->
+
                         </tr>
                     </thead>
                     <tbody>
@@ -126,14 +128,14 @@
 
                                 <td class="table-cell">{{ $query->reason }}</td>
                                 <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                <td class="table-cell" >{{ $query->remark }}</td>
+                                <td class="table-cell">{{ $query->remark }}</td>
                                 <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                <td class="table-cell">
-                                    {{-- <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                <td class="table-cell" style="display: none;">
+                                    <button type="button" wire:click.prevent="edit({{ $query->id }})"
                                         class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
                                         data-bs-target="#exampleModal1">
                                         แก้ไข
-                                    </button> --}}
+                                    </button>
                                     <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                         class="btn btn-outline-danger btn-sm">ลบ</button>
                                 </td>
@@ -144,6 +146,8 @@
                                     @else
                                     @endif
                                 </td>
+                                <td class="table-cell" style="display: none;">{{ $query->quant }}          </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -279,11 +283,11 @@
                 buttons: [{
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel"></i> Export to Excel',
-                    filename: 'บันทึกแผนฯบำรุงรักษา',
-                    title: `รายงานแผนบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
+                    filename: 'การจัดอนุมัติแผนงาน',
+                    title: `รายงานการจัดอนุมัติแผนงาน หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+                        columns: [0, 1, 4, 5, 6, 7, 8, 18,10, 11, 12, 13, 14, 15]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
