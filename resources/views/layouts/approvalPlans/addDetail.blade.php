@@ -44,7 +44,7 @@
                     <tbody>
                         @if (count($procurements_detail) > 0)
                             @foreach ($procurements_detail as $query)
-                                @if ($query->PROC_ID == $edit_id)
+                                @if ($query->PROC_ID == $edit_id && $query->used == 1)
                                     <tr>
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
                                         <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>

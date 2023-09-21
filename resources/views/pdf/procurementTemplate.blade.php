@@ -85,7 +85,7 @@
     <table width="100%" class="header" border="0" style="vertical-align: top;">
         <tr>
             <td width="30px" class="headerText">ที่</td>
-            <td class="table_doted_left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="table_doted_left">สส 0033/ผ.{{ $id }}</td>
             <td width="50px" class="headerText">วันที่</td>
             <td width="170px" class="table_doted_center">&nbsp; {{ $dateExport }} &nbsp;</td>
         </tr>
@@ -136,8 +136,21 @@
         <tr>
             <td width="50px">&nbsp;</td>
             <td width="5px">3.</td>
-            <td class="textecho">รายละเอียดของงานที่จะซื้อ/จ้าง จำนวน&nbsp;{{ $totalQuant }}&nbsp;รายการ&nbsp;ดังนี้
+            <td class="textecho">
+                @php
+                    $count = 0;
+                @endphp
+                @foreach ($vwEquipDetail as $detail)
+                    @if ($detail->PROC_ID > 0)
+                        @php
+                            $count++;
+                        @endphp
+                    @endif
+                @endforeach
+                รายละเอียดของงานที่จะซื้อ/จ้าง จำนวน&nbsp;{{ $count }}&nbsp;รายการ&nbsp;ดังนี้
+                ตามเอกสารแนบ
             </td>
+
         </tr>
         <tr>
             <td colspan="3">
@@ -147,14 +160,21 @@
                         {{-- <td class="textecho">1. MA
                             ระบบบริหารจัดการคิว&nbsp;&nbsp;จำนวน&nbsp;&nbsp;{{ $quant }}x{{ number_format($price) }}&nbsp;&nbsp;เป็นเงิน&nbsp;&nbsp;{{ number_format($sumprice) }}&nbsp;&nbsp;บาท
                         </td> --}}
-                        {{-- <td class="textecho">
-                        @foreach ($vwEquipDetail as $detail)
-                            @if ($detail->PROC_ID > 0)
-                                {{ $detail->EQUP_NAME }}
-                            @endif
-                        @endforeach
-                        จำนวน&nbsp;&nbsp;{{ $quant }}x{{ number_format($price) }}&nbsp;&nbsp;เป็นเงิน&nbsp;&nbsp;{{ number_format($sumprice) }}&nbsp;&nbsp;บาท
-                    </td> --}}
+                        <td class="textecho">
+                            @php
+                                $count = 1;
+                            @endphp
+                            @foreach ($vwEquipDetail as $detail)
+                                @if ($detail->PROC_ID > 0)
+                                    {{ $count }}. {{ $detail->EQUP_NAME }} จำนวน
+                                    {{ $detail->COUNT }}x{{ number_format($detail->price) }} เป็นเงิน
+                                    {{ number_format($detail->SUM) }} บาท<br>
+                                    @php
+                                        $count++;
+                                    @endphp
+                                @endif
+                            @endforeach
+                        </td>
                     </tr>
                 </table>
             </td>

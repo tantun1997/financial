@@ -13,13 +13,11 @@ Carbon::setLocale('th');
 class PDFController extends Controller
 {
     protected $pdfService;
-    public $vwEquipDetail;
 
     public function __construct(PDFService $pdfService)
     {
         // $data = new Segment();
         // $data->get_segment_array('sss');
-
         $this->pdfService = $pdfService;
         $this->pdfService->setDefaultFont('garuda');
     }
@@ -30,21 +28,26 @@ class PDFController extends Controller
 
         $title = 'บันทึกข้อความ';
         $department = $query->TCHN_LOCAT_NAME;
-        $tel = '-';
+        $tel = '';
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        $planName = $query->description . 'ประจำปี ' . $query->budget;
-        $projectName = 'โครงการประจำปี ' . $query->budget;
+        $planName = $query->description . ' ประจำปี ' . $query->budget;
+        $projectName = '';
         $years = $query->budget;
         $reason = $query->reason;
-        $totalQuant = $query->quant;
         $quant = $query->quant;
         $price = $query->price;
-        $sumprice = $quant * $price;
         $totalPrice = $quant * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
 
+        $vwCountDetail = DB::table('vwCountDetail')->where('PROC_ID', $id)->where('used', 1)->first();
+        $vwCountDetail = $vwCountDetail->count_detail;
+
+        $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
+        $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
+
         $data = [
+            'id' => $id,
             'title' => $title,
             'department' => $department,
             'tel' => $tel,
@@ -53,19 +56,22 @@ class PDFController extends Controller
             'planName' => $planName,
             'projectName' => $projectName,
             'reason' => $reason,
-            'totalQuant' => $totalQuant,
             'quant' => $quant,
             'price' => $price,
-            'sumprice' => $sumprice,
             'totalPrice' => $totalPrice,
             'totalPriceText' => $totalPriceText,
             'years' => $years,
-
+            'vwEquipDetail' => $vwEquipDetail,
+            'vwReportEquipDetail' => $vwReportEquipDetail,
+            'vwCountDetail' => $vwCountDetail
         ];
 
-        $this->vwEquipDetail = DB::table('vwEquipDetail')->get();
-        // return view('pdf.procurementTemplate', $data);
-        return $this->pdfService->generateFromView('pdf.procurementTemplate', $data, true);
+        $this->pdfService->addContent('pdf.procurementTemplate', $data);
+        $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
+        $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
+        $this->pdfService->setFooter('||วันที่พิมพ์ : {DATE d/m/Y}');
+        $this->pdfService->addContent('pdf.procurementTemplatePage2', $data);
+        return $this->pdfService->generateFromView();
     }
 
     protected function numberToThaiText($number, $include_unit = true, $display_zero = true)

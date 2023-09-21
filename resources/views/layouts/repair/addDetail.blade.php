@@ -34,6 +34,7 @@
                 <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
+                            <th style="text-align: center;">เลือก</th>
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
                             <th style="text-align: center;">ราคาของวัสดุ</th>
@@ -46,6 +47,15 @@
                             @foreach ($procurements_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
+                                        <td class="text-center">
+                                            @if ($query->used == 1)
+                                                <input class="form-check-input" type="checkbox"
+                                                    wire:click.prevent="CheckedEquip({{ $query->id }})" checked>
+                                            @else
+                                                <input class="form-check-input" type="checkbox"
+                                                    wire:click.prevent="CheckedEquip({{ $query->id }})">
+                                            @endif
+                                        </td>
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
                                         <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>

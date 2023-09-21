@@ -109,7 +109,7 @@
                             </nav>
                         </div>
 
-                        @if ((Auth::user()->isAdmin == 'Y' && Auth::user()->deptId == '140') || Auth::user()->id == '114000041')
+@if ((Auth::user()->isAdmin == 'Y' && Auth::user()->deptId == '140') || Auth::user()->id == '114000041' || Auth::user()->id == 1)
                             <a class="nav-link {{ Request::is('approval_plans') ? 'active' : '' }} collapsed"
                                 href="{{ route('approval_plans') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>

@@ -41,19 +41,20 @@
                             <th class="text-center table-cell" style="display: none;">รหัส</th><!-- 3 -->
                             <th class="text-center table-cell" style="display: none;">ปี</th><!-- 4 -->
                             <th class="text-center table-cell" style="display: none;">ความสำคัญ</th><!-- 5 -->
-                            <th class="text-center table-cell">ประเภท</th><!-- 6 -->
+                            <th class="text-center table-cell" style="display: none;">ประเภท</th><!-- 6 -->
                             <th class="text-left table-cell">รายการ</th><!-- 7 -->
                             <th class="text-center table-cell">ราคาต่อหน่วย</th><!-- 8 -->
                             <th class="text-center table-cell">จำนวน</th><!-- 9 -->
                             <th class="text-center table-cell" style="display: none;">หน่วยนับ</th><!-- 10 -->
                             <th class="text-center table-cell">รวมทั้งหมด</th><!-- 11 -->
-                            <th class="text-left table-cell">เหตุผลและความจำเป็น</th><!-- 12 -->
+                            <th class="text-left table-cell" style="display: none;">เหตุผลและความจำเป็น</th><!-- 12 -->
                             <th class="text-left table-cell">หน่วยงานที่เบิก</th><!-- 13 -->
-                            <th class="text-left table-cell">หมายเหตุ</th><!-- 14 -->
+                            <th class="text-left table-cell" style="display: none;">หมายเหตุ</th><!-- 14 -->
                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                             <!-- 15 -->
                             <th class="text-center table-cell">action</th><!-- 16 -->
-                            <th class="text-center table-cell">PDF</th><!-- 16 -->
+                            <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
+                            <th class="text-center table-cell" style="display: none;">Count</th><!-- 18 -->
                         </tr>
                     </thead>
                     <tbody>
@@ -93,16 +94,21 @@
                                     </td>
                                     @if ($query->levelNo != 2)
                                         <td class="table-cell">
-                                            @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                            @php
+                                                $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                            @endphp
+
+                                            @if ($filteredItems->count() > 0)
                                                 <button type="button"
                                                     wire:click.prevent="add_detail({{ $query->id }})"
                                                     class="btn btn-outline-success btn-sm position-relative"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                                    @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                    @foreach ($filteredItems as $item)
                                                         <span class="badge rounded-pill bg-danger">
                                                             {{ $item->count_detail }}
                                                         </span>
-                                                    @endforeach ครุภัณฑ์
+                                                    @endforeach
+                                                    ครุภัณฑ์
                                                 </button>
                                             @else
                                                 <button type="button"
@@ -120,7 +126,7 @@
                                     <td class="table-cell" style="display: none;">{{ $query->id }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->budget }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                    <td class="table-cell">{{ $query->objectName }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->objectName }}</td>
                                     <td class="table-cell">{{ $query->description }}</td>
                                     <td class="table-cell" style="text-align: right;">
                                         {{ number_format($query->price) }}
@@ -133,9 +139,9 @@
                                     <td class="table-cell" style="text-align: right;">
                                         {{ number_format($query->price * $query->quant) }}</td>
 
-                                    <td class="table-cell">{{ $query->reason }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->reason }}</td>
                                     <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                    <td class="table-cell">{{ $query->remark }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
                                     <td class="table-cell">
                                         <button type="button" wire:click.prevent="edit({{ $query->id }})"
@@ -146,17 +152,25 @@
                                         <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
-                                    <td class="table-cell">
-                                        @if ($query->levelNo == '1')
+                                    <td class="table-cell" style="display: none;">
+                                        @if ($query->approved == '1')
                                             <button onclick="generatePdf({{ $query->id }})"
-                                                class="btn btn-outline-danger btn-sm">สร้าง PDF</button>
+                                                class="btn btn-danger btn-sm">PDF</button>
                                         @else
-
                                         @endif
-
-                                        {{-- <button wire:click="generatePdf({{ $query->id }})"
-                                            class="btn btn-outline-danger btn-sm">Generate PDF</button> --}}
                                     </td>
+                                    @if (Auth::user()->id == '114000041')
+                                        <td class="table-cell" style="display: none;">
+                                            @php
+                                                $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                            @endphp
+                                            @foreach ($filteredItems as $item)
+                                                {{ $item->count_detail }}
+                                            @endforeach
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endif
                         @endforeach
@@ -206,7 +220,7 @@
     <script>
         function generatePdf(id) {
             // window.location.href = '/generatePdf/' + id;
-                window.open('/generatePdf/' + id, '_blank');
+            window.open('/generatePdf/' + id, '_blank');
 
         }
 
@@ -235,7 +249,7 @@
                     }
                 },
                 "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [0, 2, 16, 17];
+                    var columnIndexToExclude = [0, 2, 16, 17,18];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
@@ -244,6 +258,8 @@
 
                             $('#modalContent').html(
                                 '<table class="table">' +
+                                '<tr><td>ID</td><td class="text-primary">' + rowData[3] +
+                                '</td></tr>' +
                                 '<tr><td>ปี</td><td class="text-primary">' + rowData[4] +
                                 '</td></tr>' +
                                 '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[
@@ -268,6 +284,10 @@
                                 '</td></tr>' +
                                 '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
                                 rowData[15] + '</td></tr>' +
+                                '<tr><td>Print Out</td><td class="text-secondary">' +
+                                rowData[17] + '</td></tr>' +
+                                '<tr><td></td><td class="text-secondary" >' +
+                                rowData[16] + '</td></tr>' +
                                 '</table>'
                             );
 
@@ -275,8 +295,10 @@
                         }
                     });
                 },
-                order: [],
-                autoWidth: false,
+                order: [
+                    [18, "desc"]
+                ],
+                autoWidth: true,
                 searching: true,
                 responsive: true,
                 scrollX: true,

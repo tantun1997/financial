@@ -31,15 +31,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('approval_plans', [MainPageController::class, 'approvalPlans'])->name('approval_plans');
 
     Route::get('/home', [MainPageController::class, 'home'])->name('home');
-
+    // Generate-PDF Zone
+    Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {
         Route::get('usermanagement', [AdministratorController::class, 'usermanagement'])->name('usermanagement');
         Route::get('deptmanagement', [AdministratorController::class, 'deptmanagement'])->name('deptmanagement');
     });
 });
-// Generate-PDF Zone
-Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
+
 
 //Error Zone
 Route::get('/400', [ErrorController::class, 'page400'])->name('page400');

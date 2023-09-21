@@ -103,9 +103,9 @@ class ApprovalPlans extends Component
 
     public function render()
     {
-        $procurements_detail = DB::table('procurements_detail')->select(['id', 'PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
+        $procurements_detail = DB::table('procurements_detail')->get();
 
-        $vwCountDetail = DB::table('vwCountDetail')->get();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used',1)->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('approved', '1')

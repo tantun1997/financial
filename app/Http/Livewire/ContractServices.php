@@ -7,18 +7,16 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
 
 class ContractServices extends Component
 {
-    use WithPagination;
-
     public $procurementType, $priorityNo, $description, $price, $package, $quant,
         $objectTypeId, $reason, $deptId, $budget, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
 
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
@@ -114,6 +112,8 @@ class ContractServices extends Component
                 'EQUP_PRICE' => $selected->EQUP_PRICE,
                 'EQUP_LINK_NO' => $equipmentId,
                 'EQUP_STS_DESC' => $selected->EQUP_STS_DESC,
+                'used' => '1'
+
             ]);
 
             session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
@@ -368,13 +368,17 @@ class ContractServices extends Component
 
     public function render()
     {
-        $procurements_detail = DB::table('procurements_detail')->select(['id', 'PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
-        $vwCountDetail = DB::table('vwCountDetail')->get();
+        $procurements_detail = DB::table('procurements_detail')->get();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('procurementType', '2')
             ->where('enable', '1')
-            ->orderBy('updated_at', 'DESC')
+            ->when(Auth::user()->id == '114000041', function ($query) {
+            return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+            }, function ($query) {
+                return $query->orderByDesc('updated_at');
+            })
             ->get();
 
         $index = 1; // กำหนดค่าเริ่มต้นของอันดับ

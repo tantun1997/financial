@@ -48,6 +48,7 @@
                             <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                             <!-- 15 -->
                             <th class="text-center table-cell">action</th><!-- 16 -->
+                            <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
                         </tr>
                     </thead>
                     <tbody>
@@ -125,7 +126,7 @@
 
                                 <td class="table-cell">{{ $query->reason }}</td>
                                 <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                <td class="table-cell">{{ $query->remark }}</td>
+                                <td class="table-cell" >{{ $query->remark }}</td>
                                 <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
                                 <td class="table-cell">
                                     {{-- <button type="button" wire:click.prevent="edit({{ $query->id }})"
@@ -135,6 +136,13 @@
                                     </button> --}}
                                     <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                         class="btn btn-outline-danger btn-sm">ลบ</button>
+                                </td>
+                                <td class="table-cell" style="display: none;">
+                                    @if ($query->approved == '1')
+                                        <button onclick="generatePdf({{ $query->id }})"
+                                            class="btn btn-danger btn-sm">PDF</button>
+                                    @else
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -177,6 +185,12 @@
         }
     </style>
     <script>
+        function generatePdf(id) {
+            // window.location.href = '/generatePdf/' + id;
+            window.open('/generatePdf/' + id, '_blank');
+
+        }
+
         initializeDataTable()
 
         var table
@@ -202,7 +216,7 @@
                     }
                 },
                 "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [0, 2, 16];
+                    var columnIndexToExclude = [0, 2, 16, 17];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
@@ -211,6 +225,8 @@
 
                             $('#modalContent').html(
                                 '<table class="table">' +
+                                '<tr><td>ID</td><td class="text-primary">' + rowData[3] +
+                                '</td></tr>' +
                                 '<tr><td>ปี</td><td class="text-primary">' + rowData[4] +
                                 '</td></tr>' +
                                 '<tr><td>ลำดับความสำคัญ</td><td class="text-primary">' + rowData[
@@ -235,6 +251,10 @@
                                 '</td></tr>' +
                                 '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
                                 rowData[15] + '</td></tr>' +
+                                '<tr><td>Print Out</td><td class="text-secondary">' +
+                                rowData[17] + '</td></tr>' +
+                                '<tr><td></td><td class="text-secondary" >' +
+                                rowData[16] + '</td></tr>' +
                                 '</table>'
                             );
 
@@ -243,7 +263,7 @@
                     });
                 },
                 order: [],
-                autoWidth: false,
+                autoWidth: true,
                 searching: true,
                 responsive: true,
                 scrollX: true,

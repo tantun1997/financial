@@ -15,6 +15,24 @@ class RepairEquipment extends Component
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+    public function CheckedEquip($id)
+    {
+        $query = DB::table('procurements_detail')->where('id', $id)->first();
+
+        if ($query->used == '0' || $query->used === null) {
+            $newUsed = '1';
+        } else {
+            $newUsed = '0';
+        }
+
+        DB::table('procurements_detail')
+        ->where('id', $id)
+            ->update([
+                'used' => $newUsed
+            ]);
+    }
+
+
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
@@ -110,6 +128,8 @@ class RepairEquipment extends Component
                 'EQUP_PRICE' => $selected->EQUP_PRICE,
                 'EQUP_LINK_NO' => $equipmentId,
                 'EQUP_STS_DESC' => $selected->EQUP_STS_DESC,
+                'used' => '1'
+
             ]);
 
             session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
@@ -360,16 +380,19 @@ $this->budget = Carbon::now()->addYear()->format('Y') + 543;
 
     public function render()
     {
-        $vwCountDetail = DB::table('vwCountDetail')->get();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
-        $procurements_detail = DB::table('procurements_detail')->select(['id','PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
+        $procurements_detail = DB::table('procurements_detail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->whereNotIn('objectTypeId', ['01'])
             ->where('procurementType', '1')
             ->where('enable', '1')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
+        ->when(Auth::user()->id == '114000041', function ($query) {
+            return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+        }, function ($query) {
+            return $query->orderByDesc('updated_at');
+        })            ->get();
 
         $index = 1; // กำหนดค่าเริ่มต้นของอันดับ
 

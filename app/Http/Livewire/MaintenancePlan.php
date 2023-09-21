@@ -16,6 +16,22 @@ class MaintenancePlan extends Component
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
 
+    public function CheckedEquip($id)
+    {
+        $query = DB::table('procurements_detail')->where('id', $id)->first();
+
+        if ($query->used == '0' || $query->used === null) {
+            $newUsed = '1';
+        } else {
+            $newUsed = '0';
+        }
+
+        DB::table('procurements_detail')
+            ->where('id', $id)
+            ->update([
+                'used' => $newUsed
+            ]);
+    }
 
     public function Approval($id)
     {
@@ -111,6 +127,8 @@ class MaintenancePlan extends Component
                 'EQUP_PRICE' => $selected->EQUP_PRICE,
                 'EQUP_LINK_NO' => $equipmentId,
                 'EQUP_STS_DESC' => $selected->EQUP_STS_DESC,
+                'used' => '1'
+
             ]);
 
             session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
@@ -143,8 +161,6 @@ class MaintenancePlan extends Component
         $this->enable = '1';
         $this->created_at = now();
         $this->updated_at = now();
-
-
     }
 
     public function resetFields()
@@ -368,21 +384,23 @@ class MaintenancePlan extends Component
 
     public function render()
     {
-        $vwCountDetail = DB::table('vwCountDetail')->get();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
-        $procurements_detail = DB::table('procurements_detail')->select(['id', 'PROC_ID', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'EQUP_STS_DESC'])->get();
+        $procurements_detail = DB::table('procurements_detail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('objectTypeId', '01')
             ->where('procurementType', '1')
             ->where('enable', '1')
-            ->orderByDesc('updated_at')
+            ->when(Auth::user()->id == '114000041', function ($query) {
+                return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+            }, function ($query) {
+                return $query->orderByDesc('updated_at');
+            })
             ->get();
 
-        $index = 1;
 
         foreach ($VW_NEW_MAINPLAN as $item) {
-            $item->index = $index++; // เพิ่มคอลัมน์ index และเพิ่มค่าอันดับ
             $carbonUpdatedAt = Carbon::parse($item->updated_at); // แปลงเป็น Carbon object
             $item->updated_at = $carbonUpdatedAt->addYears(543)->format('d/m/Y H:i'); // แปลงวันที่เป็นรูปแบบพศไทย
         }

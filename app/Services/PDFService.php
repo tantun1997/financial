@@ -26,16 +26,43 @@ class PDFService
         // $this->mpdf->text_input_as_HTML = true;
         // $this->mpdf->allow_charset_conversion = true;
         // $this->mpdf->charset_in = 'utf-8';
+
+        $this->mpdf->defaultheaderfontstyle = 'R';
+        $this->mpdf->defaultheaderfontsize = 9;
+        $this->mpdf->defaultheaderline=0;
+        $this->mpdf->defaultfooterfontstyle='R';
+        $this->mpdf->defaultfooterfontsize=9;
+        $this->mpdf->defaultfooterline=0;
         $this->mpdf->useDictionaryLBR = true;
     }
     public function setDefaultFont($font)
     {
         $this->mpdf->SetDefaultFont($font);
     }
-    public function generateFromView($view, $data = [])
+
+    public function addContent($view, $data = [])
     {
         $html = view($view, $data)->render();
         $this->mpdf->WriteHTML($html);
+    }
+
+    public function setHeader($data)
+    {
+        $this->mpdf->SetHeader($data, '', 'ALL', true);
+    }
+
+    public function setFooter($data)
+    {
+        $this->mpdf->SetFooter($data, '', 'ALL', true);
+    }
+
+    public function addNewPage($orientation, $type, $resetpagenum, $pagenumstyle, $suppress, $marginLeft, $marginRight, $marginTop, $marginBottom, $marginHeader, $marginFooter, $oddHeaderName, $evenHeaderName, $oddFooterName, $evenFooterName, $oddHeaderValue, $evenHeaderValue, $oddFooterValue, $evenFooterValue, $pageselector, $sheetSize)
+    {
+        $this->mpdf->AddPage($orientation, $type, $resetpagenum, $pagenumstyle, $suppress, $marginLeft, $marginRight, $marginTop, $marginBottom, $marginHeader, $marginFooter, $oddHeaderName, $evenHeaderName, $oddFooterName, $evenFooterName, $oddHeaderValue, $evenHeaderValue, $oddFooterValue, $evenFooterValue, $pageselector, $sheetSize);
+    }
+
+    public function generateFromView()
+    {
         $this->mpdf->Output();
     }
 }
