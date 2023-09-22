@@ -257,8 +257,6 @@
                                 rowData[15] + '</td></tr>' +
                                 '<tr><td>Print Out</td><td class="text-secondary">' +
                                 rowData[17] + '</td></tr>' +
-                                '<tr><td></td><td class="text-secondary" >' +
-                                rowData[16] + '</td></tr>' +
                                 '</table>'
                             );
 

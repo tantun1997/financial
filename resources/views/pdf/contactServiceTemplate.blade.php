@@ -135,15 +135,12 @@
                 @php
                     $count = 0;
                 @endphp
-                @foreach ($vwEquipDetail as $detail)
-                    @if ($detail->PROC_ID > 0)
-                        @php
-                            $count++;
-                        @endphp
-                    @endif
-                @endforeach
+                @if ($id > 0)
+                    @php
+                        $count++;
+                    @endphp
+                @endif
                 รายละเอียดของงานที่จะซื้อ/จ้าง จำนวน&nbsp;{{ $count }}&nbsp;รายการ&nbsp;ดังนี้
-                ตามเอกสารแนบ
             </td>
 
         </tr>
@@ -152,23 +149,18 @@
                 <table width="100%" border="0" style="vertical-align: top;">
                     <tr>
                         <td width="70px">&nbsp;</td>
-                        {{-- <td class="textecho">1. MA
-                            ระบบบริหารจัดการคิว&nbsp;&nbsp;จำนวน&nbsp;&nbsp;{{ $quant }}x{{ number_format($price) }}&nbsp;&nbsp;เป็นเงิน&nbsp;&nbsp;{{ number_format($sumprice) }}&nbsp;&nbsp;บาท
-                        </td> --}}
                         <td class="textecho">
                             @php
                                 $count = 1;
                             @endphp
-                            @foreach ($vwEquipDetail as $detail)
-                                @if ($detail->PROC_ID > 0)
-                                    {{ $count }}. {{ $detail->EQUP_NAME }} จำนวน
-                                    {{ $detail->COUNT }} x {{ number_format($detail->price) }} เป็นเงิน
-                                    {{ number_format($detail->SUM) }} บาท<br>
-                                    @php
-                                        $count++;
-                                    @endphp
-                                @endif
-                            @endforeach
+                            @if ($id > 0)
+                                {{ $count }}. {{ $projectName }} จำนวน
+                                {{ $quant }}x{{ number_format($price) }} เป็นเงิน
+                                {{ number_format($totalPrice) }} บาท<br>
+                                @php
+                                    $count++;
+                                @endphp
+                            @endif
                         </td>
                     </tr>
                 </table>

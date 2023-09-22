@@ -55,7 +55,7 @@
                             <th class="text-center table-cell">action</th><!-- 16 -->
                             <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
                             <th class="text-center table-cell" style="display: none;">Count</th><!-- 18 -->
-                            <th class="text-center table-cell">จำนวน</th><!-- 19 -->
+                            <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 19 -->
 
                         </tr>
                     </thead>
@@ -164,10 +164,10 @@
                                             @endforeach
                                         </td>
                                     @else
-                                        <td></td>
+                                        <td style="display: none;"></td>
                                     @endif
                                     <td class="table-cell" style="display: none;">{{ $query->quant }}
-                                </td>
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach

@@ -55,7 +55,7 @@
                             <th class="text-center table-cell">action</th><!-- 16 -->
                             <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
                             <th class="text-center table-cell" style="display: none;">Count</th><!-- 18 -->
-                                                        <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 19 -->
+                            <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 19 -->
 
                         </tr>
                     </thead>
@@ -171,10 +171,10 @@
                                             @endforeach
                                         </td>
                                     @else
-                                        <td></td>
+                                        <td style="display: none;"></td>
                                     @endif
                                     <td class="table-cell" style="display: none;">{{ $query->quant }}
-                                </td>
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach
@@ -253,7 +253,7 @@
                     }
                 },
                 "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [0, 2, 16, 17,18];
+                    var columnIndexToExclude = [0, 2, 16, 17, 18];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
@@ -290,8 +290,7 @@
                                 rowData[15] + '</td></tr>' +
                                 '<tr><td>Print Out</td><td class="text-secondary">' +
                                 rowData[17] + '</td></tr>' +
-                                '<tr><td></td><td class="text-secondary" >' +
-                                rowData[16] + '</td></tr>' +
+
                                 '</table>'
                             );
 

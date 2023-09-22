@@ -26,11 +26,19 @@ class PDFController extends Controller
     {
         $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
 
+        $vwCountDetail = DB::table('vwCountDetail')->where('PROC_ID', $id)->where('used', 1)->first();
+        $vwCountDetail = $vwCountDetail->count_detail;
+
+        $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
+
+
+        $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
         $title = 'บันทึกข้อความ';
         $department = $query->TCHN_LOCAT_NAME;
         $tel = '';
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
         $timeExport = Carbon::now()->format('H:i:s');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
         $planName = $query->description . ' ประจำปี ' . $query->budget;
         $projectName = '';
@@ -38,17 +46,9 @@ class PDFController extends Controller
         $reason = $query->reason;
         $quant = $query->quant;
         $price = $query->price;
-        $totalPrice = $quant * $price;
+        $totalPrice = $vwCountDetail * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
 
-        $vwCountDetail = DB::table('vwCountDetail')->where('PROC_ID', $id)->where('used', 1)->first();
-        $vwCountDetail = $vwCountDetail->count_detail;
-
-        $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
-        $totalSum = DB::table('vwEquipDetail')->where('PROC_ID', $id)->sum('SUM')->get();
-        dd($totalSum);
-
-        $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
 
         $data = [
             'id' => $id,
@@ -75,7 +75,7 @@ class PDFController extends Controller
         $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
         $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
         $this->pdfService->addContent('pdf.procurementTemplatePage2', $data);
-        return $this->pdfService->generateFromView();
+        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
     }
 
     protected function numberToThaiText($number, $include_unit = true, $display_zero = true)
@@ -156,5 +156,46 @@ class PDFController extends Controller
         }
 
         return $text;
+    }
+
+    public function generateContactService($id)
+    {
+        $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
+
+        $title = 'บันทึกข้อความ';
+        $department = $query->TCHN_LOCAT_NAME;
+        $tel = '';
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
+        $planName = $query->description . ' ประจำปี ' . $query->budget;
+        $projectName = $query->description;
+        $years = $query->budget;
+        $reason = $query->reason;
+        $quant = $query->quant;
+        $price = $query->price;
+        $totalPrice = $quant * $price;
+        $totalPriceText = $this->numberToThaiText($totalPrice);
+
+
+        $data = [
+            'id' => $id,
+            'title' => $title,
+            'department' => $department,
+            'tel' => $tel,
+            'dateExport' => $dateExport,
+            'subject' => $subject,
+            'planName' => $planName,
+            'projectName' => $projectName,
+            'reason' => $reason,
+            'quant' => $quant,
+            'price' => $price,
+            'totalPrice' => $totalPrice,
+            'totalPriceText' => $totalPriceText,
+            'years' => $years,
+        ];
+
+        $this->pdfService->addContent('pdf.contactServiceTemplate', $data);
+        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
     }
 }

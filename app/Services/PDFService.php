@@ -61,8 +61,8 @@ class PDFService
         $this->mpdf->AddPage($orientation, $type, $resetpagenum, $pagenumstyle, $suppress, $marginLeft, $marginRight, $marginTop, $marginBottom, $marginHeader, $marginFooter, $oddHeaderName, $evenHeaderName, $oddFooterName, $evenFooterName, $oddHeaderValue, $evenHeaderValue, $oddFooterValue, $evenFooterValue, $pageselector, $sheetSize);
     }
 
-    public function generateFromView()
+    public function generateFromView($name)
     {
-        $this->mpdf->Output();
+        $this->mpdf->Output($name, \Mpdf\Output\Destination::INLINE);
     }
 }

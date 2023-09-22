@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [MainPageController::class, 'home'])->name('home');
     // Generate-PDF Zone
     Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
+    Route::get('/contactPdf/{id}', [PDFController::class, 'generateContactService']);
+
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {
         Route::get('usermanagement', [AdministratorController::class, 'usermanagement'])->name('usermanagement');

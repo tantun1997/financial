@@ -52,7 +52,7 @@
                             <!-- 15 -->
                             <th class="text-center table-cell">action</th><!-- 16 -->
                             <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
-                            <th class="text-center table-cell">จำนวน</th><!-- 18 -->
+                            <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 18 -->
 
                         </tr>
                     </thead>
@@ -203,7 +203,7 @@
     <script>
         function generatePdf(id) {
             // window.location.href = '/generatePdf/' + id;
-            window.open('/generatePdf/' + id, '_blank');
+            window.open('/contactPdf/' + id, '_blank');
         }
 
 
@@ -267,8 +267,6 @@
                                 rowData[15] + '</td></tr>' +
                                 '<tr><td>Print Out</td><td class="text-secondary">' +
                                 rowData[17] + '</td></tr>' +
-                                '<tr><td></td><td class="text-secondary" >' +
-                                rowData[16] + '</td></tr>' +
                                 '</table>'
                             );
 
