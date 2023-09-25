@@ -75,7 +75,7 @@
                                                     @if ($query->approved == '1')
                                                         <span class="badge bg-success">อนุมัติแล้ว</span>
                                                     @else
-                                                        <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                        <span class="badge bg-secondary">รอตรวจสอบ</span>
                                                     @endif
                                                 </span>
                                             </div>
@@ -83,7 +83,7 @@
                                             @if ($query->approved == '1')
                                                 <span class="badge bg-success">อนุมัติแล้ว</span>
                                             @else
-                                                <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                <span class="badge bg-secondary">รอตรวจสอบ</span>
                                             @endif
                                         @endif
                                     </td>

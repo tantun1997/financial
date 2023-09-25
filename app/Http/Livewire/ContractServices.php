@@ -38,11 +38,11 @@ class ContractServices extends Component
         }
 
         DB::table('procurements')
-        ->where('id', $id)
+            ->where('id', $id)
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
-            'approved_userId' => Auth::user()->id
+                'approved_userId' => Auth::user()->id
             ]);
     }
 
@@ -87,7 +87,8 @@ class ContractServices extends Component
                 'EQUP_STS_ID',
                 'PRODCT_CAT_ID',
                 'EQUP_PRICE',
-                'EQUP_STS_DESC'
+                'EQUP_STS_DESC',
+                'EQUP_REGS_DATE'
             ])
             ->where('EQUP_LINK_NO', $equipmentId)
             ->first();
@@ -112,6 +113,7 @@ class ContractServices extends Component
                 'EQUP_PRICE' => $selected->EQUP_PRICE,
                 'EQUP_LINK_NO' => $equipmentId,
                 'EQUP_STS_DESC' => $selected->EQUP_STS_DESC,
+                'EQUP_REGS_DATE' => $selected->EQUP_REGS_DATE,
                 'used' => '1'
 
             ]);
@@ -139,7 +141,7 @@ class ContractServices extends Component
     {
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
-        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
+        $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
         $this->priorityNo = '001';
         $this->quant = '1';
         $this->procurementType = '2';
@@ -150,7 +152,7 @@ class ContractServices extends Component
 
     public function resetFields()
     {
-        $this->budget = Carbon::now()->addYear()->format('Y') + 543;
+        $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
         $this->priorityNo = '001';
         $this->description = '';
         $this->price = '';
@@ -320,7 +322,7 @@ class ContractServices extends Component
                 ->update([
                     'enable' => '0',
                     'deleted_at' => now(),
-                'deleted_userId' => Auth::user()->id
+                    'deleted_userId' => Auth::user()->id
                 ]);
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
@@ -345,7 +347,7 @@ class ContractServices extends Component
 
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
-        $searchResult = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC'])
+        $searchResult = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC', 'age'])
             ->where(function ($query) use ($searchEQUIPMENT, $deptId) {
                 $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
                     ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
@@ -353,7 +355,7 @@ class ContractServices extends Component
                 if (!(Auth::user()->isAdmin == 'Y' || $deptId == 168 || $deptId == 150)) {
                     $query->where('TCHN_LOCAT_ID', $deptId);
                 }
-            })
+            })->orderBy('EQUP_ID', 'asc')
             ->get();
 
 
@@ -365,7 +367,6 @@ class ContractServices extends Component
         $this->loading = false;
         $this->searchPerformed = true;
     }
-
     public function render()
     {
         $procurements_detail = DB::table('procurements_detail')->get();
@@ -375,7 +376,7 @@ class ContractServices extends Component
             ->where('procurementType', '2')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
-            return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+                return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
             }, function ($query) {
                 return $query->orderByDesc('updated_at');
             })

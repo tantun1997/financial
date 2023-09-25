@@ -39,6 +39,7 @@
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
                             <th style="text-align: center;">ราคาของวัสดุ</th>
+                            <th style="text-align: center;">อายุการใช้งาน</th>
                             <th style="text-align: center;">สถานะ</th>
                             <th></th>
                         </tr>
@@ -50,15 +51,17 @@
                                     <tr>
                                         <td class="text-center">
                                             @if ($query->used == 1)
-                                            <input class="form-check-input" type="checkbox" wire:click.prevent="CheckedEquip({{ $query->id }})" checked>
+                                                <input class="form-check-input" type="checkbox"
+                                                    wire:click.prevent="CheckedEquip({{ $query->id }})" checked>
                                             @else
-                                            <input class="form-check-input" type="checkbox" wire:click.prevent="CheckedEquip({{ $query->id }})" >
-
+                                                <input class="form-check-input" type="checkbox"
+                                                    wire:click.prevent="CheckedEquip({{ $query->id }})">
                                             @endif
                                         </td>
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
                                         <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
+                                        <td style="text-align: center;">{{ $query->age }} ปี</td>
                                         <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
@@ -90,10 +93,7 @@
                         </div>
                         <div class="col-md-4">
                             <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
-                            <div wire:loading>
-                                Loading...
-                            </div>
-                        </div>
+                                                  </div>
                     </div>
                 </form>
 
@@ -107,6 +107,7 @@
                                         <th style="text-align: center;">รหัส</th>
                                         <th style="text-align: center;">ชื่อรายการ</th>
                                         <th style="text-align: center;">ราคาของวัสดุ</th>
+                                        <th style="text-align: center;">อายุการใช้งาน</th>
                                         <th style="text-align: center;">แผนก</th>
                                         <th style="text-align: center;">สถานะ</th>
                                     </tr>
@@ -126,6 +127,9 @@
                                                 {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
                                             <td style="text-align: center;">
                                                 {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {{ isset($query->age) ? number_format($query->age) : '' }} ปี
                                             </td>
                                             <td style="text-align: center;">
                                                 {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
@@ -157,3 +161,4 @@
         </div>
     </div>
 </div>
+

@@ -27,7 +27,8 @@ class PDFController extends Controller
         $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('PROC_ID', $id)->where('used', 1)->first();
-        $vwCountDetail = $vwCountDetail->count_detail;
+
+        $vwCountDetailText = optional($vwCountDetail)->count_detail ?? '0';
 
         $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
 
@@ -46,7 +47,7 @@ class PDFController extends Controller
         $reason = $query->reason;
         $quant = $query->quant;
         $price = $query->price;
-        $totalPrice = $vwCountDetail * $price;
+        $totalPrice = $vwCountDetailText * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
 
 
@@ -67,7 +68,9 @@ class PDFController extends Controller
             'years' => $years,
             'vwEquipDetail' => $vwEquipDetail,
             'vwReportEquipDetail' => $vwReportEquipDetail,
-            'vwCountDetail' => $vwCountDetail
+            'vwCountDetail' => $vwCountDetail,
+            'vwCountDetailText' => $vwCountDetailText,
+
         ];
 
         $this->pdfService->addContent('pdf.procurementTemplate', $data);

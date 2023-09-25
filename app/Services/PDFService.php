@@ -29,10 +29,10 @@ class PDFService
 
         $this->mpdf->defaultheaderfontstyle = 'R';
         $this->mpdf->defaultheaderfontsize = 9;
-        $this->mpdf->defaultheaderline=0;
-        $this->mpdf->defaultfooterfontstyle='R';
-        $this->mpdf->defaultfooterfontsize=9;
-        $this->mpdf->defaultfooterline=0;
+        $this->mpdf->defaultheaderline = 0;
+        $this->mpdf->defaultfooterfontstyle = 'R';
+        $this->mpdf->defaultfooterfontsize = 9;
+        $this->mpdf->defaultfooterline = 0;
         $this->mpdf->useDictionaryLBR = true;
     }
     public function setDefaultFont($font)

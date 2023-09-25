@@ -38,6 +38,8 @@
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
                             <th style="text-align: center;">ราคาของวัสดุ</th>
+                                                        <th style="text-align: center;">อายุการใช้งาน</th>
+
                             <th style="text-align: center;">สถานะ</th>
                             <th></th>
                         </tr>
@@ -59,6 +61,8 @@
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
                                         <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
+                                                                                <td style="text-align: center;">{{ $query->age }} ปี</td>
+
                                         <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
@@ -90,9 +94,7 @@
                         </div>
                         <div class="col-md-4">
                             <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
-                            <div wire:loading>
-                                Loading...
-                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -116,22 +118,27 @@
                                         <tr>
                                             <td style="text-align: center;">
                                                 <button type="button" class="btn btn-outline-success btn-sm"
-                                                    wire:click.prevent="selectRow({{ isset($query->EQUP_LINK_NO) ? $query->EQUP_LINK_NO : '' }})">
+                                                    wire:click.prevent="selectRow({{ $query->EQUP_LINK_NO }})">
                                                     +
                                                 </button>
                                             </td>
                                             <td style="text-align: center;">
-                                                {{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                                {{ $query->EQUP_ID }}
                                             </td>
                                             <td style="text-align: center;">
-                                                {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
+                                                {{ $query->EQUP_NAME }}
                                             </td>
                                             <td style="text-align: center;">
-                                                @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
+                                                {{ number_format($query->EQUP_PRICE) }}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {{ number_format($query->age) }} ปี
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {{ $query->TCHN_LOCAT_NAME }}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @switch($query->EQUP_STS_DESC)
                                                     @case('ใช้งาน')
                                                         <span class="badge bg-primary">ยังใช้งาน</span>
                                                     @break
@@ -140,6 +147,7 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
+
                             </table>
                         @else
                             <div class="alert alert-danger text-center" role="alert">ไม่พบข้อมูลที่ค้นหา</div>

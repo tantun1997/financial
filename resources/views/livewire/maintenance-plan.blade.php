@@ -75,7 +75,7 @@
                                                     @if ($query->approved == '1')
                                                         <span class="badge bg-success">อนุมัติแล้ว</span>
                                                     @else
-                                                        <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                        <span class="badge bg-secondary">รอตรวจสอบ</span>
                                                     @endif
                                                 </span>
                                             </div>
@@ -83,7 +83,7 @@
                                             @if ($query->approved == '1')
                                                 <span class="badge bg-success">อนุมัติแล้ว</span>
                                             @else
-                                                <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                <span class="badge bg-secondary">รอตรวจสอบ</span>
                                             @endif
                                         @endif
                                     </td>
@@ -334,7 +334,6 @@
         var excelButton = table.buttons(); // 0 คือ index ของปุ่ม "Export to Excel"
         excelButton.container().appendTo(
             '#newButtonContainer'); // เปลี่ยน #newButtonContainer เป็น selector ของตำแหน่งที่ต้องการ
-
 
         $('#resetBtn').click(function() {
             $("#filterSelectyear").val("").trigger("change");

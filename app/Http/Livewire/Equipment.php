@@ -8,6 +8,7 @@ use Livewire\Component;
 
 class Equipment extends Component
 {
+
     public function render()
     {
 
@@ -58,5 +59,4 @@ class Equipment extends Component
             'querys' => $querys
         ]);
     }
-    
 }

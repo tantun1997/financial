@@ -1,9 +1,4 @@
  <div class="container-fluid px-4">
-
-     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
      <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> ครุภัณฑ์</h3>
@@ -14,45 +9,45 @@
                  รายงานครุภัณฑ์</li>
      </ol>
      <hr>
-     <div class="card mb-4" >
+     <div class="card mb-4">
 
-             <div class="card-header">
-                 <div class="row">
-                     <div class="col-md-3">
-                         <div class="form-group">
-                             <label>ชื่อสินค้า</label>
-                             <select class="form-control select2" id="filterSelectName" style="width: 100%;" multiple>
-                                 <option value="" selected>ทั้งหมด</option>
-                                 @foreach ($name as $names)
-                                     <option value="{{ $names }}">{{ $names }}</option>
-                                 @endforeach
-                             </select>
-                         </div>
+         <div class="card-header">
+             <div class="row">
+                 <div class="col-md-3">
+                     <div class="form-group">
+                         <label>ชื่อครุภัณฑ์</label>
+                         <select class="form-control select2" id="filterSelectName" style="width: 100%;" multiple>
+                             <option value="" selected>ทั้งหมด</option>
+                             @foreach ($name as $names)
+                                 <option value="{{ $names }}">{{ $names }}</option>
+                             @endforeach
+                         </select>
                      </div>
-                     <div class="col-md-3">
-                         <div class="form-group">
-                             <label>แผนก</label>
-                             <select class="form-control select2" id="filterSelectLocat" style="width: 100%;" multiple>
-                                 <option value="" selected>ทั้งหมด</option>
-                                 <option value="-">-</option>
-                                 @foreach ($locat as $loc)
-                                     <option value="{{ $loc }}">{{ $loc }}</option>
-                                 @endforeach
-                             </select>
-                         </div>
+                 </div>
+                 <div class="col-md-3">
+                     <div class="form-group">
+                         <label>แผนก</label>
+                         <select class="form-control select2" id="filterSelectLocat" style="width: 100%;" multiple>
+                             <option value="" selected>ทั้งหมด</option>
+                             <option value="-">-</option>
+                             @foreach ($locat as $loc)
+                                 <option value="{{ $loc }}">{{ $loc }}</option>
+                             @endforeach
+                         </select>
                      </div>
-                     <div class="col-md-3">
-                         <div class="form-group">
-                             <label>หมวดหมู่</label>
-                             <select class="form-control select2" id="filterSelectCata" style="width: 100%;" multiple>
-                                 <option value="" selected>ทั้งหมด</option>
-                                 @foreach ($cata as $catas)
-                                     <option value="{{ $catas }}">{{ $catas }}</option>
-                                 @endforeach
-                             </select>
-                         </div>
+                 </div>
+                 {{-- <div class="col-md-3">
+                     <div class="form-group">
+                         <label>หมวดหมู่</label>
+                         <select class="form-control select2" id="filterSelectCata" style="width: 100%;" multiple>
+                             <option value="" selected>ทั้งหมด</option>
+                             @foreach ($cata as $catas)
+                                 <option value="{{ $catas }}">{{ $catas }}</option>
+                             @endforeach
+                         </select>
                      </div>
-                     <div class="col-md-3">
+                 </div> --}}
+                 {{-- <div class="col-md-3">
                          <div class="form-group">
                              <label>ประเภท</label>
                              <select class="form-control select2" id="filterSelectType" style="width: 100%;" multiple>
@@ -63,8 +58,8 @@
                                  @endforeach
                              </select>
                          </div>
-                     </div>
-                     <div class="col-md-3">
+                     </div> --}}
+                 {{-- <div class="col-md-3">
                          <div class="form-group">
                              <label>สถานะ</label>
                              <select class="form-control select2" id="filterSelectStatus" style="width: 100%;" multiple>
@@ -74,72 +69,73 @@
                                  @endforeach
                              </select>
                          </div>
-                     </div>
-                     {{-- <div class="col-md-3 mt-4">
+                     </div> --}}
+                 {{-- <div class="col-md-3 mt-4">
                          <button id="resetBtn" class="btn btn-danger">Reset</button>
                      </div> --}}
-                 </div>
-
-                 <div class="mt-4" id="newButtonContainer" wire:ignore>
-                     <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
-                 </div>
              </div>
-             <div class="card-body">
-                 <div wire:ignore>
-                     <table id='dataTable' class="nowrap cell-border table table-bordered table-hover"
-                         style="width: 100%; text-align: center; border-top: 1px solid #ddd; ">
-                         <thead>
+
+             <div class="mt-4" id="newButtonContainer" wire:ignore>
+                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
+             </div>
+         </div>
+         <div class="card-body">
+
+             <div>
+                 <table id='dataTable' class="nowrap cell-border table table-bordered table-hover"
+                     style="width: 100%; text-align: center; border-top: 1px solid #ddd; ">
+                     <thead>
+                         <tr>
+                             <th style="text-align: center;">No.</th>
+                             <th style="text-align: center;">เลขที่</th>
+                             <th style="text-align: center;">รหัส</th>
+                             <th style="text-align: center;">ชื่อครุภัณฑ์</th>
+                             <th style="text-align: center;">ราคา</th>
+                             <th style="text-align: center;">แผนก</th>
+                             <th style="text-align: center;">วันที่นำเข้า</th>
+                             {{-- <th style="text-align: center;">หมวดหมู่</th> --}}
+                             {{-- <th style="text-align: center;">ประเภท</th> --}}
+                             <th style="text-align: center;">สถานะ</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         @foreach ($querys as $query)
                              <tr>
-                                 <th style="text-align: center;">No.</th>
-                                 <th style="text-align: center;">เลขที่</th>
-                                 <th style="text-align: center;">รหัส</th>
-                                 <th style="text-align: center;">ชื่อสินค้า</th>
-                                 <th style="text-align: center;">ราคา</th>
-                                 <th style="text-align: center;">แผนก</th>
-                                 <th style="text-align: center;">วันที่นำเข้า</th>
-                                 <th style="text-align: center;">หมวดหมู่</th>
-                                 <th style="text-align: center;">ประเภท</th>
-                                 <th style="text-align: center;">สถานะ</th>
-                             </tr>
-                         </thead>
-                         <tbody>
-                             @foreach ($querys as $query)
-                                 <tr>
-                                     <td>{{ $query->index }}</td>
-                                     <td>{{ $query->EQUP_LINK_NO }}</td>
-                                     <td>{{ $query->EQUP_ID }}</td>
-                                     <td>{{ $query->EQUP_NAME }}</td>
-                                     <td>{{ $query->EQUP_PRICE }}</td>
-                                     <td>{{ $query->TCHN_LOCAT_NAME ?? '-' }}</td>
-                                     <td>{{ $query->EQUP_REGS_DATE }}</td>
-                                     <td>{{ $query->EQUP_CAT_NAME }}</td>
-                                     <td>{{ $query->EQUP_TYPE_NAME ?? '-' }}</td>
+                                 <td>{{ $query->index }}</td>
+                                 <td>{{ $query->EQUP_LINK_NO }}</td>
+                                 <td>{{ $query->EQUP_ID }}</td>
+                                 <td>{{ $query->EQUP_NAME }}</td>
+                                 <td>{{ $query->EQUP_PRICE }}</td>
+                                 <td>{{ $query->TCHN_LOCAT_NAME ?? '-' }}</td>
+                                 <td>{{ $query->EQUP_REGS_DATE }}</td>
+                                 {{-- <td>{{ $query->EQUP_CAT_NAME }}</td> --}}
+                                 {{-- <td>{{ $query->EQUP_TYPE_NAME ?? '-' }}</td> --}}
 
-                                     <td>
-                                         @if ($query->EQUP_STS_DESC == 'ใช้งาน')
-                                             <span class="badge bg-success">ใช้งาน</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'ยกเลิกการใช้')
-                                             <span class="badge bg-danger">ยกเลิกการใช้</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'จำหน่าย')
-                                             <span class="badge bg-primary">จำหน่าย</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'ห้ามใช้งาน (รอตรวจสอบ)')
-                                             <span class="badge bg-dark">ห้ามใช้งาน (รอตรวจสอบ)</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'ถูกเรียกคืน (Recall)')
-                                             <span class="badge bg-secondary">ถูกเรียกคืน (Recall)</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'เสีย')
-                                             <span class="badge bg-danger">เสีย</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'หมดอายุ')
-                                             <span class="badge bg-danger">หมดอายุ</span>
-                                         @elseif ($query->EQUP_STS_DESC == 'ส่งซ่อม')
-                                             <span class="badge bg-warning">ส่งซ่อม</span>
-                                         @endif
-                                     </td>
-                                 </tr>
-                             @endforeach
-                         </tbody>
-                     </table>
-                 </div>
+                                 <td>
+                                     @if ($query->EQUP_STS_DESC == 'ใช้งาน')
+                                         <span class="badge bg-success">ใช้งาน</span>
+                                         {{-- @elseif ($query->EQUP_STS_DESC == 'ยกเลิกการใช้')
+                                         <span class="badge bg-danger">ยกเลิกการใช้</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'จำหน่าย')
+                                         <span class="badge bg-primary">จำหน่าย</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'ห้ามใช้งาน (รอตรวจสอบ)')
+                                         <span class="badge bg-dark">ห้ามใช้งาน (รอตรวจสอบ)</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'ถูกเรียกคืน (Recall)')
+                                         <span class="badge bg-secondary">ถูกเรียกคืน (Recall)</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'เสีย')
+                                         <span class="badge bg-danger">เสีย</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'หมดอายุ')
+                                         <span class="badge bg-danger">หมดอายุ</span>
+                                     @elseif ($query->EQUP_STS_DESC == 'ส่งซ่อม')
+                                         <span class="badge bg-warning">ส่งซ่อม</span> --}}
+                                     @endif
+                                 </td>
+                             </tr>
+                         @endforeach
+                     </tbody>
+                 </table>
              </div>
+         </div>
      </div>
      <style>
          .breadcrumb a {
@@ -151,13 +147,7 @@
              display: none;
          }
      </style>
-     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
-     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+
      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
      <script>
@@ -196,41 +186,29 @@
                      [20, 30, 50, -1],
                      ['20', '30', '50', 'ทั้งหมด']
                  ],
-                 dom: 'Bfrtip',
                  buttons: [{
-                         extend: 'excelHtml5',
-                         text: '<i class="fa fa-file-excel"></i> Export to Excel', // เพิ่ม HTML สำหรับไอคอน
-                         filename: 'รายงานครุภัณฑ์',
-                         title: `รายงานครุภัณฑ์ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
-                         autoFilter: true,
-                         exportOptions: {
-                             format: {
-                                 body: function(data, row, column, node) {
-                                     if (column === 0) {
-                                         return row + 1;
-                                     }
-                                     return data.replace(/<\/?span[^>]*>/g, "");
+                     extend: 'excelHtml5',
+                     text: '<i class="fa fa-file-excel"></i> Export to Excel', // เพิ่ม HTML สำหรับไอคอน
+                     filename: 'รายงานครุภัณฑ์',
+                     title: `รายงานครุภัณฑ์ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
+                     autoFilter: true,
+                     exportOptions: {
+                         format: {
+                             body: function(data, row, column, node) {
+                                 if (column === 0) {
+                                     return row + 1;
                                  }
-                             },
-                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] // ไม่ส่งออกคอลัมน์ "action"
+                                 return data.replace(/<\/?span[^>]*>/g, "");
+                             }
                          },
-                         className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
-                         init: function(api, node, config) {
-                             $(node).removeClass(
-                                 'dt-button'); // ลบคลาสเดิมของ DataTables ออกเพื่อปรับแต่งสีตามคลาสที่กำหนด
-                         }
+                         columns: [0, 1, 2, 3, 4, 5, 6, 7] // ไม่ส่งออกคอลัมน์ "action"
                      },
-                     {
-                         extend: 'pageLength',
-                         text: 'เลือกจำนวนแสดงข้อมูล', // คำอธิบายเมื่อเอาเมาส์ไปชี้ที่ปุ่ม
-                         className: 'btn btn-outline-secondary', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
-                         init: function(api, node, config) {
-                             $(node).removeClass(
-                                 'dt-button'); // ลบคลาสเดิมของ DataTables ออกเพื่อปรับแต่งสีตามคลาสที่กำหนด
-                         },
+                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
+                     init: function(api, node, config) {
+                         $(node).removeClass(
+                             'dt-button'); // ลบคลาสเดิมของ DataTables ออกเพื่อปรับแต่งสีตามคลาสที่กำหนด
                      }
-
-                 ]
+                 }]
              });
 
          }
@@ -247,23 +225,23 @@
              });
          }).draw();
 
-        //  $('#resetBtn').click(function() {
-        //      $('#filterSelectName').val("").trigger("change.select2");
-        //      table.column(3).search("").draw();
+         //  $('#resetBtn').click(function() {
+         //      $('#filterSelectName').val("").trigger("change.select2");
+         //      table.column(3).search("").draw();
 
-        //      $("#filterSelectLocat").val("").trigger("change.select2");
-        //      table.column(6).search("").draw();
+         //      $("#filterSelectLocat").val("").trigger("change.select2");
+         //      table.column(6).search("").draw();
 
-        //      $("#filterSelectCata").val("").trigger("change.select2");
-        //      table.column(7).search("").draw();
+         //      $("#filterSelectCata").val("").trigger("change.select2");
+         //      table.column(7).search("").draw();
 
-        //      $("#filterSelectType").val("").trigger("change.select2");
-        //      table.column(8).search("").draw();
+         //      $("#filterSelectType").val("").trigger("change.select2");
+         //      table.column(8).search("").draw();
 
-        //      $("#filterSelectStatus").val("").trigger("change.select2");
-        //      table.column(9).search("").draw();
+         //      $("#filterSelectStatus").val("").trigger("change.select2");
+         //      table.column(9).search("").draw();
 
-        //  });
+         //  });
 
          $(".select2").select2();
          $('#filterSelectName').on('select2:select select2:unselect', function(e) {
@@ -372,7 +350,6 @@
              }
 
          });
-
      </script>
 
  </div>

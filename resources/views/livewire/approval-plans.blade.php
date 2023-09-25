@@ -68,7 +68,7 @@
                                                 @if ($query->approved == '1')
                                                     <span class="badge bg-success">อนุมัติแล้ว</span>
                                                 @else
-                                                    <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                                    <span class="badge bg-secondary">รอตรวจสอบ</span>
                                                 @endif
                                             </span>
                                         </div>
@@ -76,7 +76,7 @@
                                         @if ($query->approved == '1')
                                             <span class="badge bg-success">อนุมัติแล้ว</span>
                                         @else
-                                            <span class="badge bg-secondary">ยังไม่อนุมัติ</span>
+                                            <span class="badge bg-secondary">รอตรวจสอบ</span>
                                         @endif
                                     @endif
                                 </td>
@@ -146,7 +146,7 @@
                                     @else
                                     @endif
                                 </td>
-                                <td class="table-cell" style="display: none;">{{ $query->quant }}          </td>
+                                <td class="table-cell" style="display: none;">{{ $query->quant }} </td>
 
                             </tr>
                         @endforeach
@@ -285,7 +285,7 @@
                     title: `รายงานการจัดอนุมัติแผนงาน หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0, 1, 4, 5, 6, 7, 8, 18,10, 11, 12, 13, 14, 15]
+                        columns: [0, 1, 4, 5, 6, 7, 8, 18, 10, 11, 12, 13, 14, 15]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
