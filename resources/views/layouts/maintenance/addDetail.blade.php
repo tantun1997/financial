@@ -93,63 +93,62 @@
                         </div>
                         <div class="col-md-4">
                             <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
-                                                  </div>
+                        </div>
                     </div>
                 </form>
 
                 <div wire:loading.remove>
-                    @if ($searchPerformed)
-                        @if (!empty($VW_EQUIPMENT))
-                            <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th style="text-align: center;">รหัส</th>
-                                        <th style="text-align: center;">ชื่อรายการ</th>
-                                        <th style="text-align: center;">ราคาของวัสดุ</th>
-                                        <th style="text-align: center;">อายุการใช้งาน</th>
-                                        <th style="text-align: center;">แผนก</th>
-                                        <th style="text-align: center;">สถานะ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($VW_EQUIPMENT as $query)
-                                        <tr>
-                                            <td style="text-align: center;">
-                                                <button type="button" class="btn btn-outline-success btn-sm"
-                                                    wire:click.prevent="selectRow({{ isset($query->EQUP_LINK_NO) ? $query->EQUP_LINK_NO : '' }})">
-                                                    +
-                                                </button>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->age) ? number_format($query->age) : '' }} ปี
-                                            </td>
-                                            <td style="text-align: center;">
-                                                {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
-                                            </td>
-                                            <td style="text-align: center;">
-                                                @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
-                                                    @case('ใช้งาน')
-                                                        <span class="badge bg-primary">ยังใช้งาน</span>
-                                                    @break
-                                                @endswitch
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="alert alert-danger text-center" role="alert">ไม่พบข้อมูลที่ค้นหา</div>
-                        @endif
+                    @if (session()->has('SearchData'))
+                        <div class="alert alert-warning text-center">{{ session('SearchData') }}</div>
+                    @elseif (session()->has('noData'))
+                        <div class="alert alert-danger text-center">{{ session('noData') }}</div>
                     @else
-                        <div class="alert alert-warning text-center" role="alert">พิมพ์ในช่องและกดค้นหา</div>
+                        <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">เลือก</th>
+                                    <th style="text-align: center;">รหัส</th>
+                                    <th style="text-align: center;">ชื่อรายการ</th>
+                                    <th style="text-align: center;">ราคาของวัสดุ</th>
+                                    <th style="text-align: center;">อายุการใช้งาน</th>
+                                    <th style="text-align: center;">แผนก</th>
+                                    <th style="text-align: center;">สถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($VW_EQUIPMENT as $query)
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <button type="button" class="btn btn-outline-success btn-sm"
+                                                wire:click.prevent="selectRow({{ isset($query->EQUP_LINK_NO) ? $query->EQUP_LINK_NO : '' }})">
+                                                +
+                                            </button>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ isset($query->EQUP_ID) ? $query->EQUP_ID : '' }}</td>
+                                        <td style="text-align: center;">
+                                            {{ isset($query->EQUP_NAME) ? $query->EQUP_NAME : '' }}</td>
+                                        <td style="text-align: center;">
+                                            {{ isset($query->EQUP_PRICE) ? number_format($query->EQUP_PRICE) : '' }}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ isset($query->age) ? number_format($query->age) : '' }} ปี
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ isset($query->TCHN_LOCAT_NAME) ? $query->TCHN_LOCAT_NAME : '' }}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @switch(isset($query->EQUP_STS_DESC) ? $query->EQUP_STS_DESC : '')
+                                                @case('ใช้งาน')
+                                                    <span class="badge bg-primary">ยังใช้งาน</span>
+                                                @break
+                                            @endswitch
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{ $VW_EQUIPMENT->links() }} <!-- เพิ่ม Pagination Links -->
                     @endif
                 </div>
             </div>
@@ -161,4 +160,3 @@
         </div>
     </div>
 </div>
-

@@ -26,7 +26,6 @@ class MaintenancePlan extends Component
 
         if ($query->used == '0' || $query->used === null) {
             $newUsed = '1';
-
         } else {
             $newUsed = '0';
         }
@@ -36,8 +35,7 @@ class MaintenancePlan extends Component
             ->update([
                 'used' => $newUsed
             ]);
-     $this->searchPerformed = false;
-
+        $this->searchEquipment();
     }
 
     public function Approval($id)
@@ -91,8 +89,7 @@ class MaintenancePlan extends Component
             ->delete();
 
         session()->flash('success', "ลบข้อมูลสำเร็จ!!");
-        $this->searchPerformed = false;
-
+        $this->searchEquipment();
     }
 
 
@@ -254,9 +251,6 @@ class MaintenancePlan extends Component
     public function edit($id)
     {
         $data = DB::table('procurements')->where('id', $id)->first();
-
-        if ($id == $data->id) {
-            // dd($this->objectTypeId);
             $this->procurementType = $data->procurementType;
             $this->priorityNo = $data->priorityNo;
             $this->description = $data->description;
@@ -275,7 +269,6 @@ class MaintenancePlan extends Component
             $this->updated_at = now();
             $this->edit_id = $id;
         }
-    }
 
     public function update()
     {
@@ -359,35 +352,43 @@ class MaintenancePlan extends Component
         }
     }
 
-    public $searchEQUIPMENT, $VW_EQUIPMENT;
-    public $searchPerformed = false;
+    public $searchEQUIPMENT;
+    protected $VW_EQUIPMENT;
 
     public function searchEquipment()
     {
-        $deptId = Auth::user()->deptId;
-
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
         $query = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC', 'age'])
-        ->where(function ($query) use ($searchEQUIPMENT, $deptId) {
+        ->where(function ($query) use ($searchEQUIPMENT) {
             $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
                 ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-
-            if (!(Auth::user()->isAdmin == 'Y' || $deptId == 168 || $deptId == 150)) {
-                $query->where('TCHN_LOCAT_ID', $deptId);
-            }
         });
 
-        $searchResult = $query->orderBy('EQUP_ID', 'asc')->get();
-
-        $this->VW_EQUIPMENT = $searchResult->isEmpty() ? null : $searchResult;
-
-        $this->searchPerformed = true;
+        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150) {
+            // ถ้าเป็น Admin หรือ deptId เป็น 168 หรือ 150 ให้ค้นหาทั้งหมด
+        } else {
+            $query->where('TCHN_LOCAT_ID', Auth::user()->deptId);
+        }
+        $this->VW_EQUIPMENT = $query->orderBy('EQUP_ID', 'asc')->paginate(10);
+        $this->resetPage();
     }
 
 
     public function render()
     {
+        if (!$this->VW_EQUIPMENT) {
+            if ($this->searchEQUIPMENT == null) {
+                session()->flash('SearchData', 'กรุณาพิมพ์คำค้นหาและกดค้นหา');
+            }
+            $this->searchEquipment();
+        }
+        if ($this->VW_EQUIPMENT->isEmpty()) {
+            session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
+        }
+
+
+
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
@@ -429,6 +430,7 @@ class MaintenancePlan extends Component
             'deptName' => $deptName,
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
+            'VW_EQUIPMENT' => $this->VW_EQUIPMENT,
 
             'vwCountDetail' => $vwCountDetail
 

@@ -48,7 +48,8 @@
                         <div class="col-md-3">
                             <span id="levelNo">แผนฯ</span>
                             <select class="form-select @error('levelNo') is-invalid @enderror"
-                                wire:model.defer="levelNo" id="levelNo" style="width: 100%;" aria-labelledby="levelNo">
+                                wire:model.defer="levelNo" id="levelNo" style="width: 100%;"
+                                aria-labelledby="levelNo">
                                 <option value="" selected>เลือก</option>
                                 <option value="1">จริง</option>
                                 <option value="2">สำรอง</option>
@@ -60,8 +61,10 @@
                         <div class="col-md-3">
                             <span id="objectTypeId"><i class="fa-light fa-list fa-sm"></i> ประเภท</span>
                             <select class="form-select @error('objectTypeId') is-invalid @enderror"
-                                wire:model.defer="objectTypeId" id="objectTypeId" style="width: 100%;" aria-labelledby="objectTypeId">
+                                wire:model.defer="objectTypeId" id="objectTypeId" style="width: 100%;"
+                                aria-labelledby="objectTypeId">
                                 <option value="" selected>เลือก</option>
+                                <option value="24">ค่าจ้างตรวจทางห้องปฏิบัติการ (Lab)</option>
                                 @php
                                     $usedNames = []; // สำหรับเก็บชื่อค่าที่ถูกใช้แล้ว
                                 @endphp
@@ -85,8 +88,8 @@
                             <span id="description"><i class="fa-solid fa-clipboard-list fa-sm"></i> รายการ</span>
                             <input class="form-control @error('description') is-invalid @enderror" type="text"
                                 wire:model.defer="description" id="description" list="listDescription"
-                                autocomplete="off" style="width: 100%;" placeholder="รายการ" aria-labelledby="description"
-                                wire:change="updateFieldsFromDescription">
+                                autocomplete="off" style="width: 100%;" placeholder="รายการ"
+                                aria-labelledby="description" wire:change="updateFieldsFromDescription">
                             <datalist id="listDescription">
                                 @php
                                     $usedNames = [];

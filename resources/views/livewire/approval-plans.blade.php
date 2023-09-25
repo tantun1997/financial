@@ -19,9 +19,7 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            {{-- @include('layouts.maintenance.search') --}}
-
-            <div class="mt-4" id="newButtonContainer" wire:ignore>
+            <div id="newButtonContainer" style="float: right" wire:ignore>
                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
             </div>
         </div>
@@ -140,14 +138,15 @@
                                         class="btn btn-outline-danger btn-sm">ลบ</button>
                                 </td>
                                 <td class="table-cell" style="display: none;">
-                                    @if ($query->approved == '1')
+                                    @if ($query->procurementType == '1')
                                         <button onclick="generatePdf({{ $query->id }})"
-                                            class="btn btn-danger btn-sm">PDF</button>
+                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
                                     @else
+                                        <button onclick="generatePdf2({{ $query->id }})"
+                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
                                     @endif
                                 </td>
                                 <td class="table-cell" style="display: none;">{{ $query->quant }} </td>
-
                             </tr>
                         @endforeach
                     </tbody>
@@ -190,9 +189,12 @@
     </style>
     <script>
         function generatePdf(id) {
-            // window.location.href = '/generatePdf/' + id;
             window.open('/generatePdf/' + id, '_blank');
+        }
 
+        function generatePdf2(id) {
+            // window.location.href = '/generatePdf/' + id;
+            window.open('/contactPdf/' + id, '_blank');
         }
 
         initializeDataTable()

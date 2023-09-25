@@ -61,6 +61,7 @@
                                 <option value="" selected>เลือก</option>
                                 <option value="01" >บำรุงรักษา</option>
                                 <option value="02" >ซ่อมแซม</option>
+                                <option value="24">ค่าจ้างตรวจทางห้องปฏิบัติการ (Lab)</option>
 
                                 @php
                                     $usedNames = []; // สำหรับเก็บชื่อค่าที่ถูกใช้แล้ว

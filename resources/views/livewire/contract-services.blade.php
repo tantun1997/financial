@@ -10,8 +10,9 @@
     <hr>
     <div class="mb-3">
         @include('layouts.contractService.addDetail')
-        @include('layouts.contractService.edit')
         @include('layouts.contractService.create')
+
+        @include('layouts.contractService.edit')
 
     </div>
     @if (session()->has('success'))
@@ -23,10 +24,9 @@
     <div class="card mb-4">
         <div class="card-header">
             @include('layouts.contractService.search')
-
-            <div class="mt-4" id="newButtonContainer" wire:ignore>
+            {{-- <div id="newButtonContainer" style="float: right;" wire:ignore>
                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
-            </div>
+            </div> --}}
         </div>
         <div class="card-body">
             <div>
@@ -148,8 +148,11 @@
                                     <td class="table-cell" style="display: none;">
                                         @if ($query->approved == '1')
                                             <button onclick="generatePdf({{ $query->id }})"
-                                                class="btn btn-danger btn-sm">PDF</button>
+                                                class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
                                         @else
+                                            <span class="badge rounded-pill bg-secondary">
+                                                ไม่สามารถปริ้นได้
+                                            </span>
                                         @endif
                                     </td>
                                     <td class="table-cell" style="display: none;">{{ $query->quant }}
@@ -346,13 +349,12 @@
 
         $("#filterSelectdeptId").on("change", function() {
             var selectedValue = $(this).val();
+            var escapedValue = selectedValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Escape special characters
 
             if (selectedValue !== "") {
-                table.column(13).search("^" + selectedValue + "$", true, false).draw();
-
+                table.column(13).search("^" + escapedValue + "$", true, false).draw();
             } else {
                 table.column(13).search("").draw();
-
             }
         });
 
