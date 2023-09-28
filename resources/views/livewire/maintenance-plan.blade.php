@@ -42,7 +42,7 @@
                             <th class="text-center table-cell" style="display: none;">ปี</th><!-- 4 -->
                             <th class="text-center table-cell" style="display: none;">ความสำคัญ</th><!-- 5 -->
                             <th class="text-center table-cell" style="display: none;">ประเภท</th><!-- 6 -->
-                            <th class="text-left table-cell">รายการ</th><!-- 7 -->
+                            <th class="text-left table-cell">ชื่อรายการ</th><!-- 7 -->
                             <th class="text-center table-cell">ราคาต่อหน่วย</th><!-- 8 -->
                             <th class="text-center table-cell">จำนวน</th><!-- 9 -->
                             <th class="text-center table-cell" style="display: none;">หน่วยนับ</th><!-- 10 -->
@@ -275,7 +275,7 @@
                                 '</td></tr>' +
                                 '<tr><td>ประเภท</td><td class="text-primary">' + rowData[6] +
                                 '</td></tr>' +
-                                '<tr><td>รายการ</td><td class="text-primary">' + rowData[7] +
+                                '<tr><td>ชื่อรายการ</td><td class="text-primary">' + rowData[7] +
                                 '</td></tr>' +
                                 '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[8] +
                                 ' บาท</td></tr>' +

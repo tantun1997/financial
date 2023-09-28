@@ -387,13 +387,13 @@ class RepairEquipment extends Component
             session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
         }
 
+        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 1)->get();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            ->whereNotIn('objectTypeId', ['01'])
             ->where('procurementType', '1')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
@@ -431,6 +431,8 @@ class RepairEquipment extends Component
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
             'VW_EQUIPMENT' =>  $this->VW_EQUIPMENT,
+            'procurement_object' => $procurement_object,
+
             'vwCountDetail' => $vwCountDetail
 
         ]);

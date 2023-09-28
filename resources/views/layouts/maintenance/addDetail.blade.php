@@ -13,7 +13,7 @@
             <div class="modal-body">
                 @foreach ($VW_NEW_MAINPLAN as $query)
                     @if ($query->id == $edit_id)
-                        <h5> รายการ
+                        <h5> ชื่อรายการ
                             {{ $query->description }}
                         </h5>
                         <p>ค่า{{ $query->objectName }} ราคา {{ number_format($query->price) }} บาท จำนวน

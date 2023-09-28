@@ -46,6 +46,7 @@
                                 wire:model.defer="levelNo" id="levelNo" style="width: 100%;"
                                 aria-labelledby="levelNo">
                                 <option value="" selected>เลือก</option>
+                                <option value="" disabled>-------------------------</option>
                                 <option value="1">จริง</option>
                                 <option value="2">สำรอง</option>
                             </select>
@@ -59,21 +60,10 @@
                                 wire:model.defer="objectTypeId" id="objectTypeId" style="width: 100%;"
                                 aria-labelledby="objectTypeId">
                                 <option value="" selected>เลือก</option>
-                                <option value="01" >บำรุงรักษา</option>
-                                <option value="02" >ซ่อมแซม</option>
-                                <option value="24">ค่าจ้างตรวจทางห้องปฏิบัติการ (Lab)</option>
-
-                                @php
-                                    $usedNames = []; // สำหรับเก็บชื่อค่าที่ถูกใช้แล้ว
-                                @endphp
-                                @foreach ($VW_NEW_MAINPLAN as $plan)
-                                    @if ($plan->objectTypeId != '01' && !in_array($plan->objectTypeId, $usedNames))
-                                        <option value="{{ $plan->objectTypeId }}">
-                                            {{ $plan->objectName }} </option>
-                                        @php
-                                            $usedNames[] = $plan->objectTypeId; // เพิ่มชื่อค่าในอาเรย์ $usedNames
-                                        @endphp
-                                    @endif
+                                <option value="" disabled>-------------------------</option>
+                                @foreach ($procurement_object as $object)
+                                    <option value="{{ $object->procurementCode }}">
+                                        {{ $object->objectName }} </option>
                                 @endforeach
                             </select>
                             @error('objectTypeId')
@@ -83,10 +73,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <span id="description"><i class="fa-solid fa-clipboard-list fa-sm"></i> รายการ</span>
+                            <span id="description"><i class="fa-solid fa-clipboard-list fa-sm"></i> ชื่อรายการ</span>
                             <input class="form-control @error('description') is-invalid @enderror" type="text"
                                 wire:model.defer="description" id="description" list="listDescription"
-                                autocomplete="off" style="width: 100%;" placeholder="รายการ"
+                                autocomplete="off" style="width: 100%;" placeholder="ชื่อรายการ"
                                 aria-labelledby="description" wire:change="updateFieldsFromDescription">
                             <datalist id="listDescription">
                                 @php
@@ -118,7 +108,7 @@
                             </datalist>
 
                             @error('description')
-                                <span class="text-danger error">โปรดเลือกรายการ</span>
+                                <span class="text-danger error">โปรดเลือกชื่อรายการ</span>
                             @enderror
                         </div>
                         <div class="col-md-3">

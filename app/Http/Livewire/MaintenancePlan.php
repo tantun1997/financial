@@ -164,8 +164,9 @@ class MaintenancePlan extends Component
         $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
         $this->priorityNo = '001';
         $this->quant = '1';
-        $this->procurementType = '1';
+        $this->procurementType = '3';
         $this->enable = '1';
+        $this->objectTypeId = '01';
         $this->created_at = now();
         $this->updated_at = now();
     }
@@ -251,24 +252,24 @@ class MaintenancePlan extends Component
     public function edit($id)
     {
         $data = DB::table('procurements')->where('id', $id)->first();
-            $this->procurementType = $data->procurementType;
-            $this->priorityNo = $data->priorityNo;
-            $this->description = $data->description;
-            $this->price = $data->price;
-            $this->package = $data->package;
-            $this->quant = $data->quant;
-            $this->objectTypeId = $data->objectTypeId;
-            $this->reason = $data->reason;
-            $this->deptId = $data->deptId;
-            $this->budget = $data->budget;
-            $this->remark = $data->remark;
-            $this->userId = $data->userId;
-            $this->enable = $data->enable;
-            $this->levelNo = $data->levelNo;
-            $this->created_at = $data->created_at;
-            $this->updated_at = now();
-            $this->edit_id = $id;
-        }
+        $this->procurementType = $data->procurementType;
+        $this->priorityNo = $data->priorityNo;
+        $this->description = $data->description;
+        $this->price = $data->price;
+        $this->package = $data->package;
+        $this->quant = $data->quant;
+        $this->objectTypeId = $data->objectTypeId;
+        $this->reason = $data->reason;
+        $this->deptId = $data->deptId;
+        $this->budget = $data->budget;
+        $this->remark = $data->remark;
+        $this->userId = $data->userId;
+        $this->enable = $data->enable;
+        $this->levelNo = $data->levelNo;
+        $this->created_at = $data->created_at;
+        $this->updated_at = now();
+        $this->edit_id = $id;
+    }
 
     public function update()
     {
@@ -360,10 +361,10 @@ class MaintenancePlan extends Component
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
         $query = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC', 'age'])
-        ->where(function ($query) use ($searchEQUIPMENT) {
-            $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-        });
+            ->where(function ($query) use ($searchEQUIPMENT) {
+                $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                    ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+            });
 
         if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150) {
             // ถ้าเป็น Admin หรือ deptId เป็น 168 หรือ 150 ให้ค้นหาทั้งหมด
@@ -387,15 +388,15 @@ class MaintenancePlan extends Component
             session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
         }
 
-
+        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 3)->get();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            ->where('objectTypeId', '01')
-            ->where('procurementType', '1')
+            // ->where('objectTypeId', '01')
+            ->where('procurementType', '3')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
                 return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
@@ -431,7 +432,7 @@ class MaintenancePlan extends Component
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
             'VW_EQUIPMENT' => $this->VW_EQUIPMENT,
-
+            'procurement_object' => $procurement_object,
             'vwCountDetail' => $vwCountDetail
 
         ]);

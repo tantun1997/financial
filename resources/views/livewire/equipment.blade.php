@@ -80,8 +80,6 @@
              </div>
          </div>
          <div class="card-body">
-
-             <div>
                  <table id='dataTable' class="nowrap cell-border table table-bordered table-hover"
                      style="width: 100%; text-align: center; border-top: 1px solid #ddd; ">
                      <thead>
@@ -134,7 +132,6 @@
                          @endforeach
                      </tbody>
                  </table>
-             </div>
          </div>
      </div>
      <style>
@@ -143,9 +140,9 @@
              color: #000000;
          }
 
-         .dataTables_filter label {
+         /* .dataTables_filter label {
              display: none;
-         }
+         } */
      </style>
 
      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
