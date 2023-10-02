@@ -33,26 +33,26 @@
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-center table-cell">อนุมัติแผนฯ</th> <!-- 0 -->
-                            <th class="text-center table-cell">แผนฯ</th><!-- 1 -->
-                            <th class="text-center table-cell" style="display: none;">ครุภัณฑ์</th><!-- 2 -->
-                            <th class="text-center table-cell" style="display: none;">รหัส</th><!-- 3 -->
-                            <th class="text-center table-cell" style="display: none;">ปี</th><!-- 4 -->
-                            <th class="text-center table-cell" style="display: none;">ความสำคัญ</th><!-- 5 -->
-                            <th class="text-center table-cell" style="display: none;">ประเภท</th><!-- 6 -->
-                            <th class="text-left table-cell">ชื่อรายการ</th><!-- 7 -->
-                            <th class="text-center table-cell">ราคาต่อหน่วย</th><!-- 8 -->
-                            <th class="text-center table-cell">จำนวน</th><!-- 9 -->
-                            <th class="text-center table-cell" style="display: none;">หน่วยนับ</th><!-- 10 -->
-                            <th class="text-center table-cell">รวมทั้งหมด</th><!-- 11 -->
-                            <th class="text-left table-cell" style="display: none;">เหตุผลและความจำเป็น</th><!-- 12 -->
-                            <th class="text-left table-cell">หน่วยงานที่เบิก</th><!-- 13 -->
-                            <th class="text-left table-cell" style="display: none;">หมายเหตุ</th><!-- 14 -->
-                            <th class="text-center table-cell" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
+                            <th class="text-center" style="width: 8%;">อนุมัติแผนฯ</th> <!-- 0 -->
+                            <th class="text-center" style="width: 5%;">แผนฯ</th><!-- 1 -->
+                            <th class="text-center" style="display: none;">ครุภัณฑ์</th><!-- 2 -->
+                            <th class="text-center" style="display: none;">รหัส</th><!-- 3 -->
+                            <th class="text-center" style="display: none;">ปี</th><!-- 4 -->
+                            <th class="text-center" style="display: none;">ความสำคัญ</th><!-- 5 -->
+                            <th class="text-center" style="display: none;">ประเภท</th><!-- 6 -->
+                            <th class="text-left" style="width: 30%;">ชื่อรายการ</th><!-- 7 -->
+                            <th class="text-center" style="width: 8%;">ราคาต่อหน่วย</th><!-- 8 -->
+                            <th class="text-center" style="width: 5%;">จำนวน</th><!-- 9 -->
+                            <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 10 -->
+                            <th class="text-center" style="width: 8%;">รวมทั้งหมด</th><!-- 11 -->
+                            <th class="text-left" style="display: none;">เหตุผลและความจำเป็น</th><!-- 12 -->
+                            <th class="text-left" style="width: 20%;">หน่วยงานที่เบิก</th><!-- 13 -->
+                            <th class="text-left" style="display: none;">หมายเหตุ</th><!-- 14 -->
+                            <th class="text-center" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                             <!-- 15 -->
-                            <th class="text-center table-cell">action</th><!-- 16 -->
-                            <th class="text-center table-cell" style="display: none;">Print out</th><!-- 17 -->
-                            <th class="text-center table-cell" style="display: none;">จำนวน</th><!-- 18 -->
+                            <th class="text-center" style="width: 5%;">action</th><!-- 16 -->
+                            <th class="text-center" style="display: none;">Print out</th><!-- 17 -->
+                            <th class="text-center" style="display: none;">จำนวน</th><!-- 18 -->
 
                         </tr>
                     </thead>
@@ -148,7 +148,8 @@
                                     <td class="table-cell" style="display: none;">
                                         @if ($query->approved == '1')
                                             <button onclick="generatePdf({{ $query->id }})"
-                                                class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
+                                                class="btn btn-danger btn-sm"><i
+                                                    class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
                                         @else
                                             <span class="badge rounded-pill bg-secondary">
                                                 ไม่สามารถปริ้นได้
@@ -201,6 +202,31 @@
         /* .dataTables_filter label {
              display: none;
          } */
+
+         .btn {
+            border-radius: 5px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 
     <script>

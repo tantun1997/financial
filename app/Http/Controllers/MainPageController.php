@@ -42,5 +42,9 @@ class MainPageController extends Controller
     {
         return view('vw_approval-plans');
     }
+    public function calibration()
+    {
+        return view('vw_calibration');
+    }
 
 }

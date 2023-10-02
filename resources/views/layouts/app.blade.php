@@ -94,7 +94,7 @@
                             แผนการจัดซื้อจัดจ้าง
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse  {{ Request::is('maintenance_equip') || Request::is('repair_equip') || Request::is('contract_services') ? 'show' : '' }}"
+                        <div class="collapse  {{ Request::is('maintenance_equip') || Request::is('repair_equip') || Request::is('contract_services') || Request::is('calibration') ? 'show' : '' }}"
                             id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link {{ Request::is('maintenance_equip') ? 'active' : '' }}"
@@ -104,8 +104,8 @@
                                     href="{{ route('repair_equip') }}">ซ่อม วัสดุ-ครุภัณฑ์</a>
                                 <a class="nav-link {{ Request::is('contract_services') ? 'active' : '' }}"
                                     href="{{ route('contract_services') }}">จ้างเหมาบริการ</a>
-                                {{-- <a class="nav-link" href="{{ route('equipment') }}">ครุภัณฑ์</a>
-                                <a class="nav-link" href="{{ route('page404') }}">วัสดุ</a> --}}
+                                <a class="nav-link {{ Request::is('calibration') ? 'active' : '' }}"
+                                    href="{{ route('calibration') }}">สอบเทียบเครื่องมือ</a>
                             </nav>
                         </div>
 
@@ -118,7 +118,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
                                 การจัดอนุมัติแผนงาน
                             </a>
-                             <a class="nav-link {{ Request::is('equipment') ? 'active' : '' }} collapsed"
+                            <a class="nav-link {{ Request::is('equipment') ? 'active' : '' }} collapsed"
                                 href="{{ route('equipment') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
                                 ครุภัณฑ์ทั้งหมด

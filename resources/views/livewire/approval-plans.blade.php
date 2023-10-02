@@ -140,10 +140,12 @@
                                 <td class="table-cell" style="display: none;">
                                     @if ($query->procurementType == '1')
                                         <button onclick="generatePdf({{ $query->id }})"
-                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
+                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i>
+                                            PDF</button>
                                     @else
                                         <button onclick="generatePdf2({{ $query->id }})"
-                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
+                                            class="btn btn-danger btn-sm"><i class="fa-duotone fa-file-pdf fa-lg"></i>
+                                            PDF</button>
                                     @endif
                                 </td>
                                 <td class="table-cell" style="display: none;">{{ $query->quant }} </td>
@@ -185,6 +187,31 @@
         .breadcrumb a {
             text-decoration: none;
             color: #000000;
+        }
+
+        .btn {
+            border-radius: 5px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
         }
     </style>
     <script>

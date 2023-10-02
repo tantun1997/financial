@@ -24,6 +24,7 @@ use App\Http\Middleware\isAdmin;
 Auth::routes();
 Route::get('/', [MainPageController::class, 'index'])->name('index');
 Route::middleware(['auth'])->group(function () {
+    Route::get('calibration', [MainPageController::class, 'calibration'])->name('calibration');
     Route::get('equipment', [MainPageController::class, 'equipment'])->name('equipment');
     Route::get('maintenance_equip', [MainPageController::class, 'maintenanceEquipment'])->name('maintenance_equip');
     Route::get('repair_equip', [MainPageController::class, 'repairEquipment'])->name('repair_equip');
