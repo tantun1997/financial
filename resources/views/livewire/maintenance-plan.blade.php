@@ -11,10 +11,10 @@
     </ol>
     <hr>
     <div class="mb-3">
+        
         @include('layouts.maintenance.addDetail')
         @include('layouts.maintenance.edit')
         @include('layouts.maintenance.create')
-
     </div>
     @if (session()->has('success'))
         <div class="alert alert-success" role="alert">
@@ -145,12 +145,16 @@
                                     <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                    <td class="table-cell">
-                                        <button type="button" wire:click.prevent="edit({{ $query->id }})"
-                                            class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal1">
-                                            แก้ไข
-                                        </button>
+                                    <td class="table-cell" style="text-align: right;">
+                                        @if ($query->approved == '1' && $query->levelNo == '1')
+                                        @else
+                                            <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                                class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal1">
+                                                แก้ไข
+                                            </button>
+                                        @endif
+
                                         <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
@@ -224,7 +228,7 @@
              display: none;
          } */
 
-         .btn {
+        .btn {
             border-radius: 5px;
             box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;

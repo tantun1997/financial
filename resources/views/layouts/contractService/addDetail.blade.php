@@ -4,7 +4,7 @@
         <div class="modal-content">
             @csrf
             <div class="modal-header" style="background-color: rgb(128, 227, 240)">
-                <h5 class="modal-title" id="exampleModal2Label">
+                <h5 class="modal-title" id="exampleModal2Label" style="color: black">
                     <i class="fa-solid fa-pen-clip fa-lg"></i> เพิ่มครุภัณฑ์
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"

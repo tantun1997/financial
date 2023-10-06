@@ -136,12 +136,16 @@
                                     <td class="table-cell">{{ $query->TCHN_LOCAT_NAME }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                    <td class="table-cell">
-                                        <button type="button" wire:click.prevent="edit({{ $query->id }})"
-                                            class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal1">
-                                            แก้ไข
-                                        </button>
+                                     <td class="table-cell" style="text-align: right;">
+                                        @if ($query->approved == '1' && $query->levelNo == '1')
+                                        @else
+                                            <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                                class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal1">
+                                                แก้ไข
+                                            </button>
+                                        @endif
+
                                         <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>

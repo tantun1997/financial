@@ -369,11 +369,12 @@ class ContractServices extends Component
     }
     public function render()
     {
-        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 2)->get();
+        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 2)->where('procurementCode', '!=', '26')->get();
         $procurements_detail = DB::table('procurements_detail')->get();
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
+            ->where('objectTypeId', '!=', '26')
             ->where('procurementType', '2')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {

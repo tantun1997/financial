@@ -1,11 +1,11 @@
 <div class="container-fluid px-4">
     @include('layouts.loading')
-    <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> บันทึกแผนฯจ้างเหมาบริการ</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> เพิ่มแผนฯสอบเทียบเครื่องมือ</h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item "><a
                 href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
         <li class="breadcrumb-item active">
-                บันทึกแผนฯจ้างเหมาบริการ</li>
+                เพิ่มแผนฯสอบเทียบเครื่องมือ</li>
     </ol>
     <hr>
     <div class="mb-3">
@@ -131,12 +131,16 @@
                                     <td class="table-cell">{{ $query->TCHN_LOCAT_NAME }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                    <td class="table-cell">
-                                        <button type="button" wire:click.prevent="edit({{ $query->id }})"
-                                            class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal1">
-                                            แก้ไข
-                                        </button>
+                                     <td class="table-cell" style="text-align: right;">
+                                        @if ($query->approved == '1' && $query->levelNo == '1')
+                                        @else
+                                            <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                                class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal1">
+                                                แก้ไข
+                                            </button>
+                                        @endif
+
                                         <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>

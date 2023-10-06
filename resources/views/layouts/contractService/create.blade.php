@@ -11,7 +11,7 @@
             <form wire:submit.prevent="store()">
                 @csrf
                 <div class="modal-header" style="background-color: rgb(189, 226, 172)">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-inbox fa-lg"></i>
+                    <h5 class="modal-title" id="exampleModalLabel" style="color: black"><i class="fa-solid fa-inbox fa-lg"></i>
                         เพิ่มแผนฯจ้างเหมาบริการ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="closeModal"></button>

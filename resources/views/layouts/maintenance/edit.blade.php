@@ -5,7 +5,8 @@
             <form wire:submit.prevent="update()">
                 @csrf
                 <div class="modal-header" style="background-color: rgb(236, 134, 120)">
-                    <h5 class="modal-title" id="exampleModal1Label"><i class="fa-solid fa-screwdriver-wrench fa-lg"></i>
+                    <h5 class="modal-title" id="exampleModal1Label" style="color: black"><i
+                            class="fa-solid fa-screwdriver-wrench fa-lg"></i>
                         แก้ไขแผนฯบำรุงรักษา</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="closeModal"></button>
@@ -61,6 +62,7 @@
                                 aria-labelledby="objectTypeId">
                                 <option value="" selected>เลือก</option>
                                 <option value="" disabled>-------------------------</option>
+
                                 @foreach ($procurement_object as $object)
                                     <option value="{{ $object->procurementCode }}">
                                         {{ $object->objectName }} </option>

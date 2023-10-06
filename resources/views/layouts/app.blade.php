@@ -49,23 +49,23 @@
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
                         class="fas fa-search"></i></button> --}}
         </div>
-        {{--
-        </form> --}}
+
+        {{-- </form> --}}
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li>
+                    {{-- <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li> --}}
+                    {{-- <li>
                         <hr class="dropdown-divider" />
-                    </li>
+                    </li> --}}
                     <li><a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                           document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                            {{ __('ออกจากระบบ') }}
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -87,7 +87,7 @@
                             Dashboard
                         </a> --}}
 
-                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        {{-- <div class="sb-sidenav-menu-heading">Interface</div> --}}
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -115,16 +115,21 @@
                                 Auth::user()->id == 1)
                             <a class="nav-link {{ Request::is('approval_plans') ? 'active' : '' }} collapsed"
                                 href="{{ route('approval_plans') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-gears"></i></div>
                                 การจัดอนุมัติแผนงาน
                             </a>
                             <a class="nav-link {{ Request::is('equipment') ? 'active' : '' }} collapsed"
                                 href="{{ route('equipment') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-sliders"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-folder-open"></i></div>
                                 ครุภัณฑ์ทั้งหมด
                             </a>
                         @endif
+                        <a class="nav-link {{ Request::is('home') ? 'active' : '' }} collapsed"
+                            href="{{ route('home') }}">
+                            <div class="sb-nav-link-icon"><i class="fa-duotone fa-circle-info"></i></div>
+                            วิธีใช้งานระบบเบื้องต้น
 
+                        </a>
 
                         {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -188,8 +193,7 @@
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">ผู้เข้าใช้งาน:</div>
-                    {{ Auth::user()->fullName }}
+                    <div class="small">ผู้เข้าใช้งาน: {{ Auth::user()->fullName }}</div>
                 </div>
             </nav>
         </div>

@@ -32,6 +32,8 @@ class PDFController extends Controller
 
         $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->get();
 
+        $pattern = '/ประจำปี\s+\d{4}/';
+        $replacement = ' ประจำปี ' . $query->budget;
 
         $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
         $title = 'บันทึกข้อความ';
@@ -41,7 +43,12 @@ class PDFController extends Controller
         $timeExport = Carbon::now()->format('H:i:s');
         $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        $planName = $query->description . ' ประจำปี ' . $query->budget;
+        // $planName = $query->description . ' ประจำปี ' . $query->budget;
+        if (preg_match($pattern, $query->description)) {
+            $planName = preg_replace($pattern, $replacement, $query->description);
+        } else {
+            $planName = $query->description . ' ประจำปี ' . $query->budget;
+        }
         $projectName = '';
         $years = $query->budget;
         $reason = $query->reason;
@@ -49,7 +56,7 @@ class PDFController extends Controller
         $price = $query->price;
         $totalPrice = $vwCountDetailText * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
-
+        // dd($planName);
 
         $data = [
             'id' => $id,
@@ -164,6 +171,8 @@ class PDFController extends Controller
     public function generateContactService($id)
     {
         $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
+        $pattern = '/ประจำปี\s+\d{4}/';
+        $replacement = ' ประจำปี ' . $query->budget;
 
         $title = 'บันทึกข้อความ';
         $department = $query->TCHN_LOCAT_NAME;
@@ -171,7 +180,11 @@ class PDFController extends Controller
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
         $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        $planName = $query->description . ' ประจำปี ' . $query->budget;
+        if (preg_match($pattern, $query->description)) {
+            $planName = preg_replace($pattern, $replacement, $query->description);
+        } else {
+            $planName = $query->description . ' ประจำปี ' . $query->budget;
+        }
         $projectName = $query->description;
         $years = $query->budget;
         $reason = $query->reason;

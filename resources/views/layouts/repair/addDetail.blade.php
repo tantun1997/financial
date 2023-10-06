@@ -4,7 +4,7 @@
         <div class="modal-content">
             @csrf
             <div class="modal-header" style="background-color: rgb(128, 227, 240)">
-                <h5 class="modal-title" id="exampleModal2Label">
+                <h5 class="modal-title" id="exampleModal2Label" style="color: black">
                     <i class="fa-solid fa-pen-clip fa-lg"></i> เพิ่มครุภัณฑ์
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -38,10 +38,9 @@
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
                             <th style="text-align: center;">ราคาของวัสดุ</th>
-                                                        <th style="text-align: center;">อายุการใช้งาน</th>
-
+                            <th style="text-align: center;">อายุการใช้งาน</th>
                             <th style="text-align: center;">สถานะ</th>
-                            <th></th>
+                            <th style="text-align: center;">ลบ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +60,7 @@
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
                                         <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
-                                                                                <td style="text-align: center;">{{ $query->age }} ปี</td>
+                                        <td style="text-align: center;">{{ $query->age }} ปี</td>
 
                                         <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
@@ -99,7 +98,7 @@
                     </div>
                 </form>
 
-            <div wire:loading.remove>
+                <div wire:loading.remove>
                     @if (session()->has('SearchData'))
                         <div class="alert alert-warning text-center">{{ session('SearchData') }}</div>
                     @elseif (session()->has('noData'))
@@ -108,7 +107,7 @@
                         <table class="nowarp table table-bordered table-hover table-sm" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">เลือก</th>
+                                    <th style="text-align: center;">เพิ่ม</th>
                                     <th style="text-align: center;">รหัส</th>
                                     <th style="text-align: center;">ชื่อรายการ</th>
                                     <th style="text-align: center;">ราคาของวัสดุ</th>

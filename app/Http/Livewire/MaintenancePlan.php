@@ -164,7 +164,7 @@ class MaintenancePlan extends Component
         $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
         $this->priorityNo = '001';
         $this->quant = '1';
-        $this->procurementType = '3';
+        $this->procurementType = '1';
         $this->enable = '1';
         $this->objectTypeId = '01';
         $this->created_at = now();
@@ -366,7 +366,7 @@ class MaintenancePlan extends Component
                     ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
             });
 
-        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150) {
+        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150|| Auth::user()->deptId == 330) {
             // ถ้าเป็น Admin หรือ deptId เป็น 168 หรือ 150 ให้ค้นหาทั้งหมด
         } else {
             $query->where('TCHN_LOCAT_ID', Auth::user()->deptId);
@@ -388,15 +388,16 @@ class MaintenancePlan extends Component
             session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
         }
 
-        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 3)->get();
+        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 1)->whereIn('procurementCode', ['01', '02'])
+            ->get();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            // ->where('objectTypeId', '01')
-            ->where('procurementType', '3')
+            ->where('objectTypeId', '01')
+            ->where('procurementType', '1')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
                 return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');

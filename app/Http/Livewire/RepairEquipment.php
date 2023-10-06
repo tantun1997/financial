@@ -360,12 +360,12 @@ class RepairEquipment extends Component
         $searchEQUIPMENT = '%' . $this->searchEQUIPMENT . '%';
 
         $query = DB::table('VW_EQUIPMENT')->select(['EQUP_LINK_NO', 'EQUP_ID', 'EQUP_NAME', 'EQUP_PRICE', 'TCHN_LOCAT_NAME', 'EQUP_STS_DESC', 'age'])
-        ->where(function ($query) use ($searchEQUIPMENT) {
-            $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
-                ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
-        });
+            ->where(function ($query) use ($searchEQUIPMENT) {
+                $query->where('EQUP_ID', 'like', $searchEQUIPMENT)
+                    ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
+            });
 
-        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150) {
+        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150|| Auth::user()->deptId == 330) {
             // ถ้าเป็น Admin หรือ deptId เป็น 168 หรือ 150 ให้ค้นหาทั้งหมด
         } else {
             $query->where('TCHN_LOCAT_ID', Auth::user()->deptId);
@@ -387,13 +387,14 @@ class RepairEquipment extends Component
             session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
         }
 
-        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 1)->get();
+        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 1)->where('procurementCode', '!=', '01')->get();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
+            ->where('objectTypeId', '!=', '01')
             ->where('procurementType', '1')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
