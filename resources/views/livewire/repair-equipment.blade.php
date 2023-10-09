@@ -96,7 +96,11 @@
                                     </td>
                                     @if ($query->levelNo != 2)
                                         <td class="table-cell">
-                                            @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
+                                            @php
+                                                $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                            @endphp
+
+                                            @if ($filteredItems->count() > 0)
                                                 <button type="button"
                                                     wire:click.prevent="add_detail({{ $query->id }})"
                                                     class="btn btn-outline-success btn-sm position-relative"

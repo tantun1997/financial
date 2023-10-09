@@ -53,29 +53,36 @@ class RepairEquipment extends Component
         $this->searchEquipment();
     }
 
-
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
-        if ($query->approved == '0' || $query->approved === null) {
+        if ($query->levelNo == 1 && $vwCountDetail->count() > 0) {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'message' => 'อนุมัติแล้ว!!',
-                'urls' => 'repair_equip'
+                'urls' => 'maintenance_equip'
+            ]);
+        } elseif ($query->approved == '0' || $query->approved === null) {
+            $newApproved = '1';
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'success',
+                'message' => 'อนุมัติแล้ว!!',
+                'urls' => 'maintenance_equip'
             ]);
         } else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
                 'message' => 'ไม่อนุมัติ!!',
-                'urls' => 'repair_equip'
+                'urls' => 'maintenance_equip'
             ]);
         }
 
         DB::table('procurements')
-            ->where('id', $id)
+        ->where('id', $id)
             ->update([
                 'approved' => $newApproved,
                 'approved_at' => now(),
