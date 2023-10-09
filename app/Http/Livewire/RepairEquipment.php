@@ -19,6 +19,22 @@ class RepairEquipment extends Component
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+    public function close_plan()
+    {
+        $query = DB::table('close_plan')->where('id', 1)->first();
+
+        if ($query->status == 'on') {
+            $close_plan = 'off';
+        } else {
+            $close_plan = 'on';
+        }
+
+        DB::table('close_plan')
+        ->where('id', 1)
+        ->update([
+            'status' => $close_plan
+        ]);
+    }
     public function CheckedEquip($id)
     {
         $query = DB::table('procurements_detail')->where('id', $id)->first();
@@ -419,6 +435,7 @@ class RepairEquipment extends Component
         $objectName = $VW_NEW_MAINPLAN->pluck('objectName')->unique()->map(function ($item) {
             return trim($item);
         })->all();
+        $close_plan = DB::table('close_plan')->where('id', 1)->get();
 
 
         return view('livewire.repair-equipment', [
@@ -432,9 +449,8 @@ class RepairEquipment extends Component
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
             'VW_EQUIPMENT' =>  $this->VW_EQUIPMENT,
             'procurement_object' => $procurement_object_create,
-
-            'vwCountDetail' => $vwCountDetail
-
+            'vwCountDetail' => $vwCountDetail,
+            'close_plan' => $close_plan,
         ]);
     }
 }

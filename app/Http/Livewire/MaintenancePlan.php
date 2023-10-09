@@ -19,6 +19,22 @@ class MaintenancePlan extends Component
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+    public function close_plan()
+    {
+        $query = DB::table('close_plan')->where('id', 1)->first();
+
+        if ($query->status == 'on') {
+            $close_plan = 'off';
+        } else {
+            $close_plan = 'on';
+        }
+
+        DB::table('close_plan')
+            ->where('id', 1)
+            ->update([
+                'status' => $close_plan
+            ]);
+    }
 
     public function CheckedEquip($id)
     {
@@ -41,8 +57,16 @@ class MaintenancePlan extends Component
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
+        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
-        if ($query->approved == '0' || $query->approved === null) {
+        if ($query->levelNo == 1 && $vwCountDetail->count() > 0) {
+            $newApproved = '1';
+            $this->dispatchBrowserEvent('swal:modal', [
+                'type' => 'success',
+                'message' => 'อนุมัติแล้ว!!',
+                'urls' => 'maintenance_equip'
+            ]);
+        } elseif ($query->approved == '0' || $query->approved === null) {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
@@ -422,6 +446,7 @@ class MaintenancePlan extends Component
             return trim($item);
         })->all();
 
+        $close_plan = DB::table('close_plan')->where('id', 1)->get();
 
         return view('livewire.maintenance-plan', [
             'procurements_detail' => $procurements_detail,
@@ -435,8 +460,8 @@ class MaintenancePlan extends Component
             'VW_EQUIPMENT' => $this->VW_EQUIPMENT,
             'procurement_object' => $procurement_object_create,
             'procurement_object_edit' => $procurement_object_edit,
-            'vwCountDetail' => $vwCountDetail
-
+            'vwCountDetail' => $vwCountDetail,
+            'close_plan' => $close_plan,
         ]);
     }
 }

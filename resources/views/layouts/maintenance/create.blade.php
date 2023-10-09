@@ -1,14 +1,19 @@
-@if (Auth::user()->id == '114000041')
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">ปิดการเพิ่มแผนฯ</label>
-    </div>
-@endif
+   @foreach ($close_plan as $item)
+   @if (Auth::user()->id == '114000041')
+       <div class="form-check form-switch">
+           <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" wire:click='close_plan'
+               @if ($item->status == 'off') checked @endif>
+           <label class="form-check-label" for="flexSwitchCheckDefault">ปิดการเพิ่มแผนฯ</label>
+       </div>
+   @endif
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id='btnAdd'>
-    เพิ่มแผนฯบำรุงรักษา
-</button>
+   @if ($item->status == 'on')
+       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+           เพิ่มแผนฯบำรุงรักษา
+       </button>
+   @endif
 
+   @endforeach
 <!-- Modal -->
 <div wire:ignore.self class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">

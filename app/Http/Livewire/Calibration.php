@@ -16,7 +16,22 @@ class Calibration extends Component
     protected $listeners = ['deleteConfirmed'];
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+    public function close_plan()
+    {
+        $query = DB::table('close_plan')->where('id', 1)->first();
 
+        if ($query->status == 'on') {
+            $close_plan = 'off';
+        } else {
+            $close_plan = 'on';
+        }
+
+        DB::table('close_plan')
+        ->where('id', 1)
+        ->update([
+            'status' => $close_plan
+        ]);
+    }
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
@@ -403,6 +418,7 @@ class Calibration extends Component
             return trim($item);
         })->all();
 
+        $close_plan = DB::table('close_plan')->where('id', 1)->get();
 
         return view('livewire.calibration', [
             'procurements_detail' => $procurements_detail,
@@ -414,9 +430,8 @@ class Calibration extends Component
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
             'procurement_object' => $procurement_object,
-
-            'vwCountDetail' => $vwCountDetail
-
+            'vwCountDetail' => $vwCountDetail,
+            'close_plan' => $close_plan,
         ]);
     }
 }

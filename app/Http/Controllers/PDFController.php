@@ -46,8 +46,11 @@ class PDFController extends Controller
         // $planName = $query->description . ' ประจำปี ' . $query->budget;
         if (preg_match($pattern, $query->description)) {
             $planName = preg_replace($pattern, $replacement, $query->description);
+            $planName = preg_replace('/^\d+\./', '', $planName);
+
         } else {
-            $planName = $query->description . ' ประจำปี ' . $query->budget;
+            $planName = preg_replace('/^\d+\./', '', $query->description);
+            $planName = $planName . ' ประจำปี ' . $query->budget;
         }
         $projectName = '';
         $years = $query->budget;
@@ -182,10 +185,18 @@ class PDFController extends Controller
         $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
         if (preg_match($pattern, $query->description)) {
             $planName = preg_replace($pattern, $replacement, $query->description);
+            $planName = preg_replace('/^\d+\./', '', $planName);
         } else {
-            $planName = $query->description . ' ประจำปี ' . $query->budget;
+            $planName = preg_replace('/^\d+\./', '', $query->description);
+            $planName = $planName . ' ประจำปี ' . $query->budget;
         }
-        $projectName = $query->description;
+        // $projectName = $query->description;
+        if (preg_match($pattern, $query->description)) {
+            $projectName = preg_replace($pattern, '',$query->description);
+            $projectName = preg_replace('/^\d+\./', '', $projectName);
+        } else {
+            $projectName = preg_replace('/^\d+\./', '', $query->description);
+        }
         $years = $query->budget;
         $reason = $query->reason;
         $quant = $query->quant;
