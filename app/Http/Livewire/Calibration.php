@@ -376,10 +376,9 @@ class Calibration extends Component
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
             ->where('objectTypeId', '26')
-            ->where('procurementType', '2')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
-                return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+            return $query->orderBy('approved', 'asc')->orderByDesc('updated_at');
             }, function ($query) {
                 return $query->orderByDesc('updated_at');
             })

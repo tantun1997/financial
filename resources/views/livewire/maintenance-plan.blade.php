@@ -11,7 +11,7 @@
     </ol>
     <hr>
     <div class="mb-3">
-        
+
         @include('layouts.maintenance.addDetail')
         @include('layouts.maintenance.edit')
         @include('layouts.maintenance.create')
@@ -87,6 +87,7 @@
                                             @endif
                                         @endif
                                     </td>
+
                                     <td class="table-cell text-center">
                                         @if ($query->levelNo == 1)
                                             <span class="badge bg-success">จริง</span>

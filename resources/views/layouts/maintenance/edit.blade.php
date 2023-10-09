@@ -63,7 +63,7 @@
                                 <option value="" selected>เลือก</option>
                                 <option value="" disabled>-------------------------</option>
 
-                                @foreach ($procurement_object as $object)
+                                @foreach ($procurement_object_edit as $object)
                                     <option value="{{ $object->procurementCode }}">
                                         {{ $object->objectName }} </option>
                                 @endforeach

@@ -365,7 +365,7 @@ class RepairEquipment extends Component
                     ->orWhere('EQUP_NAME', 'like', $searchEQUIPMENT);
             });
 
-        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150|| Auth::user()->deptId == 330) {
+        if (Auth::user()->isAdmin == 'Y' || Auth::user()->deptId == 168 || Auth::user()->deptId == 150 || Auth::user()->deptId == 330) {
             // ถ้าเป็น Admin หรือ deptId เป็น 168 หรือ 150 ให้ค้นหาทั้งหมด
         } else {
             $query->where('TCHN_LOCAT_ID', Auth::user()->deptId);
@@ -387,18 +387,17 @@ class RepairEquipment extends Component
             session()->flash('noData', 'ไม่พบข้อมูลที่ค้นหา');
         }
 
-        $procurement_object = DB::table('procurement_object')->where('procurementTypeId', 1)->where('procurementCode', '!=', '01')->get();
+        $procurement_object_create = DB::table('procurement_object')->where('procurementTypeId', 1)->where('procurementCode', '!=', '01')->get();
 
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $procurements_detail = DB::table('vwShowEquipDetail')->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            ->where('objectTypeId', '!=', '01')
-            ->where('procurementType', '1')
+            ->whereIn('objectTypeId', ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'])
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
-                return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+                return $query->orderBy('levelNo', 'asc')->orderByDesc('updated_at');
             }, function ($query) {
                 return $query->orderByDesc('updated_at');
             })->get();
@@ -432,7 +431,7 @@ class RepairEquipment extends Component
             //ค้นหาหน่วยงานที่เบิก
             'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN, //ดึงตาราง VW_Maintenance
             'VW_EQUIPMENT' =>  $this->VW_EQUIPMENT,
-            'procurement_object' => $procurement_object,
+            'procurement_object' => $procurement_object_create,
 
             'vwCountDetail' => $vwCountDetail
 

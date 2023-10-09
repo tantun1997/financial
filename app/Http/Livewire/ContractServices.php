@@ -374,11 +374,10 @@ class ContractServices extends Component
         $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
         $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            ->where('objectTypeId', '!=', '26')
-            ->where('procurementType', '2')
+            ->whereIn('objectTypeId', ['15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'])
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
-                return $query->orderBy('levelNo', 'asc')->orderBy('approved', 'asc');
+                return $query->orderBy('approved', 'asc')->orderByDesc('updated_at');
             }, function ($query) {
                 return $query->orderByDesc('updated_at');
             })

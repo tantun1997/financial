@@ -1,4 +1,9 @@
-<!-- Button trigger modal -->
+@if (Auth::user()->id == '114000041')
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">ปิดการเพิ่มแผนฯ</label>
+    </div>
+@endif
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     เพิ่มแผนฯซ่อม
 </button>
@@ -11,7 +16,8 @@
             <form wire:submit.prevent="store()">
                 @csrf
                 <div class="modal-header" style="background-color: rgb(189, 226, 172)">
-                    <h5 class="modal-title" id="exampleModalLabel" style="color: black"><i class="fa-solid fa-inbox fa-lg"></i>
+                    <h5 class="modal-title" id="exampleModalLabel" style="color: black"><i
+                            class="fa-solid fa-inbox fa-lg"></i>
                         เพิ่มแผนฯซ่อม</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="closeModal"></button>
@@ -45,7 +51,7 @@
                                 <span class="text-danger error">โปรดใส่ลำดับความสำคัญ ใส่ได้เฉพาะตัวเลข</span>
                             @enderror
                         </div>
-                       <div class="col-md-3">
+                        <div class="col-md-3">
                             <span id="levelNo">แผนฯ</span>
                             <select class="form-select @error('levelNo') is-invalid @enderror"
                                 wire:model.defer="levelNo" id="levelNo" style="width: 100%;"

@@ -1,5 +1,11 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+@if (Auth::user()->id == '114000041')
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">ปิดการเพิ่มแผนฯ</label>
+    </div>
+@endif
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id='btnAdd'>
     เพิ่มแผนฯบำรุงรักษา
 </button>
 
@@ -172,3 +178,4 @@
         </div>
     </div>
 </div>
+
