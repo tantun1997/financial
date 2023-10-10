@@ -30,10 +30,10 @@ class RepairEquipment extends Component
         }
 
         DB::table('close_plan')
-        ->where('id', 1)
-        ->update([
-            'status' => $close_plan
-        ]);
+            ->where('id', 1)
+            ->update([
+                'status' => $close_plan
+            ]);
     }
     public function CheckedEquip($id)
     {
@@ -56,38 +56,38 @@ class RepairEquipment extends Component
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
-        $vwCountDetail = DB::table('vwCountDetail')->where('used', 1)->get();
 
-        if ($query->levelNo == 1 && $vwCountDetail->count() > 0) {
+        if ($query->approved == '0') {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'message' => 'อนุมัติแล้ว!!',
-                'urls' => 'maintenance_equip'
+                'urls' => 'repair_equip'
             ]);
-        } elseif ($query->approved == '0' || $query->approved === null) {
-            $newApproved = '1';
-            $this->dispatchBrowserEvent('swal:modal', [
-                'type' => 'success',
-                'message' => 'อนุมัติแล้ว!!',
-                'urls' => 'maintenance_equip'
-            ]);
-        } else {
+            DB::table('procurements')
+            ->where('id', $id)
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
+        }
+        if ($query->approved == '1') {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
                 'message' => 'ไม่อนุมัติ!!',
-                'urls' => 'maintenance_equip'
+                'urls' => 'repair_equip'
             ]);
-        }
 
-        DB::table('procurements')
-        ->where('id', $id)
-            ->update([
-                'approved' => $newApproved,
-                'approved_at' => now(),
-                'approved_userId' => Auth::user()->id
-            ]);
+            DB::table('procurements')
+            ->where('id', $id)
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
+        }
     }
 
     public function updateFieldsFromDescription()
@@ -183,6 +183,30 @@ class RepairEquipment extends Component
 
     public function mount()
     {
+        if (Auth::user()->id == '114000041') {
+            $procurements = DB::table('procurements')->get();
+            foreach ($procurements as $procurement) {
+                $id = $procurement->id;
+                $vwCountDetail = DB::table('vwCountDetail')
+                ->select('count_detail')
+                ->where('PROC_ID', $id)
+                ->where('used', 1)
+                ->value('count_detail');
+
+                if ($procurement->levelNo == 1 && $vwCountDetail > 0 && $procurement->approved === null) {
+                    $newApproved = '1';
+
+                    DB::table('procurements')
+                    ->where('id', $id)
+                    ->update([
+                        'approved' => $newApproved,
+                        'approved_at' => now(),
+                        'approved_userId' => Auth::user()->id
+                    ]);
+                }
+            }
+        };
+
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
         $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');

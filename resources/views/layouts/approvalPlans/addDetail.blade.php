@@ -38,7 +38,7 @@
                             <th style="text-align: center;">ชื่อรายการ</th>
                             <th style="text-align: center;">ราคาของวัสดุ</th>
                             <th style="text-align: center;">สถานะ</th>
-                            <th></th>
+                            {{-- <th></th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -56,10 +56,10 @@
                                                 @break
                                             @endswitch
                                         </td>
-                                        <td style="text-align: center;">
+                                        {{-- <td style="text-align: center;">
                                             <button type="button" wire:click="deleteRow({{ $query->id }})"
                                                 class="btn btn-outline-danger btn-sm">-</button>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endif
                             @endforeach

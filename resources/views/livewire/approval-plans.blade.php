@@ -98,11 +98,11 @@
                                                 @endforeach ครุภัณฑ์
                                             </button>
                                         @else
-                                            <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
+                                            {{-- <button type="button" wire:click.prevent="add_detail({{ $query->id }})"
                                                 class="btn btn-outline-success btn-sm position-relative"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                 + ครุภัณฑ์
-                                            </button>
+                                            </button> --}}
                                         @endif
                                     </td>
                                 @else
