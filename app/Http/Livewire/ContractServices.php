@@ -36,29 +36,37 @@ class ContractServices extends Component
     {
         $query = DB::table('procurements')->where('id', $id)->first();
 
-        if ($query->approved == '0' || $query->approved === null) {
+        if ($query->approved == '0') {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'message' => 'อนุมัติแล้ว!!',
                 'urls' => 'contract_services'
             ]);
-        } else {
+            DB::table('procurements')
+            ->where('id', $id)
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
+        }
+        else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
                 'message' => 'ไม่อนุมัติ!!',
                 'urls' => 'contract_services'
             ]);
-        }
 
-        DB::table('procurements')
+            DB::table('procurements')
             ->where('id', $id)
-            ->update([
-                'approved' => $newApproved,
-                'approved_at' => now(),
-                'approved_userId' => Auth::user()->id
-            ]);
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
+        }
     }
 
     public function updateFieldsFromDescription()
@@ -154,6 +162,36 @@ class ContractServices extends Component
 
     public function mount()
     {
+        if (Auth::user()->id == '114000041') {
+            $procurements = DB::table('procurements')->whereIn('objectTypeId', ['15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'])->where('enable', '1')->get();
+            foreach ($procurements as $procurement) {
+                $id = $procurement->id;
+
+                if ($procurement->levelNo == 1 && $procurement->approved == null) {
+                    $newApproved = '1';
+
+                    DB::table('procurements')
+                        ->where('id', $id)
+                        ->update([
+                            'approved' => $newApproved,
+                            'approved_at' => now(),
+                            'approved_userId' => Auth::user()->id
+                        ]);
+                }
+                if ($procurement->levelNo == 2 && $procurement->approved == 1) {
+                    $newApproved = '0';
+
+                    DB::table('procurements')
+                        ->where('id', $id)
+                        ->update([
+                            'approved' => $newApproved,
+                            'approved_at' => now(),
+                            'approved_userId' => Auth::user()->id
+                        ]);
+                }
+            }
+        };
+
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
         $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');

@@ -49,7 +49,7 @@ class ApprovalPlans extends Component
     {
         $query = DB::table('procurements')->where('id', $id)->first();
 
-        if ($query->approved == '0' || $query->approved === null) {
+        if ($query->approved == '0' || $query->approved == null) {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',

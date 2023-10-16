@@ -23,34 +23,37 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            @include('layouts.contractService.search')
-            {{-- <div id="newButtonContainer" style="float: right;" wire:ignore>
-                <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
-            </div> --}}
+            @if (Auth::user()->isAdmin == 'Y')
+                @include('layouts.repair.search')
+            @else
+                <div id="newButtonContainer" style="float: right;" wire:ignore>
+                    <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <div>
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-center" style="width: 8%;">อนุมัติแผนฯ</th> <!-- 0 -->
-                            <th class="text-center" style="width: 5%;">แผนฯ</th><!-- 1 -->
+                            <th class="text-center">อนุมัติแผนฯ</th> <!-- 0 -->
+                            <th class="text-center">แผนฯ</th><!-- 1 -->
                             <th class="text-center" style="display: none;">ครุภัณฑ์</th><!-- 2 -->
                             <th class="text-center" style="display: none;">รหัส</th><!-- 3 -->
                             <th class="text-center" style="display: none;">ปี</th><!-- 4 -->
                             <th class="text-center" style="display: none;">ความสำคัญ</th><!-- 5 -->
                             <th class="text-center" style="display: none;">ประเภท</th><!-- 6 -->
-                            <th class="text-left" style="width: 30%;">ชื่อรายการ</th><!-- 7 -->
-                            <th class="text-center" style="width: 8%;">ราคาต่อหน่วย</th><!-- 8 -->
-                            <th class="text-center" style="width: 5%;">จำนวน</th><!-- 9 -->
+                            <th class="text-left" style="width: 50%;">ชื่อรายการ</th><!-- 7 -->
+                            <th class="text-center">ราคาต่อหน่วย(บาท)</th><!-- 8 -->
+                            <th class="text-center">จำนวน(หน่วย)</th><!-- 9 -->
                             <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 10 -->
-                            <th class="text-center" style="width: 8%;">รวมทั้งหมด</th><!-- 11 -->
+                            <th class="text-center">วงเงินรวม(บาท)</th><!-- 11 -->
                             <th class="text-left" style="display: none;">เหตุผลและความจำเป็น</th><!-- 12 -->
-                            <th class="text-left" style="width: 20%;">หน่วยงานที่เบิก</th><!-- 13 -->
+                            <th class="text-left">หน่วยงานที่เบิก</th><!-- 13 -->
                             <th class="text-left" style="display: none;">หมายเหตุ</th><!-- 14 -->
                             <th class="text-center" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
                             <!-- 15 -->
-                            <th class="text-center" style="width: 5%;">action</th><!-- 16 -->
+                            <th class="text-center">action</th><!-- 16 -->
                             <th class="text-center" style="display: none;">Print out</th><!-- 17 -->
                             <th class="text-center" style="display: none;">จำนวน</th><!-- 18 -->
 
@@ -66,7 +69,7 @@
                                                 <input class="form-check-input" type="checkbox"
                                                     id="approvalSwitch({{ $query->id }})"
                                                     aria-labelledby="approvalSwitch({{ $query->id }})"
-                                                    wire:click.prevent="Approval({{ $query->id }})"
+                                                    wire:click="Approval({{ $query->id }})"
                                                     @if ($query->approved == '1') checked @endif>
                                                 <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
                                                     @if ($query->approved == '1')
@@ -94,8 +97,7 @@
                                     @if ($query->levelNo != 2)
                                         <td class="table-cell" style="display: none;">
                                             @if ($vwCountDetail->where('PROC_ID', $query->id)->count() > 0)
-                                                <button type="button"
-                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                <button type="button" wire:click="add_detail({{ $query->id }})"
                                                     class="btn btn-outline-success btn-sm position-relative"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                     @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
@@ -105,8 +107,7 @@
                                                     @endforeach ครุภัณฑ์
                                                 </button>
                                             @else
-                                                <button type="button"
-                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                <button type="button" wire:click="add_detail({{ $query->id }})"
                                                     class="btn btn-outline-success btn-sm position-relative"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                                     + ครุภัณฑ์
@@ -136,17 +137,17 @@
                                     <td class="table-cell">{{ $query->TCHN_LOCAT_NAME }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                     <td class="table-cell" style="text-align: right;">
+                                    <td class="table-cell" style="text-align: right;">
                                         @if ($query->approved == '1' && $query->levelNo == '1')
                                         @else
-                                            <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                            <button type="button" wire:click="edit({{ $query->id }})"
                                                 class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal1">
                                                 แก้ไข
                                             </button>
                                         @endif
 
-                                        <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
+                                        <button type="button" wire:click="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
                                     <td class="table-cell" style="display: none;">
@@ -207,7 +208,7 @@
              display: none;
          } */
 
-         .btn {
+        .btn {
             border-radius: 5px;
             box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
@@ -288,7 +289,7 @@
                                 ' บาท</td></tr>' +
                                 '<tr><td>จำนวน</td><td class="text-primary">' + rowData[9] +
                                 '</td></tr>' +
-                                '<tr><td>รวมทั้งหมด</td><td class="text-primary">' + rowData[11] +
+                                '<tr><td>วงเงินรวม</td><td class="text-primary">' + rowData[11] +
                                 ' บาท</td></tr>' +
                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
                                 rowData[12] + '</td></tr>' +

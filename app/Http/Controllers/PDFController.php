@@ -36,6 +36,7 @@ class PDFController extends Controller
         $replacement = ' ประจำปี ' . $query->budget;
 
         $vwReportEquipDetail = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
+        $vwcurrPrice = DB::table('vwReportEquipDetail')->where('PROC_ID', $id)->where('used', 1)->first();
         $title = 'บันทึกข้อความ';
         $department = $query->TCHN_LOCAT_NAME;
         $tel = '';
@@ -47,7 +48,6 @@ class PDFController extends Controller
         if (preg_match($pattern, $query->description)) {
             $planName = preg_replace($pattern, $replacement, $query->description);
             $planName = preg_replace('/^\d+\./', '', $planName);
-
         } else {
             $planName = preg_replace('/^\d+\./', '', $query->description);
             $planName = $planName . ' ประจำปี ' . $query->budget;
@@ -56,10 +56,9 @@ class PDFController extends Controller
         $years = $query->budget;
         $reason = $query->reason;
         $quant = $query->quant;
-        $price = $query->price;
+        $price = $vwcurrPrice->currentPrice;
         $totalPrice = $vwCountDetailText * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
-        // dd($planName);
 
         $data = [
             'id' => $id,
@@ -80,7 +79,6 @@ class PDFController extends Controller
             'vwReportEquipDetail' => $vwReportEquipDetail,
             'vwCountDetail' => $vwCountDetail,
             'vwCountDetailText' => $vwCountDetailText,
-
         ];
 
         $this->pdfService->addContent('pdf.procurementTemplate', $data);
@@ -192,7 +190,7 @@ class PDFController extends Controller
         }
         // $projectName = $query->description;
         if (preg_match($pattern, $query->description)) {
-            $projectName = preg_replace($pattern, '',$query->description);
+            $projectName = preg_replace($pattern, '', $query->description);
             $projectName = preg_replace('/^\d+\./', '', $projectName);
         } else {
             $projectName = preg_replace('/^\d+\./', '', $query->description);
@@ -223,6 +221,61 @@ class PDFController extends Controller
         ];
 
         $this->pdfService->addContent('pdf.contactServiceTemplate', $data);
+        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
+    }
+
+    public function generateReplaceEquip($id)
+    {
+        $query = DB::table('replace_increase_equip')->where('id', $id)->first();
+        $pattern = '/ประจำปี\s+\d{4}/';
+        $replacement = ' ประจำปี ' . $query->year;
+
+        $title = 'บันทึกข้อความ';
+        $department = $query->deptId;
+        $tel = '';
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
+        if (preg_match($pattern, $query->description)) {
+            $planName = preg_replace($pattern, $replacement, $query->description);
+            $planName = preg_replace('/^\d+\./', '', $planName);
+        } else {
+            $planName = preg_replace('/^\d+\./', '', $query->description);
+            $planName = $planName . ' ประจำปี ' . $query->year;
+        }
+        // $projectName = $query->description;
+        if (preg_match($pattern, $query->description)) {
+            $projectName = preg_replace($pattern, '', $query->description);
+            $projectName = preg_replace('/^\d+\./', '', $projectName);
+        } else {
+            $projectName = preg_replace('/^\d+\./', '', $query->description);
+        }
+        $years = $query->year;
+        $reason = $query->reason;
+        $quant = $query->qty;
+        $price = $query->price;
+        $totalPrice = $quant * $price;
+        $totalPriceText = $this->numberToThaiText($totalPrice);
+
+
+        $data = [
+            'id' => $id,
+            'title' => $title,
+            'department' => $department,
+            'tel' => $tel,
+            'dateExport' => $dateExport,
+            'subject' => $subject,
+            'planName' => $planName,
+            'projectName' => $projectName,
+            'reason' => $reason,
+            'quant' => $quant,
+            'price' => $price,
+            'totalPrice' => $totalPrice,
+            'totalPriceText' => $totalPriceText,
+            'years' => $years,
+        ];
+
+        $this->pdfService->addContent('pdf.ReplaceEquipTemplate', $data);
         return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
     }
 }

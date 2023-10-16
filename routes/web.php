@@ -24,6 +24,7 @@ use App\Http\Middleware\isAdmin;
 Auth::routes();
 Route::get('/', [MainPageController::class, 'index'])->name('index');
 Route::middleware(['auth'])->group(function () {
+    Route::get('replaceIncrease_equip', [MainPageController::class, 'replaceIncreaseEquip'])->name('replaceIncrease_equip');
     Route::get('calibration', [MainPageController::class, 'calibration'])->name('calibration');
     Route::get('equipment', [MainPageController::class, 'equipment'])->name('equipment');
     Route::get('maintenance_equip', [MainPageController::class, 'maintenanceEquipment'])->name('maintenance_equip');
@@ -35,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     // Generate-PDF Zone
     Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
     Route::get('/contactPdf/{id}', [PDFController::class, 'generateContactService']);
+    Route::get('/replaceEquipPdf/{id}', [PDFController::class, 'generateReplaceEquip']);
 
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {

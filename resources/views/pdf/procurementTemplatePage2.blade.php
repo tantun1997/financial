@@ -54,7 +54,7 @@
         <tr>
             <td>
 
-            งานจัดซื้อพัสดุ จำนวน {{ $vwCountDetailText }} รายการ ตามแผน {{ $planName }}</td>
+                งานจัดซื้อพัสดุ จำนวน {{ $vwCountDetailText }} รายการ ตามแผน {{ $planName }}</td>
         </tr>
         <tr>
             <td>โดยวิธีเฉพาะเจาะจง ซึ่งมีรายละเอียด ดังต่อไปนี้</td>
@@ -68,7 +68,8 @@
             <th>รายการ</th>
             <th width="110px">อายุการใช้งาน</th>
             <th width="110px">ราคาซื้อ</th>
-            <th width="110px">ราคาซ่อม</th>
+            <th width="110px">ราคาประเมิน</th>
+            <th width="110px">ราคาจริง</th>
         </tr>
 
         @php $number = 1 @endphp
@@ -81,12 +82,13 @@
                 <td style="text-align: center;">{{ $query->age }} ปี</td>
                 <td style="text-align: right;">{{ number_format($query->EQUP_PRICE, 2) }}</td>
                 <td style="text-align: right;">{{ number_format($query->price, 2) }}</td>
+                <td style="text-align: right;">{{ number_format($query->currentPrice, 2) }}</td>
             </tr>
             @php $number++ @endphp <!-- Increment the counter -->
         @endforeach
 
         <tr>
-            <td colspan="5" style="text-align: left; padding-left: 3px; padding-right: 3px;">รวมเป็นเงินทั้งสิ้น (
+            <td colspan="6" style="text-align: left; padding-left: 3px; padding-right: 3px;">รวมเป็นเงินทั้งสิ้น (
                 {{ $totalPriceText }} )</td>
             <td style="text-align: right; padding-left: 3px; padding-right: 3px;">{{ number_format($totalPrice, 2) }}
             </td>

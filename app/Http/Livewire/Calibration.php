@@ -27,22 +27,29 @@ class Calibration extends Component
         }
 
         DB::table('close_plan')
-        ->where('id', 1)
-        ->update([
-            'status' => $close_plan
-        ]);
+            ->where('id', 1)
+            ->update([
+                'status' => $close_plan
+            ]);
     }
     public function Approval($id)
     {
         $query = DB::table('procurements')->where('id', $id)->first();
 
-        if ($query->approved == '0' || $query->approved === null) {
+        if ($query->approved == '0') {
             $newApproved = '1';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'success',
                 'message' => 'อนุมัติแล้ว!!',
                 'urls' => 'calibration'
             ]);
+            DB::table('procurements')
+                ->where('id', $id)
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
         } else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
@@ -50,17 +57,16 @@ class Calibration extends Component
                 'message' => 'ไม่อนุมัติ!!',
                 'urls' => 'calibration'
             ]);
+
+            DB::table('procurements')
+                ->where('id', $id)
+                ->update([
+                    'approved' => $newApproved,
+                    'approved_at' => now(),
+                    'approved_userId' => Auth::user()->id
+                ]);
         }
-
-        DB::table('procurements')
-            ->where('id', $id)
-            ->update([
-                'approved' => $newApproved,
-                'approved_at' => now(),
-                'approved_userId' => Auth::user()->id
-            ]);
     }
-
     public function updateFieldsFromDescription()
     {
         $selectedPlan = DB::table('VW_NEW_MAINPLAN')->where('Description', trim($this->description))->first();
@@ -154,6 +160,38 @@ class Calibration extends Component
 
     public function mount()
     {
+        if (Auth::user()->id == '114000041') {
+            $procurements = DB::table('procurements')->where('objectTypeId', '26')->where('enable', '1')->get();
+            foreach ($procurements as $procurement) {
+                $id = $procurement->id;
+
+                if ($procurement->levelNo == 1 && $procurement->approved == null) {
+                    $newApproved = '1';
+
+                    DB::table('procurements')
+                    ->where('id', $id)
+                    ->update([
+                        'approved' => $newApproved,
+                        'approved_at' => now(),
+                        'approved_userId' => Auth::user()->id
+                    ]);
+                }
+                if ($procurement->levelNo == 2 && $procurement->approved == 1) {
+                    $newApproved = '0';
+
+                    DB::table('procurements')
+                        ->where('id', $id)
+                        ->update([
+                            'approved' => $newApproved,
+                            'approved_at' => now(),
+                            'approved_userId' => Auth::user()->id
+                        ]);
+                }
+
+
+            }
+        };
+
         $this->userId = Auth::user()->id;
         $this->deptId = Auth::user()->deptId;
         $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
@@ -393,7 +431,7 @@ class Calibration extends Component
             ->where('objectTypeId', '26')
             ->where('enable', '1')
             ->when(Auth::user()->id == '114000041', function ($query) {
-            return $query->orderBy('approved', 'asc')->orderByDesc('updated_at');
+                return $query->orderBy('approved', 'asc')->orderByDesc('updated_at');
             }, function ($query) {
                 return $query->orderByDesc('updated_at');
             })

@@ -18,7 +18,28 @@ class RepairEquipment extends Component
         $objectTypeId, $reason, $deptId, $budget, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
     protected $listeners = ['deleteConfirmed'];
 
+
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
+
+    public $currentPrice;
+    public $CurrPrice = false;
+
+    public function acceptCurrPrice($id)
+    {
+        $this->CurrPrice = true;
+        DB::table('procurements_detail')
+            ->where('id', $id)
+            ->update([
+                'currentPrice' => $this->currentPrice
+            ]);
+        $this->CurrPrice = false;
+    }
+
+    public function addCurrPrice()
+    {
+        $this->CurrPrice = true;
+    }
+
     public function close_plan()
     {
         $query = DB::table('close_plan')->where('id', 1)->first();
@@ -39,7 +60,7 @@ class RepairEquipment extends Component
     {
         $query = DB::table('procurements_detail')->where('id', $id)->first();
 
-        if ($query->used == '0' || $query->used === null) {
+        if ($query->used == '0' || $query->used == null) {
             $newUsed = '1';
         } else {
             $newUsed = '0';
@@ -65,14 +86,13 @@ class RepairEquipment extends Component
                 'urls' => 'repair_equip'
             ]);
             DB::table('procurements')
-            ->where('id', $id)
+                ->where('id', $id)
                 ->update([
                     'approved' => $newApproved,
                     'approved_at' => now(),
                     'approved_userId' => Auth::user()->id
                 ]);
-        }
-        if ($query->approved == '1') {
+        } else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
@@ -81,7 +101,7 @@ class RepairEquipment extends Component
             ]);
 
             DB::table('procurements')
-            ->where('id', $id)
+                ->where('id', $id)
                 ->update([
                     'approved' => $newApproved,
                     'approved_at' => now(),
@@ -181,28 +201,43 @@ class RepairEquipment extends Component
         $this->edit_id = $id;
     }
 
+
+
+
     public function mount()
     {
         if (Auth::user()->id == '114000041') {
-            $procurements = DB::table('procurements')->get();
+            $procurements = DB::table('procurements')->whereIn('objectTypeId', ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'])
+                ->where('enable', '1')->get();
             foreach ($procurements as $procurement) {
                 $id = $procurement->id;
                 $vwCountDetail = DB::table('vwCountDetail')
-                ->select('count_detail')
-                ->where('PROC_ID', $id)
-                ->where('used', 1)
-                ->value('count_detail');
-
-                if ($procurement->levelNo == 1 && $vwCountDetail > 0 && $procurement->approved === null) {
+                    ->select('count_detail')
+                    ->where('PROC_ID', $id)
+                    ->where('used', 1)
+                    ->value('count_detail');
+                if ($procurement->levelNo == 1 && $vwCountDetail > 0 && $procurement->approved == null) {
                     $newApproved = '1';
 
                     DB::table('procurements')
-                    ->where('id', $id)
-                    ->update([
-                        'approved' => $newApproved,
-                        'approved_at' => now(),
-                        'approved_userId' => Auth::user()->id
-                    ]);
+                        ->where('id', $id)
+                        ->update([
+                            'approved' => $newApproved,
+                            'approved_at' => now(),
+                            'approved_userId' => Auth::user()->id
+                        ]);
+                }
+
+                if ($procurement->levelNo == 1 && $vwCountDetail == null && $procurement->approved == 1) {
+                    $newApproved = '0';
+
+                    DB::table('procurements')
+                        ->where('id', $id)
+                        ->update([
+                            'approved' => $newApproved,
+                            'approved_at' => now(),
+                            'approved_userId' => Auth::user()->id
+                        ]);
                 }
             }
         };

@@ -192,7 +192,7 @@
                      exportOptions: {
                          format: {
                              body: function(data, row, column, node) {
-                                 if (column === 0) {
+                                 if (column == 0) {
                                      return row + 1;
                                  }
                                  return data.replace(/<\/?span[^>]*>/g, "");

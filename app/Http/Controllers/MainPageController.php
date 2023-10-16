@@ -46,5 +46,9 @@ class MainPageController extends Controller
     {
         return view('vw_calibration');
     }
+    public function replaceIncreaseEquip()
+    {
+        return view('vw_replace-increase-equip');
+    }
 
 }

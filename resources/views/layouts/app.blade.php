@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -94,7 +95,7 @@
                             แผนการจัดซื้อจัดจ้าง
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse  {{ Request::is('maintenance_equip') || Request::is('repair_equip') || Request::is('contract_services') || Request::is('calibration') ? 'show' : '' }}"
+                        <div class="collapse  {{ Request::is('maintenance_equip') || Request::is('repair_equip') || Request::is('contract_services') || Request::is('calibration') || Request::is('replaceIncrease_equip') ? 'show' : '' }}"
                             id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link {{ Request::is('maintenance_equip') ? 'active' : '' }}"
@@ -106,6 +107,8 @@
                                     href="{{ route('contract_services') }}">จ้างเหมาบริการ</a>
                                 <a class="nav-link {{ Request::is('calibration') ? 'active' : '' }}"
                                     href="{{ route('calibration') }}">สอบเทียบเครื่องมือ</a>
+                                <a class="nav-link {{ Request::is('replaceIncrease_equip') ? 'active' : '' }}"
+                                    href="{{ route('replaceIncrease_equip') }}">ทดแทน-เพิ่มศักย์ภาพ</a>
                             </nav>
                         </div>
 
@@ -124,11 +127,11 @@
                                 ครุภัณฑ์ทั้งหมด
                             </a>
                         @endif
+
                         <a class="nav-link {{ Request::is('home') ? 'active' : '' }} collapsed"
                             href="{{ route('home') }}">
                             <div class="sb-nav-link-icon"><i class="fa-duotone fa-circle-info"></i></div>
                             วิธีใช้งานระบบเบื้องต้น
-
                         </a>
 
                         {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
