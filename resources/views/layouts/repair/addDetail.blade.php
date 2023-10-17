@@ -106,7 +106,26 @@
                                         @endif
 
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
-                                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
+                                        @if ($editNameEquip == false)
+                                            <td style="text-align: center;">
+                                                {{ $query->EQUP_NAME }}
+                                                <button wire:click.prevent="editNameEquip()"
+                                                    class="btn btn-outline-danger btn-sm ">
+                                                    <i class="fa-solid fa-pen fa-2xs"></i>
+                                                </button>
+                                            </td>
+                                        @else
+                                            <td style="text-align: center;">
+                                                <input class="form-control @error('EQUP_NAME') is-invalid @enderror"
+                                                    wire:model.defer="EQUP_NAME" id="EQUP_NAME" type="text"
+                                                    style="width: 100%;" autocomplete="off">
+                                                <button type="button"
+                                                    wire:click.prevent="acceptNameEquip({{ $query->id }})"
+                                                    class="btn btn-success btn-sm ">
+                                                    ยืนยัน
+                                                </button>
+                                            </td>
+                                        @endif
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}
                                         </td>
                                         <td style="text-align: center;">{{ $query->age }} ปี</td>
@@ -141,7 +160,8 @@
                                 required>
                         </div>
                         <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
+                            <input type="submit" class="btn btn-primary" value="ค้นหา"
+                                wire:loading.attr="disabled">
 
                         </div>
                     </div>

@@ -59,55 +59,69 @@
                                                     wire:click.prevent="CheckedEquip({{ $query->id }})">
                                             @endif
                                         </td>
-                                        @if ($query->currentPrice == null)
-                                            @if ($CurrPrice == false)
-                                                <td style="text-align: center;">
-                                                    <button type="button" wire:click.prevent="addCurrPrice()"
+                                        <td style="text-align: center;">
+                                            @if ($query->currentPrice == null)
+                                                @if ($CurrPrice == false)
+                                                    <button type="button"
+                                                        wire:click.prevent="addCurrPrice({{ $query->id }})"
                                                         class="btn btn-success btn-sm ">
                                                         เพิ่มราคา
                                                     </button>
-                                                </td>
-                                            @else
-                                                <td style="text-align: center;">
+                                                @else
                                                     <input
                                                         class="form-control @error('currentPrice') is-invalid @enderror"
                                                         min="1" wire:model.defer="currentPrice" id="currentPrice"
                                                         type="number" style="width: 100%;" autocomplete="off"
-                                                        placeholder="ราคาซ่อมจริง">
+                                                        placeholder="ราคาจริง">
                                                     <button type="button"
                                                         wire:click.prevent="acceptCurrPrice({{ $query->id }})"
                                                         class="btn btn-success btn-sm ">
                                                         ยืนยัน
                                                     </button>
-                                                </td>
-                                            @endif
-                                        @else
-                                            @if ($CurrPrice == false)
-                                                <td style="text-align: center;">
+                                                @endif
+                                            @else
+                                                @if ($CurrPrice == false)
                                                     {{ number_format($query->currentPrice) }}
-                                                    <button wire:click.prevent="addCurrPrice()"
+                                                    <button wire:click.prevent="addCurrPrice({{ $query->id }})"
                                                         class="btn btn-outline-danger btn-sm ">
                                                         <i class="fa-solid fa-pen fa-2xs"></i>
                                                     </button>
-                                                </td>
-                                            @else
-                                                <td style="text-align: center;">
+                                                @else
                                                     <input
                                                         class="form-control @error('currentPrice') is-invalid @enderror"
                                                         min="1" wire:model.defer="currentPrice" id="currentPrice"
                                                         type="number" style="width: 100%;" autocomplete="off"
-                                                        placeholder="ราคาซ่อมจริง">
+                                                        placeholder="ราคาจริง">
                                                     <button type="button"
                                                         wire:click.prevent="acceptCurrPrice({{ $query->id }})"
                                                         class="btn btn-success btn-sm ">
                                                         ยืนยัน
                                                     </button>
-                                                </td>
+                                                @endif
                                             @endif
-                                        @endif
+                                        </td>
 
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
-                                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
+                                        @if ($editNameEquip == false)
+                                            <td style="text-align: center;">
+                                                {{ $query->EQUP_NAME }}
+                                                <button wire:click.prevent="editNameEquip()"
+                                                    class="btn btn-outline-danger btn-sm ">
+                                                    <i class="fa-solid fa-pen fa-2xs"></i>
+                                                </button>
+                                            </td>
+                                        @else
+                                            <td style="text-align: center;">
+                                                <input class="form-control @error('EQUP_NAME') is-invalid @enderror"
+                                                    wire:model.defer="EQUP_NAME" id="EQUP_NAME" type="text"
+                                                    style="width: 100%;" autocomplete="off">
+                                                <button type="button"
+                                                    wire:click.prevent="acceptNameEquip({{ $query->id }})"
+                                                    class="btn btn-success btn-sm ">
+                                                    ยืนยัน
+                                                </button>
+                                            </td>
+                                        @endif
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}
                                         </td>
                                         <td style="text-align: center;">{{ $query->age }} ปี</td>
@@ -142,7 +156,8 @@
                                 required>
                         </div>
                         <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
+                            <input type="submit" class="btn btn-primary" value="ค้นหา"
+                                wire:loading.attr="disabled">
                         </div>
                     </div>
                 </form>
@@ -210,3 +225,32 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('livewire:load', function() {
+        const enableInlineEdit = (element) => {
+            element.contentEditable = true;
+            element.focus();
+        }
+
+        const disableInlineEdit = (element) => {
+            element.contentEditable = false;
+        }
+
+        const handleCellClick = (event) => {
+            const cell = event.target;
+            const isEditable = cell.hasAttribute('contenteditable');
+
+            if (isEditable) {
+                enableInlineEdit(cell);
+            }
+        }
+
+        document.querySelectorAll('td').forEach((cell) => {
+            cell.addEventListener('click', handleCellClick);
+            cell.addEventListener('blur', (event) => {
+                const cell = event.target;
+                disableInlineEdit(cell);
+            });
+        });
+    });
+</script>

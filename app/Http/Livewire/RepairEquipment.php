@@ -24,6 +24,21 @@ class RepairEquipment extends Component
     public $currentPrice;
     public $CurrPrice = false;
 
+    public $editNameEquip = false;
+    public function acceptNameEquip($id)
+    {
+        $this->editNameEquip = true;
+        DB::table('procurements_detail')
+            ->where('id', $id)
+            ->update([
+                'EQUP_NAME' => $this->EQUP_NAME
+            ]);
+        $this->editNameEquip = false;
+    }
+    public function editNameEquip()
+    {
+        $this->editNameEquip = true;
+    }
     public function acceptCurrPrice($id)
     {
         $this->CurrPrice = true;
