@@ -36,10 +36,10 @@
                     <thead>
                         <tr>
                             <th style="text-align: center;">เลือก</th>
-                            <th style="text-align: center;">ราคาจริง</th>
+                            <th style="text-align: center;">ราคาจริง(บาท)</th>
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
-                            <th style="text-align: center;">ราคาของวัสดุ</th>
+                            <th style="text-align: center;">ราคาของวัสดุ(บาท)</th>
                             <th style="text-align: center;">อายุการใช้งาน</th>
                             <th style="text-align: center;">สถานะ</th>
                             <th style="text-align: center;">ลบ</th>
@@ -61,67 +61,63 @@
                                         </td>
                                         <td style="text-align: center;">
                                             @if ($query->currentPrice == null)
-                                                @if ($CurrPrice == false)
+                                                @if ($editingId == $query->id)
+                                                    <input class="form-control" min="1"
+                                                        wire:model.defer="currentPrice" id="currentPrice" type="number"
+                                                        style="width: 100%;" autocomplete="off"
+                                                        placeholder="ราคาซ่อมจริง">
+                                                    <button type="button"
+                                                        wire:click.prevent="acceptCurrPrice({{ $query->id }})"
+                                                        class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                    <button type="button"
+                                                        wire:click.prevent="cancelCurrPrice({{ $query->id }})"
+                                                        class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                                @else
                                                     <button type="button"
                                                         wire:click.prevent="addCurrPrice({{ $query->id }})"
-                                                        class="btn btn-success btn-sm ">
-                                                        เพิ่มราคา
-                                                    </button>
-                                                @else
-                                                    <input
-                                                        class="form-control @error('currentPrice') is-invalid @enderror"
-                                                        min="1" wire:model.defer="currentPrice" id="currentPrice"
-                                                        type="number" style="width: 100%;" autocomplete="off"
-                                                        placeholder="ราคาจริง">
-                                                    <button type="button"
-                                                        wire:click.prevent="acceptCurrPrice({{ $query->id }})"
-                                                        class="btn btn-success btn-sm ">
-                                                        ยืนยัน
-                                                    </button>
+                                                        class="btn btn-success btn-sm">เพิ่มราคา</button>
                                                 @endif
                                             @else
-                                                @if ($CurrPrice == false)
-                                                    {{ number_format($query->currentPrice) }}
-                                                    <button wire:click.prevent="addCurrPrice({{ $query->id }})"
-                                                        class="btn btn-outline-danger btn-sm ">
-                                                        <i class="fa-solid fa-pen fa-2xs"></i>
-                                                    </button>
-                                                @else
-                                                    <input
-                                                        class="form-control @error('currentPrice') is-invalid @enderror"
-                                                        min="1" wire:model.defer="currentPrice" id="currentPrice"
-                                                        type="number" style="width: 100%;" autocomplete="off"
-                                                        placeholder="ราคาจริง">
+                                                @if ($editingId == $query->id)
+                                                    <input class="form-control" min="1"
+                                                        wire:model.defer="currentPrice" id="currentPrice" type="number"
+                                                        style="width: 100%;" autocomplete="off"
+                                                        placeholder="ราคาซ่อมจริง">
                                                     <button type="button"
                                                         wire:click.prevent="acceptCurrPrice({{ $query->id }})"
-                                                        class="btn btn-success btn-sm ">
-                                                        ยืนยัน
+                                                        class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                    <button type="button"
+                                                        wire:click.prevent="cancelCurrPrice({{ $query->id }})"
+                                                        class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                                @else
+                                                    {{ number_format($query->currentPrice) }}
+                                                    <button wire:click.prevent="addCurrPrice({{ $query->id }})"
+                                                        class="btn btn-outline-danger btn-sm">
+                                                        <i class="fa-solid fa-pen fa-2xs"></i>
                                                     </button>
                                                 @endif
                                             @endif
                                         </td>
 
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
-                                        @if ($editNameEquip == false)
-                                            <td style="text-align: center;">
-                                                {{ $query->EQUP_NAME }}
-                                                <button wire:click.prevent="editNameEquip()"
-                                                    class="btn btn-outline-danger btn-sm ">
-                                                    <i class="fa-solid fa-pen fa-2xs"></i>
-                                                </button>
-                                            </td>
-                                        @else
-                                            <td style="text-align: center;">
-                                                <input class="form-control @error('EQUP_NAME') is-invalid @enderror"
-                                                    wire:model.defer="EQUP_NAME" id="EQUP_NAME" type="text"
-                                                    style="width: 100%;" autocomplete="off">
+                                        <td style="text-align: center;">
+                                            @if ($editName == $query->id)
+                                                <input class="form-control" wire:model.defer="EQUP_NAME" id="EQUP_NAME"
+                                                    type="text" style="width: 100%;" autocomplete="off">
                                                 <button type="button"
                                                     wire:click.prevent="acceptNameEquip({{ $query->id }})"
-                                                    class="btn btn-success btn-sm ">
-                                                    ยืนยัน
+                                                    class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                <button type="button"
+                                                    wire:click.prevent="cancelNameEquip({{ $query->id }})"
+                                                    class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                            @else
+                                                {{ $query->EQUP_NAME }}
+                                                <button wire:click.prevent="editNameEquip({{ $query->id }})"
+                                                    class="btn btn-outline-danger btn-sm">
+                                                    <i class="fa-solid fa-pen fa-2xs"></i>
                                                 </button>
-                                            </td>
-                                        @endif
+                                            @endif
+                                        </td>
                                         <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}
                                         </td>
                                         <td style="text-align: center;">{{ $query->age }} ปี</td>

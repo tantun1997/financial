@@ -102,14 +102,24 @@
             <td>ผู้อำนวยการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า &nbsp;</td>
         </tr>
     </table>
-    <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
+     <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
         <tr>
-            <td class="textecho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน
-                {{ $department }}
-                ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
-                โดยมีรายละเอียดดังนี้</td>
+            <td class="textecho">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน
+@if(strlen($department) > 30 && strlen($department) <= 99)
+                {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ <br>
+                ประจำปี {{ $years }} โดยมีรายละเอียดดังนี้
+                @elseif(strlen($department) > 100)
+                {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                โดยมีรายละเอียดดังนี้
+                @else
+                 {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                โดยมีรายละเอียดดังนี้
+                @endif
+            </td>
         </tr>
     </table>
+
     <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
         <tr>
             <td width="50px">&nbsp;</td>
@@ -119,11 +129,11 @@
         </tr>
 
     </table>
-    <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
+     <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
         <tr>
             <td width="50px">&nbsp;</td>
             <td width="5px">2.</td>
-            <td class="textecho">เหตุผลความจำเป็นที่ต้องจัดซื้อ/จัดจ้าง คือ&nbsp;{{ $reason }}</span>
+            <td class="textecho">เหตุผลความจำเป็นที่จะจัดซื้อ/จัดจ้าง คือ&nbsp;{{ $reason }}</span>
         </tr>
     </table>
 

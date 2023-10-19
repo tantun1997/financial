@@ -2,12 +2,12 @@
     @include('layouts.loading')
 
 
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนฯทดแทน-เพิ่มศักย์ภาพ</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนจัดซื้อคุรุภัณฑ์</h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item "><a
                 href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
         <li class="breadcrumb-item active">
-                บันทึกแผนฯทดแทน-เพิ่มศักย์ภาพ</li>
+                บันทึกแผนจัดซื้อคุรุภัณฑ์</li>
     </ol>
     <hr>
     <div class="mb-3">
@@ -37,6 +37,7 @@
                             <th style="display: none;">id</th> <!-- 0 -->
                             <th class="text-center">อนุมัติแผนฯ</th> <!-- 1 -->
                             <th class="text-center">แผนฯ</th><!-- 2 -->
+
                             <th class="text-center" style="display: none;">ปี</th><!-- 3 -->
                             <th class="text-left" style="width: 50%;">ชื่อรายการครุภัณฑ์</th><!-- 4 -->
                             <th class="text-center">ราคาต่อหน่วย(บาท)</th><!-- 5 -->
@@ -110,14 +111,14 @@
                                     </td>
                                     <td class="table-cell" style="display: none;">{{ $item->updated_at }}</td>
                                     <td class="table-cell" style="text-align: right;">
-                                        @if ($item->approved == '1' && $item->levelNo == '1')
-                                        @else
+                                        {{-- @if ($item->approved == '1' && $item->levelNo == '1')
+                                        @else --}}
                                             <button type="button" wire:click.prevent="edit({{ $item->id }})"
                                                 class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal1">
                                                 แก้ไข
                                             </button>
-                                        @endif
+                                        {{-- @endif --}}
                                         <button type="button" wire:click.prevent="deletePost({{ $item->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
@@ -292,8 +293,8 @@
                 buttons: [{
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel"></i> Export to Excel',
-                    filename: 'บันทึกแผนฯทดแทน-เพิ่มศักย์ภาพ',
-                    title: `รายงานแผนฯทดแทน-เพิ่มศักย์ภาพ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
+                    filename: 'บันทึกแผนจัดซื้อคุรุภัณฑ์',
+                    title: `รายงานแผนจัดซื้อคุรุภัณฑ์ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
                         columns: [1, 2, 3, 4, 5, 15, 14, 7, 8, 9, 10, 11, 12]

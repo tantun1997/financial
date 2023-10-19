@@ -21,39 +21,60 @@ class RepairEquipment extends Component
 
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
 
-    public $currentPrice;
-    public $CurrPrice = false;
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // แก้ไขชื่อรายการครุภัณฑ์
+    public $editName;
 
-    public $editNameEquip = false;
+    public function editNameEquip($id)
+    {
+        $data = DB::table('procurements_detail')->where('id', $id)->first();
+        $this->EQUP_NAME = $data->EQUP_NAME;
+        $this->editName = $id;
+    }
     public function acceptNameEquip($id)
     {
-        $this->editNameEquip = true;
         DB::table('procurements_detail')
             ->where('id', $id)
             ->update([
                 'EQUP_NAME' => $this->EQUP_NAME
             ]);
-        $this->editNameEquip = false;
+        $this->editName = null;
     }
-    public function editNameEquip()
+
+    public function cancelNameEquip($id)
     {
-        $this->editNameEquip = true;
+        $this->editName = null;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // แก้ไขราคาครุภัณฑ์
+
+    public $currentPrice;
+    public $editingId;
+    public function addCurrPrice($id)
+    {
+        $data = DB::table('procurements_detail')->where('id', $id)->first();
+        $this->currentPrice = $data->currentPrice;
+        $this->editingId = $id;
+    }
+
     public function acceptCurrPrice($id)
     {
-        $this->CurrPrice = true;
         DB::table('procurements_detail')
             ->where('id', $id)
             ->update([
                 'currentPrice' => $this->currentPrice
             ]);
-        $this->CurrPrice = false;
+        $this->editingId = null;
     }
 
-    public function addCurrPrice()
+    public function cancelCurrPrice($id)
     {
-        $this->CurrPrice = true;
+        $this->editingId = null;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     public function close_plan()
     {
@@ -215,8 +236,6 @@ class RepairEquipment extends Component
         $this->quant = $data->quant;
         $this->edit_id = $id;
     }
-
-
 
 
     public function mount()
@@ -506,6 +525,7 @@ class RepairEquipment extends Component
             $carbonUpdatedAt = Carbon::parse($item->updated_at); // แปลงเป็น Carbon object
             $item->updated_at = $carbonUpdatedAt->addYears(543)->format('d/m/Y H:i'); // แปลงวันที่เป็นรูปแบบพศไทย
         }
+
         $years = $VW_NEW_MAINPLAN->pluck('budget')->unique()->map(function ($item) {
             return trim($item);
         })->all();

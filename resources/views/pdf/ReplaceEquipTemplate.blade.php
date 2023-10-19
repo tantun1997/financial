@@ -56,12 +56,18 @@
 
         .textecho {
             overflow: auto;
+            /* ทำให้ข้อความที่เกินขอบเขตถูกเลื่อน (scroll) */
             word-break: keep-all;
+            /* ไม่ตัดคำที่ไม่เหมาะสม */
             text-align: justify;
+            /* จัดวางข้อความเป็นสัดส่วนที่สมดุล */
             letter-spacing: normal;
+            /* ระยะห่างระหว่างตัวอักษรเป็นปกติ */
             word-spacing: normal;
-            white-space: normal;
+            /* ระยะห่างระหว่างคำเป็นปกติ */
+            /* white-space: nowrap; ไม่ตัดข้อความเมื่อพบช่องว่าง */
             text-indent: 50px;
+            /* เยื้องข้อความในบรรทัดแรกเป็น 50px */
         }
     </style>
 </head>
@@ -70,8 +76,7 @@
     <table width="100%" class="header" style="vertical-align: bottom; padding-bottom: 5px;" cellspacing="0"
         cellpadding="0">
         <tr>
-            <td width="1px"><img src="{{ asset('assets/img/logo.png') }}" width="46" height="51"
-                    alt="" /></td>
+            <td width="1px"><img src="{{ asset('assets/img/logo.png') }}" width="46" height="51" alt="" /></td>
             <td align="center"><strong style="font-size: 19pt">บันทึกข้อความ</strong></td>
         </tr>
     </table>
@@ -85,7 +90,7 @@
     <table width="100%" class="header" border="0" style="vertical-align: top;">
         <tr>
             <td width="30px" class="headerText">ที่</td>
-            <td class="table_doted_left">สส 0033/ผ.{{ $id }}</td>
+            <td class="table_doted_left">สส 0033/ค.{{ $id }}</td>
             <td width="50px" class="headerText">วันที่</td>
             <td width="170px" class="table_doted_center">&nbsp; {{ $dateExport }} &nbsp;</td>
         </tr>
@@ -104,12 +109,23 @@
     </table>
     <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
         <tr>
-            <td class="textecho">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน
-                {{ $department }}
-                ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
-                โดยมีรายละเอียดดังนี้</td>
+            <td class="textecho">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน
+@if(strlen($department) > 30 && strlen($department) <= 99)
+                {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ <br>
+                ประจำปี {{ $years }} โดยมีรายละเอียดดังนี้
+                @elseif(strlen($department) > 100)
+                {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                โดยมีรายละเอียดดังนี้
+                @else
+                 {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                โดยมีรายละเอียดดังนี้
+                @endif
+            </td>
         </tr>
     </table>
+
+
     <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px;">
         <tr>
             <td width="50px">&nbsp;</td>
@@ -123,7 +139,7 @@
         <tr>
             <td width="50px">&nbsp;</td>
             <td width="5px">2.</td>
-            <td class="textecho">เหตุผลความจำเป็นที่ต้องจัดซื้อ/จัดจ้าง คือ&nbsp;{{ $reason }}</span>
+            <td class="textecho">เหตุผลความจำเป็นที่จะจัดซื้อ/จัดจ้าง คือ&nbsp;{{ $reason }}</span>
         </tr>
     </table>
 
@@ -133,12 +149,12 @@
             <td width="5px">3.</td>
             <td class="textecho">
                 @php
-                    $count = 0;
+                $count = 0;
                 @endphp
                 @if ($id > 0)
-                    @php
-                        $count++;
-                    @endphp
+                @php
+                $count++;
+                @endphp
                 @endif
                 รายละเอียดของงานที่จะซื้อ/จ้าง จำนวน&nbsp;{{ $count }}&nbsp;รายการ&nbsp;ดังนี้
             </td>
@@ -151,15 +167,15 @@
                         <td width="70px">&nbsp;</td>
                         <td class="textecho">
                             @php
-                                $count = 1;
+                            $count = 1;
                             @endphp
                             @if ($id > 0)
-                                {{ $count }}. {{ $projectName }} จำนวน
-                                {{ $quant }}x{{ number_format($price) }} เป็นเงิน
-                                {{ number_format($totalPrice) }} บาท<br>
-                                @php
-                                    $count++;
-                                @endphp
+                            {{ $count }}. {{ $projectName }} จำนวน
+                            {{ $quant }}x{{ number_format($price) }} เป็นเงิน
+                            {{ number_format($totalPrice) }} บาท<br>
+                            @php
+                            $count++;
+                            @endphp
                             @endif
                         </td>
                     </tr>
@@ -173,7 +189,8 @@
             <td width="50px">&nbsp;</td>
             <td width="5px">4.</td>
             <td class="textecho">
-                วงเงินที่จะซื้อ/จ้าง&nbsp;{{ number_format($totalPrice) }}&nbsp;บาท&nbsp;(&nbsp;{{ $totalPriceText }}&nbsp;)
+                วงเงินที่จะซื้อ/จ้าง&nbsp;{{ number_format($totalPrice) }}&nbsp;บาท&nbsp;(&nbsp;{{ $totalPriceText
+                }}&nbsp;)
             </td>
         </tr>
     </table>
@@ -188,17 +205,17 @@
                 <table width="100%" border="0" style="vertical-align: bottom; padding-bottom: 3px;">
                     <tr>
                         <td width="70px">&nbsp;</td>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23"
-                                height="23" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23" height="23"
+                                alt="" /></td>
                         <td width="75px">ใบส่งซ่อม</td>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23"
-                                height="23" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23" height="23"
+                                alt="" /></td>
                         <td width="85px">แคตตาล็อค</td>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23"
-                                height="23" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23" height="23"
+                                alt="" /></td>
                         <td width="95px">ใบเสนอราคา</td>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23"
-                                height="23" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="23" height="23"
+                                alt="" /></td>
                         <td>อื่น ๆ ....................</td>
                     </tr>
                 </table>
@@ -215,24 +232,23 @@
         <tr>
             <td width="50%">
                 <br>
-                <table width="100%" border="0"
-                    style="vertical-align: top; padding-bottom: 3px; font-size: 10pt;">
+                <table width="100%" border="0" style="vertical-align: top; padding-bottom: 3px; font-size: 10pt;">
                     <tr>
                         <td colspan="2">หน.กลุ่มภารกิจ/กลุ่มงาน ตรวจสอบแล้ว อยู่ใน</td>
                     </tr>
                     <tr>
-                        <td width="10px"><img src="{{ asset('assets/img/true_blue.png') }}" width="20"
-                                height="20" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_blue.png') }}" width="20" height="20"
+                                alt="" /></td>
                         <td>แผนเงินบำรุง/งบประมาณ ปี {{ $years }}</td>
                     </tr>
                     <tr>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
-                                height="20" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20" height="20"
+                                alt="" /></td>
                         <td>ไม่อยู่ในแผน / เหตุผลความจำเป็น</td>
                     </tr>
                     <tr>
-                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
-                                height="20" alt="" /></td>
+                        <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20" height="20"
+                                alt="" /></td>
                         <td>วงเงินในแผน คงเหลือ</td>
                     </tr>
                     <tr>
@@ -240,11 +256,11 @@
                         <td style="vertical-align: top;">
                             <table width="100%" border="0" style="vertical-align: top;">
                                 <tr>
-                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}"
-                                            width="20" height="20" alt="" /></td>
+                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
+                                            height="20" alt="" /></td>
                                     <td>เพียงพอ</td>
-                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}"
-                                            width="20" height="20" alt="" /></td>
+                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
+                                            height="20" alt="" /></td>
                                     <td>ไม่เพียงพอ</td>
                                     <td>&nbsp;เห็นควรดำเนินการ</td>
                                 </tr>
@@ -295,16 +311,16 @@
                         <td style="text-align: center;">
                             <table width="90%" border="0" style="vertical-align: top;">
                                 <tr>
-                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}"
-                                            width="20" height="20" alt="" /></td>
+                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
+                                            height="20" alt="" /></td>
                                     <td width="50px" style="text-align: left;">อนุมัติ</td>
-                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}"
-                                            width="20" height="20" alt="" /></td>
+                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
+                                            height="20" alt="" /></td>
                                     <td style="text-align: left;">ไม่อนุมัติ</td>
                                 </tr>
                                 <tr>
-                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}"
-                                            width="20" height="20" alt="" /></td>
+                                    <td width="10px"><img src="{{ asset('assets/img/true_box.png') }}" width="20"
+                                            height="20" alt="" /></td>
                                     <td colspan="3" class="text_doted_left">&nbsp;</td>
                                 </tr>
                                 <tr>

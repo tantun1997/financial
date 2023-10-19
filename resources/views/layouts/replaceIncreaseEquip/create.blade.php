@@ -9,7 +9,7 @@
 
        @if ($item->status == 'on')
            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-               เพิ่มแผนฯทดแทน-เพิ่มศักย์ภาพ
+               เพิ่มแผนจัดซื้อคุรุภัณฑ์
            </button>
        @endif
    @endforeach
@@ -23,7 +23,7 @@
                    <div class="modal-header" style="background-color: rgb(189, 226, 172)">
                        <h5 class="modal-title" id="exampleModalLabel" style="color: black"><i
                                class="fa-solid fa-inbox fa-lg"></i>
-                           เพิ่มแผนฯทดแทน-เพิ่มศักย์ภาพ</h5>
+                           เพิ่มแผนจัดซื้อคุรุภัณฑ์</h5>
                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                            wire:click="closeModal"></button>
                    </div>

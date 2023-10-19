@@ -226,12 +226,12 @@ class PDFController extends Controller
 
     public function generateReplaceEquip($id)
     {
-        $query = DB::table('replace_increase_equip')->where('id', $id)->first();
+        $query = DB::table('vwReplaceEquip')->where('id', $id)->first();
         $pattern = '/ประจำปี\s+\d{4}/';
         $replacement = ' ประจำปี ' . $query->year;
 
         $title = 'บันทึกข้อความ';
-        $department = $query->deptId;
+        $department = $query->TCHN_LOCAT_NAME;
         $tel = '';
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
         $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
@@ -256,7 +256,6 @@ class PDFController extends Controller
         $price = $query->price;
         $totalPrice = $quant * $price;
         $totalPriceText = $this->numberToThaiText($totalPrice);
-
 
         $data = [
             'id' => $id,

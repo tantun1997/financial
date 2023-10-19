@@ -108,7 +108,9 @@
                                 <a class="nav-link {{ Request::is('calibration') ? 'active' : '' }}"
                                     href="{{ route('calibration') }}">สอบเทียบเครื่องมือ</a>
                                 <a class="nav-link {{ Request::is('replaceIncrease_equip') ? 'active' : '' }}"
-                                    href="{{ route('replaceIncrease_equip') }}">ทดแทน-เพิ่มศักย์ภาพ</a>
+                                    href="{{ route('replaceIncrease_equip') }}">แผนจัดซื้อคุรุภัณฑ์</a>
+                                {{-- <a class="nav-link {{ Request::is('replaceIncrease_equip') ? 'active' : '' }}"
+                                    href="{{ route('replaceIncrease_equip') }}">แผนงาน/โครงการ</a> --}}
                             </nav>
                         </div>
 
