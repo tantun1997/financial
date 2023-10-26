@@ -7,11 +7,11 @@
             สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</li>
     </ol>
     <hr>
-    <table class="table-bordered table-sm" style="width: 100%;">
+    <table class="table table-bordered table-sm" style="width: 100%;">
         <tr>
             <td>
                 <div style="display: flex; align-items: center; white-space: nowrap;"><b
-                        style="margin-right: 5px;">หน่วยงาน:</b> {{ Auth::user()->deptName }}</div>
+                        style="margin-right: 5px;">หน่วยงาน:</b> {{ $ACP_ProjectName_Main->dept_name }}</div>
             </td>
             <td>
                 <div style="display: flex; align-items: center; white-space: nowrap;"><b
