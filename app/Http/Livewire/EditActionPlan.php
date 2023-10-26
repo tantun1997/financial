@@ -146,7 +146,11 @@ class EditActionPlan extends Component
         $ACP_Indicators = DB::table('ACP_Indicators')->get();
         $ACP_BudgetSource = DB::table('ACP_BudgetSource')->get();
         $ACP_Plan = DB::table('ACP_Plan')->get();
-        $ACP_ProjectName_Main = DB::table('ACP_ProjectName_Main')->where('project_ID', $id)->first();
+        $ACP_ProjectName_Main = DB::table('VW_ACP_ProjectName_Main')->where('project_ID', $id)->first();
+        $VW_ACP_Project_Detail = DB::table('VW_ACP_Project_Detail')->where('project_ID', $id)->get();
+
+
+
         return view('layouts.actionPlan.edit', [
             'ACP_Mission' => $ACP_Mission,
             'ACP_Focus' => $ACP_Focus,
@@ -156,7 +160,8 @@ class EditActionPlan extends Component
             'ACP_Indicators' => $ACP_Indicators,
             'ACP_BudgetSource' => $ACP_BudgetSource,
             'ACP_Plan' => $ACP_Plan,
-            'ACP_ProjectName_Main' => $ACP_ProjectName_Main
+            'ACP_ProjectName_Main' => $ACP_ProjectName_Main,
+            'VW_ACP_Project_Detail' => $VW_ACP_Project_Detail
 
         ]);
     }
