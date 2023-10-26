@@ -127,7 +127,7 @@ class CreateActionPlan extends Component
             'type' => 'success',
             'message' => 'เพิ่มข้อมูลสำเร็จ!!',
             'text' => 'ข้อมูลถูกเพิ่มในตารางเรียบร้อยแล้ว',
-            'urls' => ''
+            'urls' => '/action_plan'
         ]);
     }
 

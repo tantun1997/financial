@@ -73,7 +73,6 @@ class EditActionPlan extends Component
         }
 
         $this->goToCreatePage2 = true;
-        $this->resetFields();
     }
     public $eventNActivity_name, $groupTarget, $amountTarget, $place, $Q1, $Q2, $Q3, $Q4, $budgetAmount, $BGS_Id, $person_name, $P_Id, $project_ID;
 
@@ -128,35 +127,17 @@ class EditActionPlan extends Component
             'type' => 'success',
             'message' => 'เพิ่มข้อมูลสำเร็จ!!',
             'text' => 'ข้อมูลถูกเพิ่มในตารางเรียบร้อยแล้ว',
-            'urls' => ''
+            'urls' => '/action_plan'
         ]);
     }
 
 
-    public function resetFields()
-    {
-        $this->userId = Auth::user()->id;
-        $this->dept_id = Auth::user()->deptId;
-        $this->dept_name = Auth::user()->deptName;
-        $this->active = '1';
-        $this->created_at = now();
-        $this->updated_at = now();
-        $this->project_name = '';
-        $this->budget = '';
-        $this->M_ID = '';
-        $this->F_ID = '';
-        $this->SI_ID = '';
-        $this->G_ID = '';
-        $this->T_ID = '';
-        $this->Indi_ID = '';
-        $this->sub_kpi = '';
-        $this->objective_project = '';
 
-        $this->resetErrorBag(); // ใส่บรรทัดนี้เพื่อเคลียร์ข้อผิดพลาดที่เกี่ยวข้อง
 
-    }
     public function render()
     {
+        $id = request('id');
+
         $ACP_Mission = DB::table('ACP_Mission')->get();
         $ACP_Focus = DB::table('ACP_Focus')->get();
         $ACP_Strategy = DB::table('ACP_Strategy')->get();
@@ -165,8 +146,7 @@ class EditActionPlan extends Component
         $ACP_Indicators = DB::table('ACP_Indicators')->get();
         $ACP_BudgetSource = DB::table('ACP_BudgetSource')->get();
         $ACP_Plan = DB::table('ACP_Plan')->get();
-        $ACP_ProjectName_Main = DB::table('ACP_ProjectName_Main')->where('project_ID', $this->project_ID)->first();
-
+        $ACP_ProjectName_Main = DB::table('ACP_ProjectName_Main')->where('project_ID', $id)->first();
         return view('layouts.actionPlan.edit', [
             'ACP_Mission' => $ACP_Mission,
             'ACP_Focus' => $ACP_Focus,

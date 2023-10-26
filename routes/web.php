@@ -25,8 +25,8 @@ Auth::routes();
 Route::get('/', [MainPageController::class, 'index'])->name('index');
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('action_plan', [MainPageController::class, 'actionPlan'])->name('action_plan');
     Route::prefix('action_plan')->group(function () {
+        Route::get('/', [MainPageController::class, 'actionPlan'])->name('action_plan');
         Route::get('create', [MainPageController::class, 'createActionPlan'])->name('creat_action_plan');
         Route::get('detail', [MainPageController::class, 'detailActionPlan'])->name('detail_action_plan');
     });
