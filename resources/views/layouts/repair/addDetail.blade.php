@@ -67,7 +67,7 @@
                                                         placeholder="ราคาซ่อมจริง">
                                                     <button type="button"
                                                         wire:click.prevent="acceptCurrPrice({{ $query->id }})"
-                                                        class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                        class="btn btn-success btn-sm">ยืนยัน</button>
                                                     <button type="button"
                                                         wire:click.prevent="cancelCurrPrice({{ $query->id }})"
                                                         class="btn btn-secondary btn-sm">ยกเลิก</button>
@@ -84,7 +84,7 @@
                                                         placeholder="ราคาซ่อมจริง">
                                                     <button type="button"
                                                         wire:click.prevent="acceptCurrPrice({{ $query->id }})"
-                                                        class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                        class="btn btn-success btn-sm">ยืนยัน</button>
                                                     <button type="button"
                                                         wire:click.prevent="cancelCurrPrice({{ $query->id }})"
                                                         class="btn btn-secondary btn-sm">ยกเลิก</button>

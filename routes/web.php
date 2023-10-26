@@ -24,6 +24,13 @@ use App\Http\Middleware\isAdmin;
 Auth::routes();
 Route::get('/', [MainPageController::class, 'index'])->name('index');
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('action_plan', [MainPageController::class, 'actionPlan'])->name('action_plan');
+    Route::prefix('action_plan')->group(function () {
+        Route::get('create', [MainPageController::class, 'createActionPlan'])->name('creat_action_plan');
+        Route::get('detail', [MainPageController::class, 'detailActionPlan'])->name('detail_action_plan');
+    });
+
     Route::get('replaceIncrease_equip', [MainPageController::class, 'replaceIncreaseEquip'])->name('replaceIncrease_equip');
     Route::get('calibration', [MainPageController::class, 'calibration'])->name('calibration');
     Route::get('equipment', [MainPageController::class, 'equipment'])->name('equipment');
@@ -33,10 +40,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('approval_plans', [MainPageController::class, 'approvalPlans'])->name('approval_plans');
 
     Route::get('/home', [MainPageController::class, 'home'])->name('home');
+
     // Generate-PDF Zone
     Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
     Route::get('/contactPdf/{id}', [PDFController::class, 'generateContactService']);
     Route::get('/replaceEquipPdf/{id}', [PDFController::class, 'generateReplaceEquip']);
+    Route::get('/replaceEquipPdf2/{id}', [PDFController::class, 'generateReplaceEquip2']);
 
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {

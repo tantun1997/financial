@@ -27,10 +27,10 @@ class ContractServices extends Component
         }
 
         DB::table('close_plan')
-        ->where('id', 1)
-        ->update([
-            'status' => $close_plan
-        ]);
+            ->where('id', 1)
+            ->update([
+                'status' => $close_plan
+            ]);
     }
     public function Approval($id)
     {
@@ -44,14 +44,13 @@ class ContractServices extends Component
                 'urls' => 'contract_services'
             ]);
             DB::table('procurements')
-            ->where('id', $id)
+                ->where('id', $id)
                 ->update([
                     'approved' => $newApproved,
                     'approved_at' => now(),
                     'approved_userId' => Auth::user()->id
                 ]);
-        }
-        else {
+        } else {
             $newApproved = '0';
             $this->dispatchBrowserEvent('swal:modal', [
                 'type' => 'error',
@@ -60,7 +59,7 @@ class ContractServices extends Component
             ]);
 
             DB::table('procurements')
-            ->where('id', $id)
+                ->where('id', $id)
                 ->update([
                     'approved' => $newApproved,
                     'approved_at' => now(),

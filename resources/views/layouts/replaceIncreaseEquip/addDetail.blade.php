@@ -11,14 +11,14 @@
                     wire:click="closeModal"></button>
             </div>
             <div class="modal-body">
-                @foreach ($VW_NEW_MAINPLAN as $query)
+                @foreach ($replace_increase_equip as $query)
                     @if ($query->id == $edit_id)
                         <h5> ชื่อรายการ
                             {{ $query->description }}
                         </h5>
-                        <p>ค่า{{ $query->objectName }} ราคา {{ number_format($query->price) }} บาท จำนวน
-                            {{ $query->quant }}
-                            {{ $query->package }} รวมทั้งหมด {{ number_format($query->price * $query->quant) }} บาท
+                        <p>ราคา {{ number_format($query->price) }} บาท จำนวน
+                            {{ $query->qty }}
+                            {{ $query->unit }} รวมทั้งหมด {{ number_format($query->price * $query->qty) }} บาท
                         </p>
                     @endif
                 @endforeach
@@ -36,20 +36,21 @@
                     <thead>
                         <tr>
                             <th style="text-align: center;">เลือก</th>
+                            <th style="text-align: center;">ราคาซื้อจริง(บาท)</th>
                             <th style="text-align: center;">รหัส</th>
                             <th style="text-align: center;">ชื่อรายการ</th>
-                            <th style="text-align: center;">ราคาของวัสดุ</th>
+                            <th style="text-align: center;">ราคาของวัสดุ(บาท)</th>
                             <th style="text-align: center;">อายุการใช้งาน</th>
                             <th style="text-align: center;">สถานะ</th>
                             <th style="text-align: center;">ลบ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($procurements_detail) > 0)
-                            @foreach ($procurements_detail as $query)
+                        @if (count($replace_equip_detail) > 0)
+                            @foreach ($replace_equip_detail as $query)
                                 @if ($query->PROC_ID == $edit_id)
                                     <tr>
-                                        <td class="text-center">
+                                        <td style="text-align: center;">
                                             @if ($query->used == 1)
                                                 <input class="form-check-input" type="checkbox"
                                                     wire:click.prevent="CheckedEquip({{ $query->id }})" checked>
@@ -58,10 +59,69 @@
                                                     wire:click.prevent="CheckedEquip({{ $query->id }})">
                                             @endif
                                         </td>
+                                        <td style="text-align: center;">
+                                            @if ($query->currentPrice == null)
+                                                @if ($editingId == $query->id)
+                                                    <input class="form-control" min="1"
+                                                        wire:model.defer="currentPrice" id="currentPrice" type="number"
+                                                        style="width: 100%;" autocomplete="off"
+                                                        placeholder="ราคาซ่อมจริง">
+                                                    <button type="button"
+                                                        wire:click.prevent="acceptCurrPrice({{ $query->id }})"
+                                                        class="btn btn-success btn-sm">ยืนยัน</button>
+                                                    <button type="button"
+                                                        wire:click.prevent="cancelCurrPrice({{ $query->id }})"
+                                                        class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                                @else
+                                                    <button type="button"
+                                                        wire:click.prevent="addCurrPrice({{ $query->id }})"
+                                                        class="btn btn-success btn-sm">เพิ่มราคา</button>
+                                                @endif
+                                            @else
+                                                @if ($editingId == $query->id)
+                                                    <input class="form-control" min="1"
+                                                        wire:model.defer="currentPrice" id="currentPrice" type="number"
+                                                        style="width: 100%;" autocomplete="off"
+                                                        placeholder="ราคาซ่อมจริง">
+                                                    <button type="button"
+                                                        wire:click.prevent="acceptCurrPrice({{ $query->id }})"
+                                                        class="btn btn-success btn-sm">ยืนยัน</button>
+                                                    <button type="button"
+                                                        wire:click.prevent="cancelCurrPrice({{ $query->id }})"
+                                                        class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                                @else
+                                                    {{ number_format($query->currentPrice) }}
+                                                    <button wire:click.prevent="addCurrPrice({{ $query->id }})"
+                                                        class="btn btn-outline-danger btn-sm">
+                                                        <i class="fa-solid fa-pen fa-2xs"></i>
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </td>
                                         <td style="text-align: center;">{{ $query->EQUP_ID }}</td>
-                                        <td style="text-align: center;">{{ $query->EQUP_NAME }}</td>
-                                        <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}</td>
+                                        <td style="text-align: center;">
+                                            @if ($editName == $query->id)
+                                                <input class="form-control" wire:model.defer="EQUP_NAME" id="EQUP_NAME"
+                                                    type="text" style="width: 100%;" autocomplete="off">
+                                                <button type="button"
+                                                    wire:click.prevent="acceptNameEquip({{ $query->id }})"
+                                                    class="btn btn-primary btn-sm">ยืนยัน</button>
+                                                <button type="button"
+                                                    wire:click.prevent="cancelNameEquip({{ $query->id }})"
+                                                    class="btn btn-secondary btn-sm">ยกเลิก</button>
+                                            @else
+                                                {{ $query->EQUP_NAME }}
+                                                <button wire:click.prevent="editNameEquip({{ $query->id }})"
+                                                    class="btn btn-outline-danger btn-sm">
+                                                    <i class="fa-solid fa-pen fa-2xs"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+
+                                        <td style="text-align: center;">{{ number_format($query->EQUP_PRICE) }}
+                                        </td>
                                         <td style="text-align: center;">{{ $query->age }} ปี</td>
+
                                         <td style="text-align: center;">
                                             @switch($query->EQUP_STS_DESC)
                                                 @case('ใช้งาน')
@@ -78,7 +138,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5">ยังไม่ได้เพิ่มข้อมูล</td>
+                                <td colspan="7" style="text-align: center;">ยังไม่ได้เพิ่มข้อมูล</td>
                             </tr>
                         @endif
                     </tbody>
@@ -92,7 +152,8 @@
                                 required>
                         </div>
                         <div class="col-md-4">
-                            <input type="submit" class="btn btn-primary" value="ค้นหา" wire:loading.attr="disabled">
+                            <input type="submit" class="btn btn-primary" value="ค้นหา"
+                                wire:loading.attr="disabled">
                         </div>
                     </div>
                 </form>

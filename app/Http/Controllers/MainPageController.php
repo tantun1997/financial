@@ -50,5 +50,16 @@ class MainPageController extends Controller
     {
         return view('vw_replace-increase-equip');
     }
-
+    public function actionPlan()
+    {
+        return view('vw_action-plan');
+    }
+    public function createActionPlan()
+    {
+        return view('vw_create-action-plan');
+    }
+    public function detailActionPlan()
+    {
+        return view('vw_detail-action-plan');
+    }
 }

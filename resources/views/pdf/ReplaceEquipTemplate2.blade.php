@@ -85,7 +85,7 @@
     <table width="100%" class="header" border="0" style="vertical-align: top;">
         <tr>
             <td width="30px" class="headerText">ที่</td>
-            <td class="table_doted_left">สส 0033/ผ.{{ $id }}</td>
+            <td class="table_doted_left">สส 0033/ค.{{ $id }}</td>
             <td width="50px" class="headerText">วันที่</td>
             <td width="170px" class="table_doted_center">&nbsp; {{ $dateExport }} &nbsp;</td>
         </tr>

@@ -2,16 +2,16 @@
     @include('layouts.loading')
 
 
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนจัดซื้อคุรุภัณฑ์</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> บันทึกแผนจัดซื้อครุภัณฑ์</h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item "><a
                 href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
         <li class="breadcrumb-item active">
-                บันทึกแผนจัดซื้อคุรุภัณฑ์</li>
+                บันทึกแผนจัดซื้อครุภัณฑ์</li>
     </ol>
     <hr>
     <div class="mb-3">
-
+        @include('layouts.replaceIncreaseEquip.addDetail')
         @include('layouts.replaceIncreaseEquip.edit')
         @include('layouts.replaceIncreaseEquip.create')
     </div>
@@ -20,11 +20,9 @@
             {{ session()->get('success') }}
         </div>
     @endif
-
     <div class="card mb-4">
         <div class="card-header">
             {{-- @include('layouts.replaceIncreaseEquip.search') --}}
-
             <div id="newButtonContainer" style="float: right;" wire:ignore>
                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
             </div>
@@ -37,39 +35,39 @@
                             <th style="display: none;">id</th> <!-- 0 -->
                             <th class="text-center">อนุมัติแผนฯ</th> <!-- 1 -->
                             <th class="text-center">แผนฯ</th><!-- 2 -->
-
-                            <th class="text-center" style="display: none;">ปี</th><!-- 3 -->
-                            <th class="text-left" style="width: 50%;">ชื่อรายการครุภัณฑ์</th><!-- 4 -->
-                            <th class="text-center">ราคาต่อหน่วย(บาท)</th><!-- 5 -->
-                            <th class="text-center">จำนวน(หน่วย)</th><!-- 6 -->
-                            <th class="text-center">วงเงินรวม(บาท)</th><!-- 7 -->
-                            <th class="text-left" style="display: none;">เหตุผลและความจำเป็น</th><!-- 8 -->
-                            <th class="text-left">หน่วยงานที่เบิก</th><!-- 9 -->
-                            <th class="text-left" style="display: none;">หมายเหตุ</th><!-- 10 -->
-                            <th class="text-left" style="display: none;">ประเภทการขอ</th><!-- 11 -->
-                            <th class="text-center" style="display: none;">วันที่ปรับปรุงข้อมูล</th><!-- 12 -->
-                            <th class="text-center">action</th><!-- 13 -->
-                            <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 14 -->
-                            <th class="text-center" style="display: none;">จำนวน</th><!-- 15 -->
-                            <th class="text-center" style="display: none;">Print out</th><!-- 16 -->
+                            <th class="text-center">ครุภัณฑ์</th><!-- 3 -->
+                            <th class="text-center" style="display: none;">ปี</th><!-- 4 -->
+                            <th class="text-left" style="width: 50%;">ชื่อรายการครุภัณฑ์</th><!-- 5 -->
+                            <th class="text-center">ราคาต่อหน่วย(บาท)</th><!-- 6 -->
+                            <th class="text-center">จำนวน(หน่วย)</th><!-- 7 -->
+                            <th class="text-center">วงเงินรวม(บาท)</th><!-- 8 -->
+                            <th class="text-left" style="display: none;">เหตุผลและความจำเป็น</th><!-- 9 -->
+                            <th class="text-left">หน่วยงานที่เบิก</th><!-- 10 -->
+                            <th class="text-left" style="display: none;">หมายเหตุ</th><!-- 11 -->
+                            <th class="text-left" style="display: none;">ประเภทการขอ</th><!-- 12 -->
+                            <th class="text-center" style="display: none;">วันที่ปรับปรุงข้อมูล</th><!-- 13 -->
+                            <th class="text-center">action</th><!-- 14 -->
+                            <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 15 -->
+                            <th class="text-center" style="display: none;">จำนวน</th><!-- 16 -->
+                            <th class="text-center" style="display: none;">Print out</th><!-- 17 -->
 
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($replace_increase_equip as $item)
-                            @if ($item->deptId == Auth::user()->deptId || Auth::user()->isAdmin == 'Y')
+                        @foreach ($replace_increase_equip as $query)
+                            @if ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y')
                                 <tr style="cursor: pointer;">
-                                    <td class="table-cell" style="display: none;">{{ $item->id }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->id }}</td>
                                     <td class="table-cell text-center">
                                         @if (Auth::user()->id == '114000041')
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
-                                                    id="approvalSwitch({{ $item->id }})"
-                                                    aria-labelledby="approvalSwitch({{ $item->id }})"
-                                                    wire:click.prevent="Approval({{ $item->id }})"
-                                                    @if ($item->approved == '1') checked @endif>
-                                                <span class="form-check-label" id="approvalSwitch({{ $item->id }})">
-                                                    @if ($item->approved == '1')
+                                                    id="approvalSwitch({{ $query->id }})"
+                                                    aria-labelledby="approvalSwitch({{ $query->id }})"
+                                                    wire:click.prevent="Approval({{ $query->id }})"
+                                                    @if ($query->approved == '1') checked @endif>
+                                                <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
+                                                    @if ($query->approved == '1')
                                                         <span class="badge bg-success">อนุมัติแล้ว</span>
                                                     @else
                                                         <span class="badge bg-secondary">รอตรวจสอบ</span>
@@ -77,7 +75,7 @@
                                                 </span>
                                             </div>
                                         @else
-                                            @if ($item->approved == '1')
+                                            @if ($query->approved == '1')
                                                 <span class="badge bg-success">อนุมัติแล้ว</span>
                                             @else
                                                 <span class="badge bg-secondary">รอตรวจสอบ</span>
@@ -85,48 +83,103 @@
                                         @endif
                                     </td>
                                     <td class="table-cell text-center">
-                                        @if ($item->levelNo == 1)
+                                        @if ($query->levelNo == 1)
                                             <span class="badge bg-success">จริง</span>
-                                        @elseif($item->levelNo == 2)
+                                        @elseif($query->levelNo == 2)
                                             <span class="badge bg-secondary">สำรอง</span>
                                         @endif
                                     </td>
-                                    <td class="table-cell" style="display: none;">{{ $item->year }}</td>
-                                    <td class="table-cell" style="text-align: left;">{{ $item->description }}</td>
-                                    <td class="table-cell" style="text-align: right;">{{ number_format($item->price) }}
-                                    </td>
-                                    <td class="table-cell" style="text-align: right;">{{ $item->qty }}
-                                        {{ $item->unit }}</td>
+                                    @if ($query->levelNo != 2 && $query->request_type == 1)
+                                        <td class="table-cell">
+                                            @php
+                                                $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                            @endphp
+
+                                            @if ($filteredItems->count() > 0)
+                                                <button type="button"
+                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                    class="btn btn-outline-success btn-sm position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                                    @foreach ($filteredItems as $item)
+                                                        <span class="badge rounded-pill bg-danger">
+                                                            {{ $item->count_detail }}
+                                                        </span>
+                                                    @endforeach
+                                                    ครุภัณฑ์
+                                                </button>
+                                            @else
+                                                <button type="button"
+                                                    wire:click.prevent="add_detail({{ $query->id }})"
+                                                    class="btn btn-outline-success btn-sm position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                                    + ครุภัณฑ์
+                                                </button>
+                                            @endif
+                                        </td>
+                                    @else
+                                        <td></td>
+                                    @endif
+
+                                    <td class="table-cell" style="display: none;">{{ $query->year }}</td>
+                                    <td class="table-cell" style="text-align: left;">{{ $query->description }}</td>
                                     <td class="table-cell" style="text-align: right;">
-                                        {{ number_format($item->price * $item->qty) }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $item->reason }}</td>
-                                    <td class="table-cell" style="text-align: left;">{{ $item->TCHN_LOCAT_NAME }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $item->remark }}</td>
+                                        {{ number_format($query->price) }}
+                                    </td>
+                                    <td class="table-cell" style="text-align: right;">
+                                        @php
+                                            $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                        @endphp
+                                        @if ($filteredItems->count() > 0 && $query->levelNo == 1)
+                                            @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
+                                                <span style="color: #53a9fa">
+                                                    {{ $item->count_detail }}
+                                                </span>
+                                            @endforeach / {{ $query->qty }}
+                                            {{ $query->unit }}
+                                        @else
+                                            {{ $query->qty }}
+                                            {{ $query->unit }}
+                                        @endif
+                                    </td>
+
+                                    <td class="table-cell" style="text-align: right;">
+                                        {{ number_format($query->price * $query->qty) }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->reason }}</td>
+                                    <td class="table-cell" style="text-align: left;">{{ $query->TCHN_LOCAT_NAME }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
                                     <td class="table-cell text-center" style="display: none;">
-                                        @if ($item->request_type == 1)
+                                        @if ($query->request_type == 1)
                                             <span>ทดแทน</span>
-                                        @elseif($item->request_type == 2)
+                                        @elseif($query->request_type == 2)
                                             <span>เพิ่มศักยภาพ</span>
                                         @endif
                                     </td>
-                                    <td class="table-cell" style="display: none;">{{ $item->updated_at }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->updated_at }}</td>
                                     <td class="table-cell" style="text-align: right;">
-                                        {{-- @if ($item->approved == '1' && $item->levelNo == '1')
+                                        {{-- @if ($query->approved == '1' && $query->levelNo == '1')
                                         @else --}}
-                                            <button type="button" wire:click.prevent="edit({{ $item->id }})"
-                                                class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal1">
-                                                แก้ไข
-                                            </button>
+                                        <button type="button" wire:click.prevent="edit({{ $query->id }})"
+                                            class="btn btn-outline-info btn-sm " data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal1">
+                                            แก้ไข
+                                        </button>
                                         {{-- @endif --}}
-                                        <button type="button" wire:click.prevent="deletePost({{ $item->id }})"
+                                        <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
                                             class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
-                                    <td class="table-cell" style="display: none;"> {{ $item->unit }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $item->qty }}</td>
+                                    <td class="table-cell" style="display: none;"> {{ $query->unit }}</td>
+                                    <td class="table-cell" style="display: none;">{{ $query->qty }}</td>
                                     <td class="table-cell" style="display: none;">
-                                        @if ($item->approved == '1')
-                                            <button onclick="generatePdf({{ $item->id }})"
+                                        @php
+                                            $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
+                                        @endphp
+                                        @if ($query->approved == '1' && $filteredItems->count() > 0)
+                                            <button onclick="generatePdf({{ $query->id }})"
+                                                class="btn btn-danger btn-sm"><i
+                                                    class="fa-duotone fa-file-pdf fa-lg"></i>
+                                                PDF</button>
+                                        @elseif ($query->request_type == '2')
+                                            <button onclick="generatePdf2({{ $query->id }})"
                                                 class="btn btn-danger btn-sm"><i
                                                     class="fa-duotone fa-file-pdf fa-lg"></i>
                                                 PDF</button>
@@ -135,10 +188,11 @@
                                                 ไม่สามารถปริ้นได้
                                             </span>
                                         @endif
+
                                     </td>
+                                </tr>
                             @endif
                         @endforeach
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -212,6 +266,10 @@
 
         }
 
+        function generatePdf2(id) {
+            window.open('/replaceEquipPdf2/' + id, '_blank');
+
+        }
         initializeDataTable()
 
         var table
@@ -237,7 +295,7 @@
                     }
                 },
                 "rowCallback": function(row, data) {
-                    var columnIndexToExclude = [1, 2, 13];
+                    var columnIndexToExclude = [1, 3, 14];
 
                     $(row).on('click', 'td', function(e) {
                         if (!columnIndexToExclude.includes($(this).index())) {
@@ -248,30 +306,30 @@
                                 '<table class="table">' +
                                 '<tr><td>ID</td><td class="text-primary">' + rowData[0] +
                                 '</td></tr>' +
-                                '<tr><td>ปี</td><td class="text-primary">' + rowData[3] +
+                                '<tr><td>ปี</td><td class="text-primary">' + rowData[4] +
                                 '</td></tr>' +
                                 '<tr><td>แผนฯ</td><td class="text-success">' + rowData[2] +
                                 '</td></tr>' +
-                                '<tr><td>ประเภทการขอ</td><td class="text-primary">' + rowData[11] +
+                                '<tr><td>ประเภทการขอ</td><td class="text-primary">' + rowData[12] +
                                 '</td></tr>' +
-                                '<tr><td>ชื่อรายการ</td><td class="text-primary">' + rowData[4] +
+                                '<tr><td>ชื่อรายการ</td><td class="text-primary">' + rowData[5] +
                                 '</td></tr>' +
-                                '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[5] +
+                                '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[6] +
                                 ' บาท</td></tr>' +
-                                '<tr><td>จำนวน</td><td class="text-primary">' + rowData[6] +
+                                '<tr><td>จำนวน</td><td class="text-primary">' + rowData[7] +
                                 '</td></tr>' +
-                                '<tr><td>วงเงินรวม</td><td class="text-primary">' + rowData[7] +
+                                '<tr><td>วงเงินรวม</td><td class="text-primary">' + rowData[8] +
                                 ' บาท</td></tr>' +
                                 '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
-                                rowData[8] + '</td></tr>' +
+                                rowData[9] + '</td></tr>' +
                                 '<tr><td>หน่วยงานที่เบิก</td><td class="text-success">' + rowData[
-                                    9] + '</td></tr>' +
-                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[10] +
+                                    10] + '</td></tr>' +
+                                '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[11] +
                                 '</td></tr>' +
                                 '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
-                                rowData[12] + '</td></tr>' +
+                                rowData[13] + '</td></tr>' +
                                 '<tr><td>Print Out</td><td class="text-secondary">' +
-                                rowData[16] + '</td></tr>' +
+                                rowData[17] + '</td></tr>' +
                                 '</table>'
                             );
                         }
@@ -297,7 +355,7 @@
                     title: `รายงานแผนจัดซื้อคุรุภัณฑ์ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [1, 2, 3, 4, 5, 15, 14, 7, 8, 9, 10, 11, 12]
+                        columns: [1, 2, 4, 5, 6, 16, 15, 8, 9, 10, 11, 12, 13]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {

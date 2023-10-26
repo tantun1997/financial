@@ -7,7 +7,7 @@
                 <div class="modal-header" style="background-color: rgb(236, 134, 120)">
                     <h5 class="modal-title" id="exampleModal1Label" style="color: black"><i
                             class="fa-solid fa-screwdriver-wrench fa-lg"></i>
-                        แก้ไขแผนจัดซื้อคุรุภัณฑ์</h5>
+                        แก้ไขแผนจัดซื้อครุภัณฑ์</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="closeModal"></button>
                 </div>
