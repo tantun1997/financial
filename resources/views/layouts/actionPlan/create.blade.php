@@ -1,9 +1,10 @@
 <div class="container-fluid px-4">
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. 2567</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}
+    </h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item "><a href="{{ route('action_plan') }}">แผนปฏิบัติการ</a></li>
         <li class="breadcrumb-item active">
-            สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. 2567</li>
+            สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</li>
     </ol>
     <hr>
 

@@ -16,6 +16,7 @@ class EditActionPlan extends Component
         $userId, $created_at, $updated_at, $dept_id, $active;
     public $rows = [];
     public $i = 1;
+    public $year;
 
     public function addRow($i)
     {
@@ -37,6 +38,9 @@ class EditActionPlan extends Component
         $this->active = '1';
         $this->created_at = now();
         $this->updated_at = now();
+
+        $currentYear = date('Y') + 543; // แปลงปีให้เป็น พ.ศ.
+        $this->year = $currentYear + 1;
     }
 
     public function nextCreatePage2()

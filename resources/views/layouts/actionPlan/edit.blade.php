@@ -1,9 +1,10 @@
 <div class="container-fluid px-4">
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. 2567</h3>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}
+    </h3>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item "><a href="{{ route('action_plan') }}">แผนปฏิบัติการ</a></li>
         <li class="breadcrumb-item active">
-            สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. 2567</li>
+            สร้างแผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</li>
     </ol>
     <hr>
     <table class="table-bordered table-sm" style="width: 100%;">
@@ -135,7 +136,7 @@
                         <td style="text-align: center;">{{ $item->Q2 }}</td>
                         <td style="text-align: center;"> {{ $item->Q3 }}</td>
                         <td style="text-align: center;"> {{ $item->Q4 }} </td>
-                        <td style="text-align: center;"> {{ $item->budgetAmount }}</td>
+                        <td style="text-align: center;"> {{ number_format($item->budgetAmount) }}</td>
                         <td style="text-align: center;"> {{ $item->BGS_Name }}</select></td>
                         <td style="text-align: center;"> {{ $item->person_name }}</td>
                         <td style="text-align: center;">

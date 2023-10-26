@@ -1,10 +1,6 @@
 <div class="container-fluid px-4">
     @include('layouts.loading')
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> แผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. 2567</h3>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">
-            แผนปฏิบัติการ</li>
-    </ol>
+    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> แผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</h3>
     <hr>
     <div class="mb-3">
         <a class="btn btn-primary" href="{{ route('creat_action_plan') }}" role="button">สร้างแผนปฏิบัติการ</a>
@@ -28,7 +24,7 @@
                     <thead>
                         <tr>
                             <th class="text-left" style="width: 60%;">ชื่อรายการ</th>
-                            <th class="text-left">แผนก</th>
+                            <th class="text-left" style="width: 30%;">แผนก</th>
                             <th class="text-center">action</th>
                         </tr>
                     </thead>
