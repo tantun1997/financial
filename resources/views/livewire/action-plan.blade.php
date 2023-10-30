@@ -17,19 +17,19 @@
     @endif
 
     <div class="card mb-4">
-        <div class="card-header">
+        {{-- <div class="card-header">
 
             <div id="newButtonContainer" style="float: right;" wire:ignore>
                 <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
             </div>
-        </div>
+        </div> --}}
         <div class="card-body">
             <div>
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-left" style="width: 50%;">ชื่อรายการ</th>
-                            <th class="text-left" style="width: 25%;">แผนก</th>
+                            <th class="text-left" style="width: 60%;">ชื่อรายการ</th>
+                            <th class="text-left">แผนก</th>
                             <th class="text-left">ประเภทแผน</th>
                             <th class="text-center">action</th>
                         </tr>
@@ -38,19 +38,20 @@
                         @foreach ($ACP_ProjectName_Main as $item)
                             @if ($item->dept_id == Auth::user()->deptId || Auth::user()->isAdmin == 'Y')
                                 <tr>
-                                    <td>{{ $item->project_name }}</td>
-                                    <td>{{ $item->dept_name }}</td>
-                                    <td class="text-left">
+                                    <td class="text-left table-cell">{{ $item->project_name }}</td>
+                                    <td class="text-left table-cell">{{ $item->dept_name }}</td>
+                                    <td class="text-left table-cell">
                                         @if ($item->planType == 'strategic')
                                             <span>แผนยุทธศาสตร์</span>
                                         @elseif($item->planType == 'regular')
                                             <span>แผนประจำ</span>
                                         @endif
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center table-cell">
                                         <a class="btn btn-outline-primary btn-sm"
                                             href="{{ route('detail_action_plan', ['id' => $item->project_ID]) }}">ดูข้อมูล</a>
-                                        <button type="button" class="btn btn-outline-danger btn-sm">ลบ</button>
+                                        <button type="button" wire:click="deleteRow({{ $item->project_ID }})"
+                                            class="btn btn-outline-danger btn-sm">ลบ</button>
                                     </td>
                                 </tr>
                             @endif
@@ -76,8 +77,7 @@
         }
     </style>
     <script>
-        initializeDataTable()
-
+        initializeDataTable();
         var table
 
         function initializeDataTable() {
@@ -120,7 +120,7 @@
                     title: `รายงานแผนฯบำรุงรักษา หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0]
+                        columns: [0, 1, 2]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
