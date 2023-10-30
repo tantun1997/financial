@@ -50,6 +50,7 @@
                             <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 15 -->
                             <th class="text-center" style="display: none;">จำนวน</th><!-- 16 -->
                             <th class="text-center" style="display: none;">Print out</th><!-- 17 -->
+                            <th class="text-center" style="display: none;">ประเภทงบประมาณ</th><!-- 18 -->
 
                         </tr>
                     </thead>
@@ -190,6 +191,7 @@
                                         @endif
 
                                     </td>
+                                    <td class="table-cell" style="display: none;">{{ $query->BGS_NAME }}</td>
                                 </tr>
                             @endif
                         @endforeach
@@ -310,23 +312,28 @@
                                 '</td></tr>' +
                                 '<tr><td>แผนฯ</td><td class="text-success">' + rowData[2] +
                                 '</td></tr>' +
-                                '<tr><td>ประเภทการขอ</td><td class="text-primary">' + rowData[12] +
+                                '<tr><td style=" white-space: nowrap;">ประเภทการขอ</td><td class="text-primary">' +
+                                rowData[12] +
                                 '</td></tr>' +
                                 '<tr><td>ชื่อรายการ</td><td class="text-primary">' + rowData[5] +
                                 '</td></tr>' +
-                                '<tr><td>ราคาต่อหน่วย</td><td class="text-primary">' + rowData[6] +
+                                '<tr><td style=" white-space: nowrap;">ราคาต่อหน่วย</td><td class="text-primary">' +
+                                rowData[6] +
                                 ' บาท</td></tr>' +
                                 '<tr><td>จำนวน</td><td class="text-primary">' + rowData[7] +
                                 '</td></tr>' +
                                 '<tr><td>วงเงินรวม</td><td class="text-primary">' + rowData[8] +
                                 ' บาท</td></tr>' +
-                                '<tr><td>เหตุผลและความจำเป็น</td><td class="text-primary">' +
+                                '<tr><td style=" white-space: nowrap;">ประเภทงบประมาณ</td><td class="text-primary">' +
+                                rowData[18] + '</td></tr>' +
+                                '<tr><td style=" white-space: nowrap;">เหตุผลและความจำเป็น</td><td class="text-primary">' +
                                 rowData[9] + '</td></tr>' +
-                                '<tr><td>หน่วยงานที่เบิก</td><td class="text-success">' + rowData[
+                                '<tr><td style=" white-space: nowrap;">หน่วยงานที่เบิก</td><td class="text-success">' +
+                                rowData[
                                     10] + '</td></tr>' +
                                 '<tr><td>หมายเหตุ</td><td class="text-danger">' + rowData[11] +
                                 '</td></tr>' +
-                                '<tr><td>วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
+                                '<tr><td style=" white-space: nowrap;">วันที่ปรับปรุงข้อมูล</td><td class="text-secondary">' +
                                 rowData[13] + '</td></tr>' +
                                 '<tr><td>Print Out</td><td class="text-secondary">' +
                                 rowData[17] + '</td></tr>' +
@@ -355,7 +362,7 @@
                     title: `รายงานแผนจัดซื้อคุรุภัณฑ์ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [1, 2, 4, 5, 6, 16, 15, 8, 9, 10, 11, 12, 13]
+                        columns: [1, 2, 4, 5, 6, 16, 15, 8, 18, 9, 10, 11, 12, 13]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {

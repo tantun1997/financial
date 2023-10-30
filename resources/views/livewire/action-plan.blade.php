@@ -3,8 +3,13 @@
     <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> แผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</h3>
     <hr>
     <div class="mb-3">
-        <a class="btn btn-primary" href="{{ route('creat_action_plan') }}" role="button">สร้างแผนปฏิบัติการ</a>
+        <a class="btn btn-outline-primary" href="{{ route('creat_action_plan', ['planType' => 'strategic']) }}"
+            role="button">สร้างแผนยทุธศาสตร์</a>
+        <a class="btn btn-outline-primary" href="{{ route('creat_action_plan', ['planType' => 'regular']) }}"
+            role="button">สร้างแผนประจำ</a>
     </div>
+
+
     @if (session()->has('success'))
         <div class="alert alert-success" role="alert">
             {{ session()->get('success') }}
@@ -23,22 +28,32 @@
                 <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th class="text-left" style="width: 60%;">ชื่อรายการ</th>
-                            <th class="text-left" style="width: 30%;">แผนก</th>
+                            <th class="text-left" style="width: 50%;">ชื่อรายการ</th>
+                            <th class="text-left" style="width: 25%;">แผนก</th>
+                            <th class="text-left">ประเภทแผน</th>
                             <th class="text-center">action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($ACP_ProjectName_Main as $item)
-                            <tr>
-                                <td>{{ $item->project_name }}</td>
-                                <td>{{ $item->dept_name }}</td>
-                                <td>
-                                    <a class="btn btn-outline-primary btn-sm"
-                                        href="{{ route('detail_action_plan', ['id' => $item->project_ID]) }}">ดูข้อมูล</a>
-                                    <button type="button" class="btn btn-outline-danger btn-sm">ลบ</button>
-                                </td>
-                            </tr>
+                            @if ($item->dept_id == Auth::user()->deptId || Auth::user()->isAdmin == 'Y')
+                                <tr>
+                                    <td>{{ $item->project_name }}</td>
+                                    <td>{{ $item->dept_name }}</td>
+                                    <td class="text-left">
+                                        @if ($item->planType == 'strategic')
+                                            <span>แผนยุทธศาสตร์</span>
+                                        @elseif($item->planType == 'regular')
+                                            <span>แผนประจำ</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-outline-primary btn-sm"
+                                            href="{{ route('detail_action_plan', ['id' => $item->project_ID]) }}">ดูข้อมูล</a>
+                                        <button type="button" class="btn btn-outline-danger btn-sm">ลบ</button>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -91,8 +106,10 @@
                 responsive: true,
                 ordering: true,
                 lengthMenu: [
-                    [-1, 20, 30, 50],
-                    ['ทั้งหมด', '20', '30', '50']
+                    // [-1, 20, 30, 50],
+                    // ['ทั้งหมด', '20', '30', '50']
+                    [30, 50, 100, -1],
+                    ['30', '50', '100', 'ทั้งหมด']
                 ],
 
                 //   dom: 'Bfrtip',

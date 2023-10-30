@@ -16,7 +16,7 @@ class ReplaceIncreaseEquip extends Component
 
     protected $listeners = ['deleteConfirmed'];
 
-    public $request_type, $description, $price, $unit, $qty, $reason, $deptId, $year, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
+    public $BGS_ID, $request_type, $description, $price, $unit, $qty, $reason, $deptId, $year, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
     public $EQUP_ID, $EQUP_NAME, $EQUP_CAT_ID, $EQUP_TYPE_ID, $EQUP_SEQ, $TCHN_LOCAT_ID, $EQUP_STS_ID, $PRODCT_CAT_ID, $PROC_ID, $EQUP_PRICE, $EQUP_LINK_NO, $EQUP_STS_DESC;
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -191,6 +191,7 @@ class ReplaceIncreaseEquip extends Component
             'unit' => 'required|regex:/^[^0-9]*$/',
             'qty' => 'required|numeric|min:1',
             'request_type' => 'required',
+            'BGS_ID' => 'required',
             'reason' => 'required',
             'deptId' => 'required',
             'remark' => 'nullable',
@@ -198,6 +199,7 @@ class ReplaceIncreaseEquip extends Component
             'enable' => 'required',
             'created_at' => 'required',
             'updated_at' => 'required'
+
         ]);
 
         DB::table('replace_increase_equip')->insert($validatedData);
@@ -230,6 +232,7 @@ class ReplaceIncreaseEquip extends Component
         $this->updated_at = now();
         $this->edit_id = $id;
         $this->request_type = $data->request_type;
+        $this->BGS_ID = $data->BGS_ID;
     }
     public function update()
     {
@@ -241,6 +244,7 @@ class ReplaceIncreaseEquip extends Component
             'unit' => 'required|regex:/^[^0-9]*$/',
             'qty' => 'required|numeric|min:1',
             'request_type' => 'required',
+            'BGS_ID' => 'required',
             'reason' => 'required',
             'deptId' => 'required',
             'remark' => 'nullable',
@@ -265,8 +269,8 @@ class ReplaceIncreaseEquip extends Component
             'levelNo' => $this->levelNo,
             'created_at' =>  $this->created_at,
             'updated_at' =>  $this->updated_at = now(),
-            'request_type' => $this->request_type
-
+            'request_type' => $this->request_type,
+            'BGS_ID' => $this->BGS_ID
         ]);
 
         session()->flash('success', 'เปลี่ยนข้อมูลสำเร็จ!!');
@@ -288,6 +292,7 @@ class ReplaceIncreaseEquip extends Component
         $this->unit = '';
         $this->qty = '1';
         $this->request_type = '';
+        $this->BGS_ID = '';
         $this->reason = '';
         $this->deptId = Auth::user()->deptId;
         $this->remark = '';

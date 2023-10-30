@@ -64,7 +64,7 @@
                                @enderror
                            </div>
                            <div class="col-md-3">
-                               <span id="request_type"><i class="fa-light fa-list fa-sm"></i> ประเภท</span>
+                               <span id="request_type"><i class="fa-light fa-list fa-sm"></i> ประเภทการขอ</span>
                                <select class="form-select @error('request_type') is-invalid @enderror"
                                    wire:model.defer="request_type" id="request_type" style="width: 100%;"
                                    aria-labelledby="request_type">
@@ -75,7 +75,22 @@
                                    </option>
                                </select>
                                @error('request_type')
-                                   <span class="text-danger error">โปรดเลือกประเภท</span>
+                                   <span class="text-danger error">โปรดเลือกประเภทการขอ</span>
+                               @enderror
+                           </div>
+                           <div class="col-md-3">
+                               <span id="BGS_ID"><i class="fa-light fa-list fa-sm"></i> ประเภทงบประมาณ</span>
+                               <select class="form-select @error('BGS_ID') is-invalid @enderror"
+                                   wire:model.defer="BGS_ID" id="BGS_ID" style="width: 100%;"
+                                   aria-labelledby="BGS_ID">
+                                   <option value="" selected>เลือก</option>
+                                   <option value="" disabled>-------------------------</option>
+                                   <option value="1">เงินบำรุง / เงินบริจาค</option>
+                                   <option value="2">งบค่าเสื่อม</option>
+                                   <option value="3">งบประมาณ</option>
+                               </select>
+                               @error('BGS_ID')
+                                   <span class="text-danger error">โปรดเลือกประเภทงบประมาณ</span>
                                @enderror
                            </div>
                        </div>
