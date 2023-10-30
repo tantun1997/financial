@@ -739,7 +739,7 @@
                                 <td style="text-align: center; white-space: nowrap;"> {{ $item->Q3_NAME }}</td>
                                 <td style="text-align: center; white-space: nowrap;"> {{ $item->Q4_NAME }} </td>
                                 <td style="text-align: center;"> {{ number_format($item->budgetAmount) }}</td>
-                                <td style="text-align: center; white-space: nowrap;"> {{ $item->BGS_Name }}</select>
+                                <td style="text-align: center; "> {{ $item->BGS_Name }}</select>
                                 </td>
                                 <td style="text-align: center;"> {{ $item->person_name }}</td>
 
@@ -880,7 +880,7 @@
                                 <td style="text-align: center; white-space: nowrap;"> {{ $item->Q3_NAME }}</td>
                                 <td style="text-align: center; white-space: nowrap;"> {{ $item->Q4_NAME }} </td>
                                 <td style="text-align: center;"> {{ number_format($item->budgetAmount) }}</td>
-                                <td style="text-align: center; white-space: nowrap;"> {{ $item->BGS_Name }}</select>
+                                <td style="text-align: center; "> {{ $item->BGS_Name }}</select>
                                 </td>
                                 <td style="text-align: center;"> {{ $item->person_name }}</td>
 
