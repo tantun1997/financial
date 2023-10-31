@@ -13,7 +13,7 @@ class CreateActionPlan extends Component
     public $goToCreatePage2 = false;
     public $project_name, $budget, $dept_name, $work_group, $M_ID, $F_ID, $SI_ID, $G_ID, $T_ID, $Indi_ID, $sub_kpi, $objective_project,
         $userId, $created_at, $updated_at, $dept_id, $active;
-    public $eventNActivity_name, $groupTarget, $amountTarget, $place, $Q1, $Q2, $Q3, $Q4, $budgetAmount, $BGS_Id, $person_name, $P_Id, $project_ID;
+    public $project_detail_id, $eventNActivity_name, $groupTarget, $amountTarget, $place, $Q1, $Q2, $Q3, $Q4, $budgetAmount, $BGS_Id, $person_name, $P_Id, $project_ID;
 
     public $rows = [];
     public $i = 1;
@@ -77,7 +77,7 @@ class CreateActionPlan extends Component
                 return;
             }
 
-            $ACP_ProjectName_Main = DB::table('ACP_ProjectName_Main')->insert($validatedData);
+            $ACP_ProjectName_Main = DB::table('ACP_ProjectName_Main')->insertGetId($validatedData);
 
             if ($ACP_ProjectName_Main) {
                 $this->project_ID = $ACP_ProjectName_Main;

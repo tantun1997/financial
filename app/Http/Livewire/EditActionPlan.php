@@ -17,9 +17,6 @@ class EditActionPlan extends Component
     public $eventNActivity_name, $groupTarget, $amountTarget, $place, $Q1, $Q2, $Q3,
         $Q4, $budgetAmount, $BGS_Id, $person_name, $P_Id, $project_ID, $project_detail_id;
     public $planType;
-
-    public $rows = [];
-    public $i = 1;
     public $year;
     public $editID;
     public $Edit_ACP_Project_Detail;
@@ -42,25 +39,25 @@ class EditActionPlan extends Component
         $this->sub_kpi = $ACP_ProjectName_Main->sub_kpi;
         $this->objective_project = $ACP_ProjectName_Main->objective_project;
 
-        $this->Edit_ACP_Project_Detail = DB::table('VW_ACP_Project_Detail')->where('project_ID', $id)->get();
+        $this->Edit_ACP_Project_Detail = DB::table('ACP_Project_Detail')->where('project_ID', $id)->get();
         foreach ($this->Edit_ACP_Project_Detail as $index => $item) {
             $this->project_detail_id[$index] = $item->project_detail_id;
             $this->eventNActivity_name[$index] = $item->eventNActivity_name;
             $this->groupTarget[$index] = $item->groupTarget;
             $this->amountTarget[$index] = $item->amountTarget;
             $this->place[$index] = $item->place;
-            $this->Q1[$index] = $item->Q1_ID;
-            $this->Q2[$index] = $item->Q2_ID;
-            $this->Q3[$index] = $item->Q3_ID;
-            $this->Q4[$index] = $item->Q4_ID;
+            $this->Q1[$index] = $item->Q1;
+            $this->Q2[$index] = $item->Q2;
+            $this->Q3[$index] = $item->Q3;
+            $this->Q4[$index] = $item->Q4;
             $this->budgetAmount[$index] = $item->budgetAmount;
             $this->BGS_Id[$index] = $item->BGS_Id;
             $this->person_name[$index] = $item->person_name;
             $this->P_Id[$index] = $item->P_Id;
         }
-
-        // dd($this->Edit_ACP_Project_Detail);
     }
+
+
     public function acceptActionPlan($id)
     {
         DB::table('ACP_ProjectName_Main')->where('project_ID', $id)
@@ -75,25 +72,35 @@ class EditActionPlan extends Component
                 'sub_kpi' => $this->sub_kpi,
                 'objective_project' => $this->objective_project,
             ]);
-        foreach ($this->eventNActivity_name as $index => $item) {
-            DB::table('ACP_Project_Detail')->where('project_ID', $id)
-                ->where('project_detail_id', $this->project_detail_id[$index])
-                ->update([
-                    'eventNActivity_name' =>
-                    $this->eventNActivity_name[$index],
-                    'groupTarget' => $this->groupTarget[$index],
-                    'amountTarget' => $this->amountTarget[$index],
-                    'place' => $this->place[$index],
-                    'Q1' => $this->Q1[$index],
-                    'Q2' => $this->Q2[$index],
-                    'Q3' => $this->Q3[$index],
-                    'Q4' => $this->Q4[$index],
-                    'budgetAmount' => $this->budgetAmount[$index],
-                    'BGS_Id' => $this->BGS_Id[$index],
-                    'person_name' => $this->person_name[$index],
-                    'P_Id' => $this->P_Id[$index]
-                ]);
+        foreach ($this->Edit_ACP_Project_Detail as $item) {
+            if ($item['project_detail_id'] !== null) {
+                DB::table('ACP_Project_Detail')
+                    ->updateOrInsert(
+                        [
+                            'project_ID' => $id,
+                            'project_detail_id' => $item['project_detail_id'],
+                        ],
+                        [
+                            'eventNActivity_name' => $item['eventNActivity_name'],
+                            'groupTarget' => $item['groupTarget'],
+                            'amountTarget' => $item['amountTarget'],
+                            'place' => $item['place'],
+                            'budgetAmount' => $item['budgetAmount'],
+                            'BGS_Id' => $item['BGS_Id'],
+                            'person_name' => $item['person_name'],
+                            'P_Id' => $item['P_Id'],
+                            'project_ID' => $id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                            'Q1' => isset($item['Q1']) ? $item['Q1'] : null,
+                            'Q2' => isset($item['Q2']) ? $item['Q2'] : null,
+                            'Q3' => isset($item['Q3']) ? $item['Q3'] : null,
+                            'Q4' => isset($item['Q4']) ? $item['Q4'] : null,
+                        ]
+                    );
+            }
         }
+
         $totalBudget = DB::table('ACP_Project_Detail')
             ->where('project_ID', $id)
             ->sum('budgetAmount');
@@ -106,21 +113,84 @@ class EditActionPlan extends Component
         $this->dispatchBrowserEvent('swal:modal', [
             'type' => 'success',
             'message' => 'แก้ไขข้อมูลสำเร็จ!!',
-            'text' => 'ข้อมูลถูกแก้ไขข้อมูลเรียบร้อยแล้ว',
+            'text' => 'ข้อมูลถูกแก้ไขเรียบร้อยแล้ว',
             'urls' => '/action_plan/detail?id=' . $id
         ]);
     }
-    public function addRow($i)
-    {
-        $i = $i + 1;
-        $this->i = $i;
-        array_push($this->rows, $i);
-    }
-    public function removeRow($i)
-    {
+    protected $listeners = ['refreshTable' => '$refresh'];
 
-        unset($this->rows, $i);
+    public function addRow($editID)
+    {
+        $newRowId = DB::table('ACP_Project_Detail')->insertGetId([
+            'eventNActivity_name' => null,
+            'groupTarget' => null,
+            'amountTarget' => null,
+            'place' => null,
+            'Q1' => null,
+            'Q2' => null,
+            'Q3' => null,
+            'Q4' => null,
+            'budgetAmount' => null,
+            'BGS_Id' => null,
+            'person_name' => null,
+            'P_Id' => null,
+            'project_ID' => $editID,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if ($newRowId) {
+            $this->Edit_ACP_Project_Detail[] = [
+                'project_detail_id' => (string) $newRowId,
+                'eventNActivity_name' => null,
+                'groupTarget' => null,
+                'amountTarget' => null,
+                'place' => null,
+                'Q1' => null,
+                'Q2' => null,
+                'Q3' => null,
+                'Q4' => null,
+                'budgetAmount' => null,
+                'BGS_Id' => null,
+                'person_name' => null,
+                'P_Id' => null,
+                'project_ID' => (string)$editID,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        // dd($this->Edit_ACP_Project_Detail);
+
+        $this->emit('refreshTable');
     }
+
+
+    public function removeRow($index, $Edit_ID_Project_Detail, $editID)
+    {
+        $project_detail_id = $Edit_ID_Project_Detail[$index];
+
+        unset($this->Edit_ACP_Project_Detail[$index]);
+        // สร้าง collection ใหม่โดยเอาค่า null ออก
+        $this->Edit_ACP_Project_Detail = $this->Edit_ACP_Project_Detail->filter(function ($item) {
+            return !is_null($item['project_detail_id']);
+        });
+
+        DB::table('ACP_Project_Detail')
+            ->where('project_detail_id', $project_detail_id)
+            ->delete();
+
+        $totalBudget = DB::table('ACP_Project_Detail')
+            ->where('project_ID', $editID)
+            ->sum('budgetAmount');
+
+        DB::table('ACP_ProjectName_Main')
+            ->where('project_ID', $editID)
+            ->update(['budget' => $totalBudget]);
+
+        session()->flash('success2', "ลบข้อมูลสำเร็จ!!");
+        $this->emit('refreshTable');
+    }
+
 
     public function mount()
     {

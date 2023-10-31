@@ -141,6 +141,6 @@
             @endforeach
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" wire:click.prevent='addRow({{ $i }})'>+เพิ่ม</button>
+    <button type="button" class="btn btn-primary" wire:click.prevent='addRow({{ $i }})'>เพิ่ม</button>
 </div>
 <br>

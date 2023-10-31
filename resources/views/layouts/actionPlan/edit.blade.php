@@ -172,11 +172,16 @@
                     </td>
                 </tr>
             </table>
-
+            @if (session()->has('success2'))
+                <div class="alert alert-success" role="alert">
+                    {{ session()->get('success2') }}
+                </div>
+            @endif
             <div style="max-height: 100%; overflow-x: scroll; ">
                 <table class="table-bordered table-sm" style="width: 100%;">
                     <thead>
                         <tr>
+                            <th style="text-align: center;">-</th>
                             <th style="text-align: center;">ลำดับ</th>
                             <th style="text-align: center; white-space: nowrap;">แผนที่เกี่ยวข้อง</th>
                             <th style="text-align: center;">งานและกิจกรรม</th>
@@ -187,6 +192,7 @@
                             <th style="text-align: center; white-space: nowrap;">ผู้รับผิดชอบ</th>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -204,7 +210,15 @@
                     </thead>
                     <tbody>
                         @foreach ($Edit_ACP_Project_Detail as $index => $item)
+                            @php
+                                $itemArray = json_decode(json_encode($item), true);
+                            @endphp
                             <tr>
+                                <td style="text-align: center;">
+                                    <button type="button"
+                                        wire:click.prevent="removeRow({{ $index }},{{ $itemArray['project_detail_id'] }}, {{ $editID }})"
+                                        class="btn btn-outline-danger btn-sm">ลบ</button>
+                                </td>
                                 <td style="text-align: center;">{{ $index + 1 }}</td>
                                 <td style="text-align: center;">
                                     <select class="form-select" wire:model="P_Id.{{ $index }}"
@@ -304,7 +318,8 @@
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-primary"
-                    wire:click.prevent='addRow({{ $i }})'>+เพิ่ม</button>
+                    wire:click.prevent='addRow({{ $editID }})'>+เพิ่ม
+                </button>
             </div>
         @elseif ($planType == 'regular')
             <div style="display: flex; justify-content: space-between;">
@@ -472,10 +487,21 @@
                     </td>
                 </tr>
             </table>
+            @if (session()->has('success2'))
+                <div class="alert alert-success" role="alert">
+                    {{ session()->get('success2') }}
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="alert alert-success" role="alert">
+                    {{ session()->get('error') }}
+                </div>
+            @endif
             <div style="max-height: 100%; overflow-x: scroll; ">
                 <table class="table-bordered table-sm" style="width: 100%;">
                     <thead>
                         <tr>
+                            <th style="text-align: center;">-</th>
                             <th style="text-align: center;">ลำดับ</th>
                             <th style="text-align: center; white-space: nowrap;">แผนที่เกี่ยวข้อง</th>
                             <th style="text-align: center;">งานและกิจกรรม</th>
@@ -486,6 +512,7 @@
                             <th style="text-align: center; white-space: nowrap;">ผู้รับผิดชอบ</th>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -504,6 +531,11 @@
                     <tbody>
                         @foreach ($Edit_ACP_Project_Detail as $index => $item)
                             <tr>
+                                <td style="text-align: center;">
+                                    <button type="button"
+                                        wire:click.prevent="removeRow({{ $index }},{{ $Edit_ACP_Project_Detail }}, {{ $editID }})"
+                                        class="btn btn-outline-danger btn-sm">ลบ</button>
+                                </td>
                                 <td style="text-align: center;">{{ $index + 1 }}</td>
                                 <td style="text-align: center;">
                                     <select class="form-select" wire:model="P_Id.{{ $index }}"
@@ -603,7 +635,8 @@
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-primary"
-                    wire:click.prevent='addRow({{ $i }})'>+เพิ่ม</button>
+                    wire:click.prevent='addRow({{ $editID }})'>+เพิ่ม
+                </button>
             </div>
         @endif
     @else
@@ -612,7 +645,8 @@
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; white-space: nowrap;"><b
-                                style="margin-right: 5px;">หน่วยงาน:</b> {{ $ACP_ProjectName_Main->dept_name }}</div>
+                                style="margin-right: 5px;">หน่วยงาน:</b> {{ $ACP_ProjectName_Main->dept_name }}
+                        </div>
                     </td>
                     <td>
                         <div style="display: flex; align-items: center; white-space: nowrap;"><b
@@ -753,7 +787,8 @@
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; white-space: nowrap;"><b
-                                style="margin-right: 5px;">หน่วยงาน:</b> {{ $ACP_ProjectName_Main->dept_name }}</div>
+                                style="margin-right: 5px;">หน่วยงาน:</b> {{ $ACP_ProjectName_Main->dept_name }}
+                        </div>
                     </td>
                     <td>
                         <div style="display: flex; align-items: center; white-space: nowrap;"><b
