@@ -1,5 +1,5 @@
 <div class="container-fluid px-4">
-    @include('layouts.loading')
+    {{-- @include('layouts.loading') --}}
     <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> แผนปฏิบัติการ ประจำปีงบประมาณ พ.ศ. {{ $year }}</h3>
     <hr>
     <div class="mb-3">

@@ -123,7 +123,13 @@ class CreateActionPlan extends Component
 
     public function confirmData()
     {
+
         foreach ($this->eventNActivity_name as $key => $value) {
+            $q1Value = isset($this->Q1[$key]) ? implode('', $this->Q1[$key]) : null;
+            $q2Value = isset($this->Q2[$key]) ? implode('', $this->Q2[$key]) : null;
+            $q3Value = isset($this->Q3[$key]) ? implode('', $this->Q3[$key]) : null;
+            $q4Value = isset($this->Q4[$key]) ? implode('', $this->Q4[$key]) : null;
+
             DB::table('ACP_Project_Detail')->insert([
                 'eventNActivity_name' => $this->eventNActivity_name[$key],
                 'groupTarget' => $this->groupTarget[$key],
@@ -136,10 +142,10 @@ class CreateActionPlan extends Component
                 'project_ID' => $this->project_ID,
                 'created_at' => now(),
                 'updated_at' => now(),
-                'Q1' => isset($this->Q1[$key]) ? $this->Q1[$key] : null,
-                'Q2' => isset($this->Q2[$key]) ? $this->Q2[$key] : null,
-                'Q3' => isset($this->Q3[$key]) ? $this->Q3[$key] : null,
-                'Q4' => isset($this->Q4[$key]) ? $this->Q4[$key] : null,
+                'Q1' => $q1Value,
+                'Q2' => $q2Value,
+                'Q3' => $q3Value,
+                'Q4' => $q4Value,
             ]);
         }
         $totalBudget = DB::table('ACP_Project_Detail')

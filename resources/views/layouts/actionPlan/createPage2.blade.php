@@ -1,6 +1,6 @@
 <div style="max-height: 100%; overflow-x: scroll; ">
     <input type="hidden" wire:model="project_ID">
-    <table class="table table-bordered table-sm" style="width: 100%; ">
+    <table class="table-bordered table-sm" style="width: 100%; ">
         <thead>
             <tr>
                 <th style="text-align: center;">ลำดับ</th>
@@ -60,66 +60,64 @@
                             style="width: 150px;" id="place.{{ $value }}"
                             wire:model="place.{{ $value }}" required>
                     </td>
-
-
                     <td style="text-align: center;">
-                        {{-- @foreach (['ต.ค', 'พ.ย', 'ธ.ค'] as $index => $month)
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox"
-                                    id="Q1.{{ $month }}.{{ $value }}"
-                                    wire:model="Q1.{{ $index }}.{{ $value }}"
-                                    value="{{ $month }}">
-                                <label class="form-check-label"
-                                    for="Q1.{{ $month }}.{{ $value }}">{{ $month }}</label>
-                            </div>
-                        @endforeach --}}
-                        <select class="form-select" wire:model="Q1.{{ $value }}" style="width: 140px;"
-                            id="Q1.{{ $value }}">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            @foreach ($ACP_Q1 as $item)
-                                <option value="{{ $item->Q1_ID }}">
-                                    {{ $item->Q1_NAME }} </option>
-                            @endforeach
-                        </select>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.10"
+                                value="10">
+                            <label class="form-check-label">ต.ค.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.11"
+                                value="11">
+                            <label class="form-check-label">พ.ย.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.12"
+                                value="12">
+                            <label class="form-check-label">ธ.ค.</label>
+                        </div>
                     </td>
 
                     <td style="text-align: center;">
-                        <select class="form-select" wire:model="Q2.{{ $value }}" style="width: 140px;"
-                            id="Q2.{{ $value }}">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            @foreach ($ACP_Q2 as $item)
-                                <option value="{{ $item->Q2_ID }}">
-                                    {{ $item->Q2_NAME }} </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td style="text-align: center;">
-                        <select class="form-select" wire:model="Q3.{{ $value }}" style="width: 140px;"
-                            id="Q3.{{ $value }}">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            @foreach ($ACP_Q3 as $item)
-                                <option value="{{ $item->Q3_ID }}">
-                                    {{ $item->Q3_NAME }} </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td style="text-align: center;">
-                        <select class="form-select" wire:model="Q4.{{ $value }}" style="width: 140px;"
-                            id="Q4.{{ $value }}">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            @foreach ($ACP_Q4 as $item)
-                                <option value="{{ $item->Q4_ID }}">
-                                    {{ $item->Q4_NAME }} </option>
-                            @endforeach
-                        </select>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" wire:model="Q2.{{ $value }}.1"
+                                value="1">
+                            <label class="form-check-label">ม.ค.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q2.{{ $value }}.2"
+                                value="2">
+                            <label class="form-check-label">ก.พ.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q2.{{ $value }}.3"
+                                value="3">
+                            <label class="form-check-label">มี.ค.</label>
+                        </div>
                     </td>
 
-                    <td style="text-align: center;"><input class="form-control" type="number" autocomplete="off"
-                            style="width: 140px;" id="budgetAmount.{{ $value }}"
+                    <td style="text-align: center;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.4"
+                                value="4">
+                            <label class="form-check-label">เม.ย.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.5"
+                                value="5">
+                            <label class="form-check-label">พ.ค.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.6"
+                                value="6">
+                            <label class="form-check-label">มิ.ย.</label>
+                        </div>
+                    </td>
+
+                    <td style="text-align: center;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.7"
+                                value="7">
+                            <label class="form-check-label">ก.ค.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.8"
+                                value="8">
+                            <label class="form-check-label">ส.ค.</label><br>
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.9"
+                                value="9">
+                            <label class="form-check-label">ก.ย.</label>
+                        </div>
+                    </td>
+
+                    <td style="text-align: center;"><input class="form-control" type="number" min="1"
+                            autocomplete="off" style="width: 140px;" id="budgetAmount.{{ $value }}"
                             wire:model="budgetAmount.{{ $value }}" required>
                     </td>
                     <td style="text-align: center;">

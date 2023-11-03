@@ -266,45 +266,60 @@
                                     </td>
 
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q1.{{ $index }}"
-                                            style="width: 140px;" id="Q1.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q1 as $item)
-                                                <option value="{{ $item->Q1_ID }}">
-                                                    {{ $item->Q1_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '10' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1012') checked @endif value="10">
+                                            <label class="form-check-label">ต.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '11' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1112') checked @endif value="11">
+                                            <label class="form-check-label">พ.ย.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '12' || $Q1[$index] == '101112' || $Q1[$index] == '1012' || $Q1[$index] == '1112') checked @endif value="12">
+                                            <label class="form-check-label">ธ.ค.</label>
+                                        </div>
+                                    </td>
+
+
+                                    <td style="text-align: center;">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q2[$index] == '1' || $Q2[$index] == '12' || $Q2[$index] == '123' || $Q2[$index] == '13') checked @endif value="1">
+                                            <label class="form-check-label">ม.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q2[$index] == '2' || $Q2[$index] == '12' || $Q2[$index] == '123' || $Q2[$index] == '23') checked @endif value="2">
+                                            <label class="form-check-label">ก.พ.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q2[$index] == '3' || $Q2[$index] == '123' || $Q2[$index] == '13' || $Q2[$index] == '23') checked @endif value="3">
+                                            <label class="form-check-label">มี.ค.</label>
+                                        </div>
                                     </td>
 
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q2.{{ $index }}"
-                                            style="width: 140px;" id="Q2.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q2 as $item)
-                                                <option value="{{ $item->Q2_ID }}">
-                                                    {{ $item->Q2_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q3[$index] == '4' || $Q3[$index] == '45' || $Q3[$index] == '456' || $Q3[$index] == '46') checked @endif value="4">
+                                            <label class="form-check-label">เม.ย.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q3[$index] == '5' || $Q3[$index] == '45' || $Q3[$index] == '456' || $Q3[$index] == '56') checked @endif value="5">
+                                            <label class="form-check-label">พ.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q3[$index] == '6' || $Q3[$index] == '456' || $Q3[$index] == '46' || $Q3[$index] == '56') checked @endif value="6">
+                                            <label class="form-check-label">มิ.ย.</label>
+                                        </div>
                                     </td>
+
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q3.{{ $index }}"
-                                            style="width: 140px;" id="Q3.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q3 as $item)
-                                                <option value="{{ $item->Q3_ID }}">
-                                                    {{ $item->Q3_NAME }} </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q4.{{ $index }}"
-                                            style="width: 140px;" id="Q4.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q4 as $item)
-                                                <option value="{{ $item->Q4_ID }}">
-                                                    {{ $item->Q4_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q4[$index] == '7' || $Q4[$index] == '78' || $Q4[$index] == '789' || $Q4[$index] == '79') checked @endif value="7">
+                                            <label class="form-check-label">ก.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q4[$index] == '8' || $Q4[$index] == '78' || $Q4[$index] == '789' || $Q4[$index] == '89') checked @endif value="8">
+                                            <label class="form-check-label">ส.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q4[$index] == '9' || $Q4[$index] == '789' || $Q4[$index] == '79' || $Q4[$index] == '89') checked @endif value="9">
+                                            <label class="form-check-label">ก.ย.</label>
+                                        </div>
                                     </td>
 
                                     <td style="text-align: center;"><input class="form-control" type="number"
@@ -365,9 +380,9 @@
                         <td>
                             <div style="display: flex; align-items: center; white-space: nowrap;">
                                 <b style="margin-right: 5px;">ชื่อโครงการ:</b>
-                                <input class="form-control @error('project_name') is-invalid @enderror" type="text"
-                                    autocomplete="off" placeholder="ชื่อโครงการ" wire:model="project_name"
-                                    id="project_name" required>
+                                <input class="form-control @error('project_name') is-invalid @enderror"
+                                    type="text" autocomplete="off" placeholder="ชื่อโครงการ"
+                                    wire:model="project_name" id="project_name" required>
                             </div>
 
                         </td>
@@ -580,46 +595,85 @@
                                             wire:model="place.{{ $index }}" required>
                                     </td>
 
+                                    {{-- <td style="text-align: center;">
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" wire:model="Q1.{{ $index }}.10"
+                                                value="10"> 
+
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '10' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1012') checked @endif>
+                                            <label class="form-check-label">ต.ค.</label><br>
+                                             <input type="checkbox" wire:model="Q1.{{ $index }}.11"
+                                                value="11"> 
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '11' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1112') checked @endif>
+                                            <label class="form-check-label">พ.ย.</label><br>
+                                           -- <input type="checkbox" wire:model="Q1.{{ $index }}.12"
+                                                value="12"> 
+                                            <input class="form-check-input" type="checkbox"
+                                                @if ($Q1[$index] == '12' || $Q1[$index] == '101112' || $Q1[$index] == '1012' || $Q1[$index] == '1112') checked @endif>
+                                            <label class="form-check-label">ธ.ค.</label>
+                                        </div>
+                                    </td> --}}
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q1.{{ $index }}"
-                                            style="width: 140px;" id="Q1.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q1 as $item)
-                                                <option value="{{ $item->Q1_ID }}">
-                                                    {{ $item->Q1_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:click="toggleCheckbox({{ $index }}, '10')"
+                                                @if ($Q1[$index] == '10' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1012') checked @endif>
+                                            <label class="form-check-label">ต.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:click="toggleCheckbox({{ $index }}, '11')"
+                                                @if ($Q1[$index] == '11' || $Q1[$index] == '1011' || $Q1[$index] == '101112' || $Q1[$index] == '1112') checked @endif>
+                                            <label class="form-check-label">พ.ย.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:click="toggleCheckbox({{ $index }}, '12')"
+                                                @if ($Q1[$index] == '12' || $Q1[$index] == '101112' || $Q1[$index] == '1012' || $Q1[$index] == '1112') checked @endif>
+                                            <label class="form-check-label">ธ.ค.</label>
+                                        </div>
+                                    </td>
+
+
+                                    <td style="text-align: center;">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q2.{{ $index }}.1" {{-- @if (strpos($Q2[$index], '1') !== false) checked @endif value="1" --}}>
+                                            <label class="form-check-label">ม.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q2.{{ $index }}.2" {{-- @if (strpos($Q2[$index], '2') !== false) checked @endif value="2" --}}>
+                                            <label class="form-check-label">ก.พ.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q2.{{ $index }}.3" {{-- @if (strpos($Q2[$index], '3') !== false) checked @endif value="3" --}}>
+                                            <label class="form-check-label">มี.ค.</label>
+                                        </div>
                                     </td>
 
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q2.{{ $index }}"
-                                            style="width: 140px;" id="Q2.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q2 as $item)
-                                                <option value="{{ $item->Q2_ID }}">
-                                                    {{ $item->Q2_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q3.{{ $index }}.4" {{-- @if (strpos($Q3[$index], '4') !== false) checked @endif value="4" --}}>
+                                            <label class="form-check-label">เม.ย.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q3.{{ $index }}.5" {{-- @if (strpos($Q3[$index], '5') !== false) checked @endif value="5" --}}>
+                                            <label class="form-check-label">พ.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q3.{{ $index }}.6" {{-- @if (strpos($Q3[$index], '6') !== false) checked @endif value="6" --}}>
+                                            <label class="form-check-label">มิ.ย.</label>
+
+                                        </div>
                                     </td>
+
                                     <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q3.{{ $index }}"
-                                            style="width: 140px;" id="Q3.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q3 as $item)
-                                                <option value="{{ $item->Q3_ID }}">
-                                                    {{ $item->Q3_NAME }} </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <select class="form-select" wire:model="Q4.{{ $index }}"
-                                            style="width: 140px;" id="Q4.{{ $index }}">
-                                            <option value="" selected>-------------------------</option>
-                                            @foreach ($ACP_Q4 as $item)
-                                                <option value="{{ $item->Q4_ID }}">
-                                                    {{ $item->Q4_NAME }} </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q4.{{ $index }}.7" {{-- @if (strpos($Q4[$index], '7') !== false) checked @endif value="7" --}}>
+                                            <label class="form-check-label">ก.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q4.{{ $index }}.8" {{-- @if (strpos($Q4[$index], '8') !== false) checked @endif value="8" --}}>
+                                            <label class="form-check-label">ส.ค.</label><br>
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="Q4.{{ $index }}.9" {{-- @if (strpos($Q4[$index], '9') !== false) checked @endif value="9" --}}>
+                                            <label class="form-check-label">ก.ย.</label>
+                                        </div>
                                     </td>
 
                                     <td style="text-align: center;"><input class="form-control" type="number"

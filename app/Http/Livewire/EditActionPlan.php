@@ -21,6 +21,69 @@ class EditActionPlan extends Component
     public $editID;
     public $Edit_ACP_Project_Detail;
 
+    // public function toggleCheckbox($index, $value)
+    // {
+    //     if (is_array($this->Q1[$index])) {
+    //         // ตรวจสอบว่ามีการเลือกทั้ง 10, 11, และ 12 หรือไม่
+    //         if (in_array('10', $this->Q1[$index]) && in_array('11', $this->Q1[$index]) && in_array('12', $this->Q1[$index])) {
+    //             $this->Q1[$index] = ['10', '11', '12'];
+    //         } else {
+    //             $uniqueValues = array_unique($this->Q1[$index]);
+
+    //             if (in_array('10', $uniqueValues)) {
+    //                 $key = array_search('10', $uniqueValues);
+    //                 unset($uniqueValues[$key]);
+    //             }
+    //             if (in_array('11', $uniqueValues)) {
+    //                 $key = array_search('11', $uniqueValues);
+    //                 unset($uniqueValues[$key]);
+    //             }
+    //             if (in_array('12', $uniqueValues)) {
+    //                 $key = array_search('12', $uniqueValues);
+    //                 unset($uniqueValues[$key]);
+    //             }
+
+    //             $this->Q1[$index] = array_merge($uniqueValues, [$value]);
+    //         }
+    //     } else {
+    //         $this->Q1[$index] = [$value];       }
+    // }
+
+    public function toggleCheckbox($index, $value)
+    {
+        // ตรวจสอบว่า $this->Q1[$index] เป็นอาร์เรย์หรือไม่
+        if (is_array($this->Q1[$index])) {
+
+            // ตรวจสอบว่ามีการเลือกทั้ง 10, 11, และ 12 หรือไม่
+            if (in_array('10', $this->Q1[$index]) && in_array('11', $this->Q1[$index]) && in_array('12', $this->Q1[$index])) {
+                // ถ้ามีการเลือกทั้ง 10, 11, และ 12 จะกำหนดค่าใหม่เป็น [$value, '11', '12']
+                $this->Q1[$index] = ['10', '11', '12'];
+            } else {
+                // นำค่าที่ถูกเลือกมาเก็บในอาร์เรย์ที่ไม่ซ้ำกัน
+                $uniqueValues = array_unique($this->Q1[$index]);
+
+                // ตรวจสอบแต่ละค่า
+                if (in_array('10', $this->Q1[$index])) {
+                    // ถ้าเลือก '10' จะลบ '11' และ '12' ออก
+                    $key = array_search('11', $uniqueValues);
+                    unset($uniqueValues[$key]);
+                    $key = array_search('12', $uniqueValues);
+                    unset($uniqueValues[$key]);
+                } elseif (in_array('11', $this->Q1[$index])) {
+                    // ถ้าเลือก '11' จะลบ '12' ออก
+                    $key = array_search('12', $uniqueValues);
+                    unset($uniqueValues[$key]);
+                } else {
+                    // ถ้าไม่มีการเลือก '10' หรือ '11' หรือ '12' จะเพิ่มค่า $value เข้าไปในอาร์เรย์
+                    $this->Q1[$index] = array_merge($uniqueValues, [$value]);
+                }
+            }
+        } else {
+            // ถ้า $this->Q1[$index] ไม่ใช่อาร์เรย์ แสดงว่าเป็นการเลือกครั้งแรก จะกำหนดค่าให้เป็น [$value]
+            $this->Q1[$index] = [$value];
+        }
+    }
+
     public function editActionPlan($id)
     {
         $ACP_ProjectName_Main = DB::table('VW_ACP_ProjectName_Main')->where('project_ID', $id)->first();
@@ -46,10 +109,10 @@ class EditActionPlan extends Component
             $this->groupTarget[$index] = $item->groupTarget;
             $this->amountTarget[$index] = $item->amountTarget;
             $this->place[$index] = $item->place;
-            $this->Q1[$index] = $item->Q1;
-            $this->Q2[$index] = $item->Q2;
-            $this->Q3[$index] = $item->Q3;
-            $this->Q4[$index] = $item->Q4;
+            $this->Q1[$index] = (string)$item->Q1;
+            $this->Q2[$index] = (string)$item->Q2;
+            $this->Q3[$index] = (string)$item->Q3;
+            $this->Q4[$index] = (string)$item->Q4;
             $this->budgetAmount[$index] = $item->budgetAmount;
             $this->BGS_Id[$index] = $item->BGS_Id;
             $this->person_name[$index] = $item->person_name;
@@ -71,14 +134,19 @@ class EditActionPlan extends Component
                 'objective_project' => $this->objective_project,
             ]);
 
-
         foreach ($this->Edit_ACP_Project_Detail as $index => $item) {
-            // dd($this->Edit_ACP_Project_Detail, $this->eventNActivity_name);
-
+            $q1Value = is_array($this->Q1[$index]) ? implode('', $this->Q1[$index]) : $this->Q1[$index];
+            $q2Value = is_array($this->Q2[$index]) ? implode('', $this->Q2[$index]) : $this->Q2[$index];
+            $q3Value = is_array($this->Q3[$index]) ? implode('', $this->Q3[$index]) : $this->Q3[$index];
+            $q4Value = is_array($this->Q4[$index]) ? implode('', $this->Q4[$index]) : $this->Q4[$index];
             DB::table('ACP_Project_Detail')
                 ->where('project_ID', $id)
                 ->where('project_detail_id', $item['project_detail_id'])
                 ->update([
+                    'Q1' => $q1Value,
+                    'Q2' => $q2Value,
+                    'Q3' => $q3Value,
+                    'Q4' => $q4Value,
                     'eventNActivity_name' => $this->eventNActivity_name[$index],
                     'groupTarget' => $this->groupTarget[$index],
                     'amountTarget' => $this->amountTarget[$index],
@@ -89,12 +157,9 @@ class EditActionPlan extends Component
                     'P_Id' => $this->P_Id[$index],
                     'created_at' => now(),
                     'updated_at' => now(),
-                    'Q1' => isset($this->Q1[$index]) ? $this->Q1[$index] : null,
-                    'Q2' => isset($this->Q2[$index]) ? $this->Q2[$index] : null,
-                    'Q3' => isset($this->Q3[$index]) ? $this->Q3[$index] : null,
-                    'Q4' => isset($this->Q4[$index]) ? $this->Q4[$index] : null,
                 ]);
         }
+
 
         $totalBudget = DB::table('ACP_Project_Detail')
             ->where('project_ID', $id)
@@ -112,7 +177,6 @@ class EditActionPlan extends Component
             'urls' => '/action_plan/detail?id=' . $id
         ]);
     }
-    protected $listeners = ['refreshTable' => '$refresh'];
 
     public function addRow($editID)
     {
@@ -164,8 +228,6 @@ class EditActionPlan extends Component
             ->where('project_ID', $editID)
             ->update(['budget' => $totalBudget]);
         session()->flash('success2', "ลบข้อมูลสำเร็จ!!");
-
-        $this->emit('refreshTable');
     }
 
 
