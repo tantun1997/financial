@@ -31,7 +31,7 @@
                             <th class="text-left" style="width: 60%;">ชื่อรายการ</th>
                             <th class="text-left">แผนก</th>
                             <th class="text-left">ประเภทแผน</th>
-                            <th class="text-center">action</th>
+                            <th class="text-center">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -3,6 +3,7 @@
     <table class="table-bordered table-sm" style="width: 100%; ">
         <thead>
             <tr>
+                <th style="text-align: center;">-</th>
                 <th style="text-align: center;">ลำดับ</th>
                 <th style="text-align: center; white-space: nowrap;">แผนที่เกี่ยวข้อง</th>
                 <th style="text-align: center;">งานและกิจกรรม</th>
@@ -13,6 +14,7 @@
                 <th style="text-align: center; white-space: nowrap;">ผู้รับผิดชอบ</th>
             </tr>
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -31,6 +33,10 @@
         <tbody>
             @foreach ($rows as $index => $value)
                 <tr>
+                    <td style="text-align: center;">
+                        <button type="button" wire:click.prevent="removeRow({{ $index }})"
+                            class="btn btn-outline-danger btn-sm">ลบ</button>
+                    </td>
                     <td style="text-align: center;">{{ $index + 1 }}</td>
                     <td style="text-align: center;">
                         <select class="form-select" wire:model="P_Id.{{ $value }}" id="P_Id.{{ $value }}"
@@ -62,14 +68,14 @@
                     </td>
                     <td style="text-align: center;">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.10"
-                                value="10">
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.1"
+                                value="1">
                             <label class="form-check-label">ต.ค.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.11"
-                                value="11">
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.2"
+                                value="2">
                             <label class="form-check-label">พ.ย.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.12"
-                                value="12">
+                            <input class="form-check-input" type="checkbox" wire:model="Q1.{{ $value }}.3"
+                                value="3">
                             <label class="form-check-label">ธ.ค.</label>
                         </div>
                     </td>
@@ -90,28 +96,28 @@
 
                     <td style="text-align: center;">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.4"
-                                value="4">
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.1"
+                                value="1">
                             <label class="form-check-label">เม.ย.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.5"
-                                value="5">
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.2"
+                                value="2">
                             <label class="form-check-label">พ.ค.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.6"
-                                value="6">
+                            <input class="form-check-input" type="checkbox" wire:model="Q3.{{ $value }}.3"
+                                value="3">
                             <label class="form-check-label">มิ.ย.</label>
                         </div>
                     </td>
 
                     <td style="text-align: center;">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.7"
-                                value="7">
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.1"
+                                value="1">
                             <label class="form-check-label">ก.ค.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.8"
-                                value="8">
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.2"
+                                value="2">
                             <label class="form-check-label">ส.ค.</label><br>
-                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.9"
-                                value="9">
+                            <input class="form-check-input" type="checkbox" wire:model="Q4.{{ $value }}.3"
+                                value="3">
                             <label class="form-check-label">ก.ย.</label>
                         </div>
                     </td>
