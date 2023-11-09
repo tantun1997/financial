@@ -13,14 +13,23 @@
         </div>
     @endif
     @if ($ACP_ProjectName_Main)
-        <div style="display: flex; justify-content: space-between;">
-            <a class="btn btn-outline-primary " href="{{ route('action_plan') }}">ย้อนกลับ</a>
-            <button wire:click.prevent="editActionPlan({{ $ACP_ProjectName_Main->project_ID }})"
-                class="btn btn-outline-danger">
-                <i class="fa-solid fa-pen fa-xs"></i> แก้ไขข้อมูล
-            </button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+                <a class="btn btn-outline-primary" href="{{ route('action_plan') }}">ย้อนกลับ</a>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <button onclick="generatePdf({{ $ACP_ProjectName_Main->project_ID }})" class="btn btn-danger mr-2">
+                    <i class="fa-duotone fa-file-pdf fa-lg"></i> PDF
+                </button>
+                <button wire:click.prevent="editActionPlan({{ $ACP_ProjectName_Main->project_ID }})"
+                    class="btn btn-outline-danger">
+                    <i class="fa-solid fa-pen fa-xs"></i> แก้ไขข้อมูล
+                </button>
+            </div>
         </div>
     @endif
+
+
     @if ($editID)
         @if ($planType == 'strategic')
             <form wire:submit.prevent="acceptActionPlan({{ $editID }},{{ $Edit_ACP_Project_Detail }})">
@@ -983,6 +992,10 @@
     @endif
 
     <script>
+        function generatePdf(id) {
+            window.open('/actionPlanPdf/' + id, '_blank');
+        }
+
         window.addEventListener('swal:modal', event => {
             swal({
                 title: event.detail.message,

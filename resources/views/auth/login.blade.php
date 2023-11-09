@@ -10,8 +10,16 @@
     <title>Login - Somdet Intranet</title>
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles_login.css') }}">
+    <style>
+        .btn.btn-primary {
+            width: 100%;
+        }
 
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -26,11 +34,9 @@
                             <h5 class="mb-3">ระบบสร้างแผนงาน</h5>
                             <h5>โรงพยาบาลสมเด็จพระพุทธเลิศหล้า</h5>
                         </div>
-
                         <div class="card shadow-lg">
-                            <div class="card-header">
-                                <h5 class="text-center">ล็อกอินเข้าใช้งานระบบ</h5>
-                            </div>
+                            <h5 class="text-center mt-3">ล็อกอินเข้าใช้งานระบบ</h5>
+                            <hr>
                             <div class="card-body">
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
@@ -49,13 +55,6 @@
                                             placeholder="Password" />
                                         <label for="password">รหัสผ่าน</label>
                                     </div>
-                                    {{-- <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                            {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div> --}}
                                     <div class="d-flex justify-content-center align-items-center mt-4">
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('เข้าสู่ระบบ') }}
@@ -122,8 +121,10 @@
 
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="{{ asset('js/scripts.js') }}"></script>
 </body>
 

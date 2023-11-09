@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/contactPdf/{id}', [PDFController::class, 'generateContactService']);
     Route::get('/replaceEquipPdf/{id}', [PDFController::class, 'generateReplaceEquip']);
     Route::get('/replaceEquipPdf2/{id}', [PDFController::class, 'generateReplaceEquip2']);
+    Route::get('/actionPlanPdf/{id}', [PDFController::class, 'generateActionPlan'])->name('actionPlanPdf');
 
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {

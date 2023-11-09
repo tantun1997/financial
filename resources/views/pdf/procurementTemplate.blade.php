@@ -146,7 +146,7 @@
                 @php
                     $count = 0;
                 @endphp
-                @foreach ($vwEquipDetail as $detail)
+                @foreach ($vwReportEquipDetail as $detail)
                     @if ($detail->PROC_ID > 0)
                         @php
                             $count++;
@@ -167,13 +167,14 @@
                             @php
                                 $count = 1;
                             @endphp
-                            @foreach ($vwEquipDetail as $item)
+                            @foreach ($vwReportEquipDetail as $item)
                                 @if ($item->PROC_ID > 0)
                                     {{ $count }}. {{ $item->EQUP_NAME }}
                                     @if (strpos($item->EQUP_NAME, 'ราคา') === false &&
                                             strpos($item->EQUP_NAME, 'บาท') === false &&
                                             strpos($item->EQUP_NAME, 'x') === false)
-                                        ราคา {{ $item->COUNT }}x{{ number_format($item->currentPrice) }} บาท<br>
+                                        ราคา {{ $item->count_equp }}x{{ number_format($item->currentPrice) }}
+                                        บาท<br>
                                     @endif
                                     @php
                                         $count++;
@@ -184,8 +185,6 @@
                     </tr>
                 </table>
             </td>
-
-
         </tr>
     </table>
 
