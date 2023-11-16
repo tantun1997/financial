@@ -108,13 +108,13 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยกลุ่มงาน/ฝ่าย/งาน
                 @if (strlen($department) > 30 && strlen($department) <= 80)
                     {{ $department }}
-                    ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ <br>
+                    ได้รับอนุมัติให้ดำเนินการตามแผนเงินบำรุง/งบประมาณ <br>
                     ประจำปี {{ $years }} โดยมีรายละเอียดดังนี้
                 @elseif(strlen($department) > 100)
-                    {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                    {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผนเงินบำรุง/งบประมาณ ประจำปี {{ $years }}
                     โดยมีรายละเอียดดังนี้
                 @else
-                    {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผน เงินบำรุง/งบประมาณ ประจำปี {{ $years }}
+                    {{ $department }} ได้รับอนุมัติให้ดำเนินการตามแผนเงินบำรุง/งบประมาณ ประจำปี {{ $years }}
                     โดยมีรายละเอียดดังนี้
                 @endif
             </td>
@@ -146,7 +146,7 @@
                 @php
                     $count = 0;
                 @endphp
-                @foreach ($vwReportEquipDetail as $detail)
+                @foreach ($vwSameName as $detail)
                     @if ($detail->PROC_ID > 0)
                         @php
                             $count++;
@@ -167,7 +167,7 @@
                             @php
                                 $count = 1;
                             @endphp
-                            @foreach ($vwReportEquipDetail as $item)
+                            @foreach ($vwSameName as $item)
                                 @if ($item->PROC_ID > 0)
                                     {{ $count }}. {{ $item->EQUP_NAME }}
                                     @if (strpos($item->EQUP_NAME, 'ราคา') === false &&

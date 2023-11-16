@@ -33,7 +33,9 @@ class PDFController extends Controller
         $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->first();
         $pattern = '/ประจำปี\s+\d{4}/';
         $replacement = ' ประจำปี ' . $query->budget;
-        $vwReportEquipDetail = DB::table('vwShowEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
+        $vwReportEquipDetail = DB::table('vwShowEquipDetail')->where('PROC_ID', $id)->where('used', 1)->orderBy('EQUP_ID', 'asc')->get();
+        $vwSameName = DB::table('vwSameName')->where('PROC_ID', $id)->get();
+
         $title = 'บันทึกข้อความ';
         $department = $query->TCHN_LOCAT_NAME;
         $tel = '';
@@ -72,6 +74,7 @@ class PDFController extends Controller
             'years' => $years,
             'vwEquipDetail' => $vwEquipDetail,
             'vwReportEquipDetail' => $vwReportEquipDetail,
+            'vwSameName' => $vwSameName,
             'vwCountDetail' => $vwCountDetail,
             'vwCountDetailText' => $vwCountDetailText,
         ];
@@ -183,7 +186,7 @@ class PDFController extends Controller
             $planName = preg_replace('/^\d+\./', '', $query->description);
             $planName = $planName . ' ประจำปี ' . $query->budget;
         }
-        // $projectName = $query->description;
+        // dd(strlen($department));
         if (preg_match($pattern, $query->description)) {
             $projectName = preg_replace($pattern, '', $query->description);
             $projectName = preg_replace('/^\d+\./', '', $projectName);
