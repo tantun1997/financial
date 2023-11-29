@@ -30,13 +30,37 @@ Route::middleware(['auth'])->group(function () {
         Route::get('create', [MainPageController::class, 'createActionPlan'])->name('creat_action_plan');
         Route::get('detail', [MainPageController::class, 'detailActionPlan'])->name('detail_action_plan');
     });
+    Route::prefix('maintenance_equip')->group(function () {
+        Route::get('/', [MainPageController::class, 'maintenanceEquipment'])->name('maintenance_equip');
+        Route::get('create', [MainPageController::class, 'createMaintenancePlan'])->name('creat_maintenance');
+        Route::get('detail', [MainPageController::class, 'detailMaintenancePlan'])->name('detail_maintenance');
+    });
 
-    Route::get('replaceIncrease_equip', [MainPageController::class, 'replaceIncreaseEquip'])->name('replaceIncrease_equip');
-    Route::get('calibration', [MainPageController::class, 'calibration'])->name('calibration');
+    Route::prefix('repair_equip')->group(function () {
+        Route::get('/', [MainPageController::class, 'repairEquipment'])->name('repair_equip');
+        Route::get('create', [MainPageController::class, 'createRepairEquipment'])->name('creat_repair');
+        Route::get('detail', [MainPageController::class, 'detailRepairEquipment'])->name('detail_repair');
+    });
+
+    Route::prefix('contract_services')->group(function () {
+        Route::get('/', [MainPageController::class, 'contractServices'])->name('contract_services');
+        Route::get('create', [MainPageController::class, 'createContractServices'])->name('creat_contract_services');
+        Route::get('detail', [MainPageController::class, 'detailContractServices'])->name('detail_contract_services');
+    });
+
+    Route::prefix('calibration')->group(function () {
+        Route::get('/', [MainPageController::class, 'calibration'])->name('calibration');
+        Route::get('create', [MainPageController::class, 'createCalibration'])->name('creat_calibration');
+        Route::get('detail', [MainPageController::class, 'detailCalibration'])->name('detail_calibration');
+    });
+
+    Route::prefix('purchasing_plan')->group(function () {
+        Route::get('/', [MainPageController::class, 'purchasingPlan'])->name('purchasing_plan');
+        Route::get('create', [MainPageController::class, 'createPurchasingPlan'])->name('creat_purchasing_plan');
+        Route::get('detail', [MainPageController::class, 'detailpurchasingPlan'])->name('detail_purchasing_plan');
+    });
+
     Route::get('equipment', [MainPageController::class, 'equipment'])->name('equipment');
-    Route::get('maintenance_equip', [MainPageController::class, 'maintenanceEquipment'])->name('maintenance_equip');
-    Route::get('repair_equip', [MainPageController::class, 'repairEquipment'])->name('repair_equip');
-    Route::get('contract_services', [MainPageController::class, 'contractServices'])->name('contract_services');
     Route::get('approval_plans', [MainPageController::class, 'approvalPlans'])->name('approval_plans');
 
     Route::get('/home', [MainPageController::class, 'home'])->name('home');

@@ -1,4 +1,4 @@
-<div class="container-fluid px-4">
+{{-- <div class="container-fluid px-4">
     <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> วิธีใช้งานระบบเบื้องต้น</h3>
     <hr class="mb-4">
     <div class="col-md-8 mb-4">
@@ -49,4 +49,4 @@
         <p></p>
         <img src="{{ asset('assets/img/how_to_use/pdf.jpg') }}" width="100%" class="rounded">
     </div>
-</div>
+</div> --}}
