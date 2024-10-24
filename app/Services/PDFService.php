@@ -10,6 +10,7 @@ class PDFService
 
     public function __construct()
     {
+
         $this->mpdf = new Mpdf([
             // 'autoPageBreak' => true,
             // 'autoScriptToLang' => true,
@@ -38,6 +39,7 @@ class PDFService
     public function setDefaultFont($font)
     {
         $this->mpdf->SetDefaultFont($font);
+        $this->mpdf->watermark_font = $font;
     }
 
     public function addContent($view, $data = [])
@@ -54,6 +56,12 @@ class PDFService
     public function setFooter($data)
     {
         $this->mpdf->SetFooter($data, '', 'ALL', true);
+    }
+
+    public function setWatermark($text, $alpha)
+    {
+        $this->mpdf->SetWatermarkText($text, $alpha);
+        $this->mpdf->showWatermarkText = true;
     }
 
     public function addNewPage($orientation, $type, $resetpagenum, $pagenumstyle, $suppress, $marginLeft, $marginRight, $marginTop, $marginBottom, $marginHeader, $marginFooter, $oddHeaderName, $evenHeaderName, $oddFooterName, $evenFooterName, $oddHeaderValue, $evenHeaderValue, $oddFooterValue, $evenFooterValue, $pageselector, $sheetSize)

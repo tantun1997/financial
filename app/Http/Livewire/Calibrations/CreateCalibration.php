@@ -10,87 +10,104 @@ use Carbon\Carbon;
 
 class CreateCalibration extends Component
 {
-    public $procurementType, $priorityNo, $description, $price, $package, $quant,
-        $objectTypeId, $reason, $deptId, $budget, $remark, $userId, $enable, $levelNo, $edit_id, $created_at, $updated_at;
+    public $Plan_DATE,
+        $Plan_YEAR,
+        $Plan_TYPE_ID,
+        $Plan_NAME,
+        $Plan_PRICE_OVERALL,
+        $Plan_AMOUNT,
+        $Plan_REASON,
+        $Plan_REMARK,
+        $Plan_DEPTID,
+        $Plan_USERID,
+        $Plan_LEVEL,
+        $Plan_ENABLE,
+        $Plan_BUDGET,
 
-    public function updateFieldsFromDescription()
-    {
-        $selectedPlan = DB::table('VW_NEW_MAINPLAN')->where('Description', trim($this->description))->first();
-
-        if ($selectedPlan) {
-            $this->price = $selectedPlan->price;
-            $this->quant = $selectedPlan->quant;
-            $this->package = $selectedPlan->package;
-            $this->reason = $selectedPlan->reason;
-            $this->remark = $selectedPlan->remark;
-            $this->objectTypeId = $selectedPlan->objectTypeId;
-            $this->priorityNo = $selectedPlan->priorityNo;
-        }
-    }
-
-
+        $Plan_ID;
 
     public function mount()
     {
-        $this->userId = Auth::user()->id;
-        $this->deptId = Auth::user()->deptId;
-        $this->budget = Carbon::now()->addYear()->addYears(543)->format('Y');
-        $this->priorityNo = '001';
-        $this->quant = '1';
-        $this->procurementType = '2';
-        $this->enable = '1';
-        $this->objectTypeId = '26';
-        $this->created_at = now();
-        $this->updated_at = now();
+        $this->Plan_DATE = now()->format('Y-m-d H:i:s');
+        $this->Plan_DEPTID = Auth::user()->deptId;
+        $this->Plan_USERID = Auth::user()->id;
     }
-
-
-    public function addMaintenence()
+    protected $rules = [
+        'Plan_YEAR' => 'required',
+        'Plan_TYPE_ID' => 'required',
+        'Plan_NAME' => 'required',
+        'Plan_PRICE_OVERALL' => 'required',
+        'Plan_AMOUNT' => 'required',
+        'Plan_REASON' => 'required',
+        'Plan_LEVEL' => 'required',
+    ];
+    public function clearInputs()
     {
-        $validatedData = $this->validate([
-            'budget' => 'required',
-            'priorityNo' => 'required|numeric',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'package' => 'required|regex:/^[^0-9]*$/',
-            'quant' => 'required|numeric|min:1',
-            'objectTypeId' => 'required',
-            'reason' => 'required',
-            'deptId' => 'required',
-            'remark' => 'nullable|max:250',
-            'levelNo' => 'required',
-            'procurementType' => 'required',
-            'userId' => 'required',
-            'enable' => 'required',
-            'created_at' => 'required',
-            'updated_at' => 'required'
-        ]);
-
-        DB::table('procurements')->insert($validatedData);
-
-        session()->flash('success', 'เพิ่มข้อมูลสำเร็จ!!');
-        $this->dispatchBrowserEvent('swal:modal', [
-            'type' => 'success',
-            'message' => 'เพิ่มข้อมูลสำเร็จ!!',
-            'text' => 'ข้อมูลถูกเพิ่มในตารางเรียบร้อยแล้ว',
-            'urls' => '/calibration'
-        ]);
+        $this->Plan_DATE = null;
+        $this->Plan_YEAR = null;
+        $this->Plan_TYPE_ID = null;
+        $this->Plan_NAME = null;
+        $this->Plan_PRICE_OVERALL = null;
+        $this->Plan_AMOUNT = null;
+        $this->Plan_REASON = null;
+        $this->Plan_REMARK = null;
+        $this->Plan_DEPTID = null;
+        $this->Plan_USERID = null;
+        $this->Plan_LEVEL = null;
+        $this->Plan_ENABLE = null;
+        $this->Plan_BUDGET = null;
     }
 
+    public function save()
+    {
+        // ตรวจสอบว่าข้อมูลถูกต้องหรือไม่
+        if (
+            empty($this->Plan_YEAR) || empty($this->Plan_TYPE_ID) || empty($this->Plan_NAME) || empty($this->Plan_PRICE_OVERALL)
+            || empty($this->Plan_AMOUNT) || empty($this->Plan_REASON) || empty($this->Plan_LEVEL)
+        ) {
+            // ถ้าข้อมูลไม่ครบ ส่งอีเวนต์ alert ประเภท error
+            $this->dispatchBrowserEvent(
+                'alert',
+                ['type' => 'error', 'message' => 'กรุณากรอกข้อมูลให้ครบถ้วน!']
+            );
+            $this->validate();
 
+            return;
+        }
+
+        $this->Plan_ID = DB::table('EQUIPMENT_PLAN')->insertGetId([
+            'Plan_DATE' => $this->Plan_DATE,
+            'Plan_YEAR' => $this->Plan_YEAR,
+            'Plan_TYPE_ID' => $this->Plan_TYPE_ID,
+            'Plan_NAME' => $this->Plan_NAME,
+            'Plan_PRICE_OVERALL' => $this->Plan_PRICE_OVERALL,
+            'Plan_AMOUNT' => $this->Plan_AMOUNT,
+            'Plan_REASON' => $this->Plan_REASON,
+            'Plan_REMARK' => $this->Plan_REMARK,
+            'Plan_DEPTID' => $this->Plan_DEPTID,
+            'Plan_USERID' => $this->Plan_USERID,
+            'Plan_LEVEL' => $this->Plan_LEVEL,
+            'Plan_ENABLE' => 1,            'Plan_BUDGET' => $this->Plan_BUDGET,
+
+        ]);
+        $this->clearInputs(); // เรียกใช้ฟังก์ชันเพื่อเคลียร์ข้อมูลใน input
+
+        $this->dispatchBrowserEvent('alert', [
+            'type' => 'success',
+            'message' => 'บันทึกสำเร็จ!! รหัสแผนงาน: ' . $this->Plan_ID,
+            'id' => $this->Plan_ID, // เพิ่ม Plan_ID ไปยังอีเวนต์
+            'refresh' => true // จะเรียกใช้งานโหลดหน้าใหม่หลังจากการปิด alert
+        ]);
+    }
     public function render()
     {
+        $EQUIPMENT_TYPE = DB::table('EQUIPMENT_TYPE')->where('TYPE_ID', 26)->get();
+        $DimBudget = DB::table('DimBudget')->get();
 
-        $VW_NEW_MAINPLAN = DB::table('VW_NEW_MAINPLAN')
-            ->where('objectTypeId', '26')
-            ->where('enable', '1')
-            ->get();
-
-        $procurement_object_create = DB::table('procurement_object')->where('procurementCode', 26)
-            ->get();
         return view('livewire.calibration.create', [
-            'VW_NEW_MAINPLAN' => $VW_NEW_MAINPLAN,
-            'procurement_object' => $procurement_object_create
+            'EQUIPMENT_TYPE' => $EQUIPMENT_TYPE,
+            'DimBudget' => $DimBudget
+
         ]);
     }
 }

@@ -2,12 +2,15 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Login - Somdet Intranet</title>
+    <title>ระบบสร้างแผนงานครุภัณฑ์</title>
+    <link rel="shortcut icon" href="assets/img/logo1.png" type="image/x-icon">
+    {{-- <link rel="icon" type="image/x-icon" href="assets/img/logo1.png"> --}}
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <style>
@@ -31,7 +34,7 @@
                     <div class="col-lg-5">
                         <div class="text-center mb-4">
                             <img src="assets/img/logo1.png" class="w-50 mb-3" alt="Logo">
-                            <h5 class="mb-3">ระบบสร้างแผนงาน</h5>
+                            <h5 class="mb-3">ระบบสร้างแผนงานครุภัณฑ์</h5>
                             <h5>โรงพยาบาลสมเด็จพระพุทธเลิศหล้า</h5>
                         </div>
                         <div class="card shadow-lg">

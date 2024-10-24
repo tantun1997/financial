@@ -90,17 +90,107 @@ class MainPageController extends Controller
         return view('vwAllPlan.purchasingPlan.vw_detail-purchasing_plan');
     }
 
+    public function replacementPlan()
+    {
+        return view('vwAllPlan.replacementPlan.vw_replacement_plan');
+    }
+    public function createReplacementPlan()
+    {
+        return view('vwAllPlan.replacementPlan.vw_create-replacement_plan');
+    }
+    public function detailReplacementPlan()
+    {
+        return view('vwAllPlan.replacementPlan.vw_detail-replacement_plan');
+    }
+
+    public function potentialPlan()
+    {
+        return view('vwAllPlan.potentialPlan.vw_potential_plan');
+    }
+    public function createPotentialPlan()
+    {
+        return view('vwAllPlan.potentialPlan.vw_create-potential_plan');
+    }
+    public function detailPotentialPlan()
+    {
+        return view('vwAllPlan.potentialPlan.vw_detail-potential_plan');
+    }
+
+    public function noserialPlan()
+    {
+        return view('vwAllPlan.noserialPlan.vw_noserial_plan');
+    }
+    public function createNoserialPlan()
+    {
+        return view('vwAllPlan.noserialPlan.vw_create-noserial_plan');
+    }
+    public function detailNoserialPlan()
+    {
+        return view('vwAllPlan.noserialPlan.vw_detail-noserial_plan');
+    }
+
+    public function POutsidewarehouse()
+    {
+        return view('vwAllPlan.POutsidewarehouse.vw_outsidewarehouse_plan');
+    }
+    public function createPOutsidewarehouse()
+    {
+        return view('vwAllPlan.POutsidewarehouse.vw_creat_outsidewarehouse_plan');
+    }
+    public function detailPOutsidewarehouse()
+    {
+        return view('vwAllPlan.POutsidewarehouse.vw_detail_outsidewarehouse_plan');
+    }
+
+    public function PInsidewarehouse()
+    {
+        return view('vwAllPlan.PInsidewarehouse.vw_insidewarehouse_plan');
+    }
+    public function createPInsidewarehouse()
+    {
+        return view('vwAllPlan.PInsidewarehouse.vw_creat_insidewarehouse_plan');
+    }
+    public function detailPInsidewarehouse()
+    {
+        return view('vwAllPlan.PInsidewarehouse.vw_detail_insidewarehouse_plan');
+    }
+
+
+
 
     public function equipment()
     {
         return view('vw_equipment');
     }
 
-    public function approvalPlans()
+    public function FinancialReport()
     {
-        return view('vw_approval-plans');
+        return view('vw_financial-report');
     }
-
+    public function AdministrationReport()
+    {
+        return view('vw_administration_report');
+    }
+    public function NursingReport()
+    {
+        return view('vw_nursing_report');
+    }
+    public function SecondaryReport()
+    {
+        return view('vw_secondary_report');
+    }
+    public function PrimaryReport()
+    {
+        return view('vw_primary_report');
+    }
+    public function SupportingReport()
+    {
+        return view('vw_supporting_report');
+    }
+    public function ApprovedItems()
+    {
+        return view('vw_approved_items');
+    }
 
     public function actionPlan()
     {

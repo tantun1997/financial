@@ -22,69 +22,339 @@ class PDFController extends Controller
         $this->pdfService->setDefaultFont('garuda');
     }
 
-    public function generateProcurement($id)
+    public function MaintenancePDF($id)
     {
-        $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
+        $Plan = DB::table('PDFแผนบำรุงรักษา')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
 
-        $vwCountDetail = DB::table('vwCountDetail')->where('PROC_ID', $id)->where('used', 1)->first();
-
-        $vwCountDetailText = optional($vwCountDetail)->count_detail ?? '0';
-
-        $vwEquipDetail = DB::table('vwEquipDetail')->where('PROC_ID', $id)->first();
-        $pattern = '/ประจำปี\s+\d{4}/';
-        $replacement = ' ประจำปี ' . $query->budget;
-        $vwReportEquipDetail = DB::table('vwShowEquipDetail')->where('PROC_ID', $id)->where('used', 1)->orderBy('EQUP_ID', 'asc')->get();
-        $vwSameName = DB::table('vwSameName')->where('PROC_ID', $id)->get();
-
-        $title = 'บันทึกข้อความ';
-        $department = $query->TCHN_LOCAT_NAME;
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนบำรุงรักษา')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
         $tel = '';
+
         $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
         $timeExport = Carbon::now()->format('H:i:s');
         $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
-        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        // $planName = $query->description . ' ประจำปี ' . $query->budget;
-        if (preg_match($pattern, $query->description)) {
-            $planName = preg_replace($pattern, $replacement, $query->description);
-            $planName = preg_replace('/^\d+\./', '', $planName);
-        } else {
-            $planName = preg_replace('/^\d+\./', '', $query->description);
-            $planName = $planName . ' ประจำปี ' . $query->budget;
-        }
-        $years = $query->budget;
-        $reason = $query->reason;
-        $quant = $query->quant;
-        $totalPrice = $vwEquipDetail->TotalCurrentPrice;
-        // $totalPrice = $vwCountDetailText * $price;
-        $totalPriceText = $this->numberToThaiText($totalPrice);
-        // dd($planName);
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
         $data = [
             'id' => $id,
-            'title' => $title,
-            'department' => $department,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
             'tel' => $tel,
-            'dateExport' => $dateExport,
-            'subject' => $subject,
-            'planName' => $planName,
-            'reason' => $reason,
-            'quant' => $quant,
-            // 'price' => $price,
-            'totalPrice' => $totalPrice,
-            'totalPriceText' => $totalPriceText,
-            'years' => $years,
-            'vwEquipDetail' => $vwEquipDetail,
-            'vwReportEquipDetail' => $vwReportEquipDetail,
-            'vwSameName' => $vwSameName,
-            'vwCountDetail' => $vwCountDetail,
-            'vwCountDetailText' => $vwCountDetailText,
+            'dateExport' => $dateExport
         ];
 
-        $this->pdfService->addContent('pdf.procurementTemplate', $data);
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.maintenanceTemplatePage1', $data);
         $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
         $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
         $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
-        $this->pdfService->addContent('pdf.procurementTemplatePage2', $data);
-        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
+        $this->pdfService->addContent('pdf.maintenanceTemplatePage2', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+
+    public function RepairPDF($id)
+    {
+        $Plan = DB::table('PDFแผนซ่อม')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนซ่อม')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $timeExport = Carbon::now()->format('H:i:s');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.repairTemplatePage1', $data);
+        $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
+        $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
+        $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
+        $this->pdfService->addContent('pdf.repairTemplatePage2', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+    public function ReplacementPDF($id)
+    {
+        $Plan = DB::table('PDFแผนทดแทน')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนทดแทน')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $timeExport = Carbon::now()->format('H:i:s');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.replacementTemplatePage1', $data);
+        $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
+        $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
+        $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
+        $this->pdfService->addContent('pdf.replacementTemplatePage2', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+
+    public function ContactPDF($id)
+    {
+        $Plan = DB::table('PDFแผนจ้างเหมาบริการ')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนจ้างเหมาบริการ')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.contactServiceTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+
+    public function CalibrationPDF($id)
+    {
+        $Plan = DB::table('PDFแผนสอบเทียบเครื่องมือ')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนสอบเทียบเครื่องมือ')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.calibrationTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+
+    public function PotentialPDF($id)
+    {
+        $Plan = DB::table('PDFแผนเพิ่มศักยภาพ')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการครุภัณฑ์แผนเพิ่มศักยภาพ')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.potentialTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+    public function NoserialPDF($id)
+    {
+        $Plan = DB::table('PDFแผนไม่มีเลขครุภัณฑ์')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการไม่มีเลขครุภัณฑ์')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.noserialTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+    public function POutsidewarehousePDF($id)
+    {
+        $Plan = DB::table('PDFแผนวัสดุนอกคลัง')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการแผนวัสดุนอกคลัง')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.POutsidewarehouseTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
+    }
+    public function PInsidewarehousePDF($id)
+    {
+        $Plan = DB::table('PDFแผนวัสดุในคลัง')->where('Plan_ID', $id)->first();
+        $Plan_NAME = $Plan->Plan_NAME;
+        $Plan_YEAR = $Plan->Plan_YEAR;
+        $Plan_DEPT = $Plan->TCHN_LOCAT_NAME;
+        $Plan_REASON = $Plan->Plan_REASON;
+        $Total_Used = $Plan->Total_Used;
+
+        $List_Equip = DB::table('PDFรายการแผนวัสดุในคลัง')->where('Equip_USED', 1)->where('Plan_ID', $id)->get();
+        $tel = '';
+
+        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
+        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
+
+        $Remaining_Price = $Plan->Total_Current_Price;
+        $Remaining_Price_Text = $this->numberToThaiText($Remaining_Price);
+        $data = [
+            'id' => $id,
+            'Plan_NAME' => $Plan_NAME,
+            'Plan_YEAR' => $Plan_YEAR,
+            'Plan_DEPT' => $Plan_DEPT,
+            'Plan_REASON' => $Plan_REASON,
+            'Total_Used' => $Total_Used,
+            'Remaining_Price' => $Remaining_Price,
+            'Remaining_Price_Text' => $Remaining_Price_Text,
+            'List_Equip' => $List_Equip,
+            'tel' => $tel,
+            'dateExport' => $dateExport
+        ];
+
+        $this->pdfService->setWatermark('เอกสารราชการ รพ.สมเด็จฯลฯ ห้ามปลอมแปลง', 0.1);
+        $this->pdfService->addContent('pdf.PInsidewarehouseTemplate', $data);
+        return $this->pdfService->generateFromView($Plan_YEAR . '_' . $id . '-' . $datePDF);
     }
 
     protected function numberToThaiText($number, $include_unit = true, $display_zero = true)
@@ -165,245 +435,5 @@ class PDFController extends Controller
         }
 
         return $text;
-    }
-
-    public function generateContactService($id)
-    {
-        $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
-        $pattern = '/ประจำปี\s+\d{4}/';
-        $replacement = ' ประจำปี ' . $query->budget;
-
-        $title = 'บันทึกข้อความ';
-        $department = $query->TCHN_LOCAT_NAME;
-        $tel = '';
-        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
-        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
-        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        if (preg_match($pattern, $query->description)) {
-            $planName = preg_replace($pattern, $replacement, $query->description);
-            $planName = preg_replace('/^\d+\./', '', $planName);
-        } else {
-            $planName = preg_replace('/^\d+\./', '', $query->description);
-            $planName = $planName . ' ประจำปี ' . $query->budget;
-        }
-        // dd(strlen($department));
-        if (preg_match($pattern, $query->description)) {
-            $projectName = preg_replace($pattern, '', $query->description);
-            $projectName = preg_replace('/^\d+\./', '', $projectName);
-        } else {
-            $projectName = preg_replace('/^\d+\./', '', $query->description);
-        }
-        $years = $query->budget;
-        $reason = $query->reason;
-        $quant = $query->quant;
-        $price = $query->price;
-        $totalPrice = $quant * $price;
-        $totalPriceText = $this->numberToThaiText($totalPrice);
-
-
-        $data = [
-            'id' => $id,
-            'title' => $title,
-            'department' => $department,
-            'tel' => $tel,
-            'dateExport' => $dateExport,
-            'subject' => $subject,
-            'planName' => $planName,
-            'projectName' => $projectName,
-            'reason' => $reason,
-            'quant' => $quant,
-            'price' => $price,
-            'totalPrice' => $totalPrice,
-            'totalPriceText' => $totalPriceText,
-            'years' => $years,
-        ];
-
-        $this->pdfService->addContent('pdf.contactServiceTemplate', $data);
-        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
-    }
-
-    public function generateReplaceEquip($id)
-    {
-        $query = DB::table('vwReplaceEquip')->where('id', $id)->first();
-
-        $vwCountDetail = DB::table('vwCountReplaceEquipDetail')->where('PROC_ID', $id)->where('used', 1)->first();
-
-        $vwCountDetailText = optional($vwCountDetail)->count_detail ?? '0';
-
-        $vwEquipDetail = DB::table('vwReplaceEquipDetail')->where('PROC_ID', $id)->get();
-
-        $pattern = '/ประจำปี\s+\d{4}/';
-        $replacement = ' ประจำปี ' . $query->year;
-
-        $vwReportEquipDetail = DB::table('vwReportReplaceEquipDetail')->where('PROC_ID', $id)->orderBy('EQUP_ID', 'asc')->get();
-        $vwcurrPrice = DB::table('vwReportReplaceEquipDetail')->where('PROC_ID', $id)->where('used', 1)->first();
-        $title = 'บันทึกข้อความ';
-        $department = $query->TCHN_LOCAT_NAME;
-        $tel = '';
-        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
-        $timeExport = Carbon::now()->format('H:i:s');
-        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
-        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        if (preg_match($pattern, $query->description)) {
-            $planName = preg_replace($pattern, $replacement, $query->description);
-            $planName = preg_replace('/^\d+\./', '', $planName);
-        } else {
-            $planName = preg_replace('/^\d+\./', '', $query->description);
-            $planName = $planName . ' ประจำปี ' . $query->year;
-        }
-        // $projectName = $query->description;
-        if (preg_match($pattern, $query->description)) {
-            $projectName = preg_replace($pattern, '', $query->description);
-            $projectName = preg_replace('/^\d+\./', '', $projectName);
-        } else {
-            $projectName = preg_replace('/^\d+\./', '', $query->description);
-        }
-        $years = $query->year;
-        $reason = $query->reason;
-        $quant = $query->qty;
-        $price = $vwcurrPrice->currentPrice;
-        $totalPrice = $vwCountDetailText * $price;
-        $totalPriceText = $this->numberToThaiText($totalPrice);
-
-        $data = [
-            'id' => $id,
-            'title' => $title,
-            'department' => $department,
-            'tel' => $tel,
-            'dateExport' => $dateExport,
-            'subject' => $subject,
-            'planName' => $planName,
-            'projectName' => $projectName,
-            'reason' => $reason,
-            'quant' => $quant,
-            'price' => $price,
-            'totalPrice' => $totalPrice,
-            'totalPriceText' => $totalPriceText,
-            'years' => $years,
-            'vwEquipDetail' => $vwEquipDetail,
-            'vwReportEquipDetail' => $vwReportEquipDetail,
-            'vwCountDetail' => $vwCountDetail,
-            'vwCountDetailText' => $vwCountDetailText,
-        ];
-
-        $this->pdfService->addContent('pdf.ReplaceEquipTemplate', $data);
-        $this->pdfService->addNewPage('L', '', '1', '', '', '10', '10', '20', '20', '5', '5', '', '', '', '', '', '', '', '', '', 'A4');
-        $this->pdfService->setHeader('โรงพยาบาลสมเด็จพระพุทธเลิศหล้า||หน้า {PAGENO}/{nbpg}');
-        $this->pdfService->setFooter('||วันที่พิมพ์ : ' . $dateExport . ' ' . $timeExport);
-        $this->pdfService->addContent('pdf.ReplaceEquipTemplatePage2', $data);
-        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
-    }
-
-    public function generateReplaceEquip2($id)
-    {
-        $query = DB::table('vwReplaceEquip')->where('id', $id)->first();
-        $pattern = '/ประจำปี\s+\d{4}/';
-        $replacement = ' ประจำปี ' . $query->year;
-
-        $title = 'บันทึกข้อความ';
-        $department = $query->TCHN_LOCAT_NAME;
-        $tel = '';
-        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
-        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
-        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-
-        if (preg_match($pattern, $query->description)) {
-            $planName = preg_replace($pattern, $replacement, $query->description);
-            $planName = preg_replace('/^\d+\./', '', $planName);
-        } else {
-            $planName = preg_replace('/^\d+\./', '', $query->description);
-            $planName = $planName . ' ประจำปี ' . $query->year;
-        }
-        // $projectName = $query->description;
-        if (preg_match($pattern, $query->description)) {
-            $projectName = preg_replace($pattern, '', $query->description);
-            $projectName = preg_replace('/^\d+\./', '', $projectName);
-        } else {
-            $projectName = preg_replace('/^\d+\./', '', $query->description);
-        }
-        $years = $query->year;
-        $reason = $query->reason;
-        $quant = $query->qty;
-        $price = $query->price;
-        $totalPrice = $quant * $price;
-        $totalPriceText = $this->numberToThaiText($totalPrice);
-
-
-        $data = [
-            'id' => $id,
-            'title' => $title,
-            'department' => $department,
-            'tel' => $tel,
-            'dateExport' => $dateExport,
-            'subject' => $subject,
-            'planName' => $planName,
-            'projectName' => $projectName,
-            'reason' => $reason,
-            'quant' => $quant,
-            'price' => $price,
-            'totalPrice' => $totalPrice,
-            'totalPriceText' => $totalPriceText,
-            'years' => $years,
-        ];
-
-        $this->pdfService->addContent('pdf.ReplaceEquipTemplate2', $data);
-        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
-    }
-
-    public function generateActionPlan($id)
-    {
-        $query = DB::table('VW_NEW_MAINPLAN')->where('id', $id)->first();
-        $pattern = '/ประจำปี\s+\d{4}/';
-        $replacement = ' ประจำปี ' . $query->budget;
-
-        $title = 'บันทึกข้อความ';
-        $department = $query->TCHN_LOCAT_NAME;
-        $tel = '';
-        $dateExport = Carbon::now()->addYears(543)->translatedFormat('d F Y');
-        $datePDF = Carbon::now()->addYears(543)->translatedFormat('Ymd');
-        $subject = 'ขออนุมัติในหลักการจัดซื้อ/จัดจ้าง';
-        if (preg_match($pattern, $query->description)) {
-            $planName = preg_replace($pattern, $replacement, $query->description);
-            $planName = preg_replace('/^\d+\./', '', $planName);
-        } else {
-            $planName = preg_replace('/^\d+\./', '', $query->description);
-            $planName = $planName . ' ประจำปี ' . $query->budget;
-        }
-        // $projectName = $query->description;
-        if (preg_match($pattern, $query->description)) {
-            $projectName = preg_replace($pattern, '', $query->description);
-            $projectName = preg_replace('/^\d+\./', '', $projectName);
-        } else {
-            $projectName = preg_replace('/^\d+\./', '', $query->description);
-        }
-        $years = $query->budget;
-        $reason = $query->reason;
-        $quant = $query->quant;
-        $price = $query->price;
-        $totalPrice = $quant * $price;
-        $totalPriceText = $this->numberToThaiText($totalPrice);
-
-
-        $data = [
-            'id' => $id,
-            'title' => $title,
-            'department' => $department,
-            'tel' => $tel,
-            'dateExport' => $dateExport,
-            'subject' => $subject,
-            'planName' => $planName,
-            'projectName' => $projectName,
-            'reason' => $reason,
-            'quant' => $quant,
-            'price' => $price,
-            'totalPrice' => $totalPrice,
-            'totalPriceText' => $totalPriceText,
-            'years' => $years,
-        ];
-
-        $this->pdfService->addContent('pdf.actionPlanTemplate', $data);
-
-
-        return $this->pdfService->generateFromView($years . '_' . $id . '-' . $datePDF);
     }
 }

@@ -1,180 +1,246 @@
-<div class="container-fluid px-4">
-    @include('layouts.loading')
-    <h3 class="mt-3 mb-3"><i class="fa-duotone fa-newspaper"></i> ข้อมูลแผนฯจ้างเหมาบริการ</h3>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item "><a
-                href="\">แผนการจัดซื้อจัดจ้าง วัสดุ/ครุภัณฑ์</a></li>
-        <li class="breadcrumb-item active">
-                ข้อมูลแผนฯจ้างเหมาบริการ</li>
-    </ol>
-    <hr>
+<div class="container-fluid">
+    <h3 class="mt-3 mb-3"> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+            style="fill: rgb(34, 89, 241);">
+            <path
+                d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z">
+            </path>
+            <path
+                d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z">
+            </path>
+        </svg> ข้อมูลแผนจ้างเหมาบริการ</h3>
+
     <div class="mb-3">
-        {{-- @foreach ($close_plan as $item)
+        @foreach ($close_plan as $item)
             @if (Auth::user()->id == '114000041')
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" wire:click='close_plan'
                         @if ($item->status == 'off') checked @endif>
                     <label class="form-check-label" for="flexSwitchCheckDefault">ปิดการเพิ่มแผนฯ</label>
                 </div>
-            @endif --}}
-
-        {{-- @if ($item->status == 'on') --}}
-        <a class="btn btn-outline-primary" href="{{ route('creat_contract_services') }}"
-            role="button">สร้างแผนฯจ้างเหมาบริการ</a>
-        {{-- @endif
-        @endforeach --}}
-    </div>
-    @if (session()->has('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session()->get('success') }}
-        </div>
-    @endif
-
-    <div class="card mb-4">
-        <div class="card-header">
-            @if (Auth::user()->isAdmin == 'Y')
-                @include('layouts.repair.search')
-            @else
-                <div id="newButtonContainer" style="float: right;" wire:ignore>
-                    <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
-                </div>
             @endif
-        </div>
-        <div class="card-body">
-            <div>
-                <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th class="text-center">อนุมัติแผนฯ</th> <!-- 0 -->
-                            <th class="text-center">แผนฯ</th><!-- 1 -->
-                            <th class="text-center" style="display: none;">รหัส</th><!-- 2 -->
-                            <th class="text-center" style="display: none;">ปี</th><!-- 3 -->
-                            <th class="text-center" style="display: none;">ความสำคัญ</th><!-- 4 -->
-                            <th class="text-center" style="display: none;">ประเภท</th><!-- 5 -->
-                            <th class="text-left" style="width: 50%;">ชื่อรายการ</th><!-- 6 -->
-                            <th class="text-center">ราคาต่อหน่วย(บาท)</th><!-- 7 -->
-                            <th class="text-center">จำนวน(หน่วย)</th><!-- 8 -->
-                            <th class="text-center" style="display: none;">หน่วยนับ</th><!-- 9 -->
-                            <th class="text-center">วงเงินรวม(บาท)</th><!-- 10 -->
-                            <th class="text-left" style="display: none;">เหตุผลและความจำเป็น</th><!-- 11 -->
-                            <th class="text-left">หน่วยงานที่เบิก</th><!-- 12 -->
-                            <th class="text-left" style="display: none;">หมายเหตุ</th><!-- 13 -->
-                            <th class="text-center" style="display: none;">วันที่ปรับปรุงข้อมูล</th>
-                            <!-- 14 -->
-                            <th class="text-center">จัดการ</th><!-- 15 -->
-                            <th class="text-center" style="display: none;">Print out</th><!-- 16 -->
-                            <th class="text-center" style="display: none;">จำนวน</th><!-- 17 -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($VW_NEW_MAINPLAN as $query)
-                            @if ($query->TCHN_LOCAT_ID == Auth::user()->deptId || Auth::user()->isAdmin == 'Y')
-                                <tr>
-                                    <td class="table-cell text-center">
-                                        @if (Auth::user()->id == '114000041')
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox"
-                                                    id="approvalSwitch({{ $query->id }})"
-                                                    aria-labelledby="approvalSwitch({{ $query->id }})"
-                                                    wire:click.prevent="Approval({{ $query->id }})"
-                                                    @if ($query->approved == '1') checked @endif>
-                                                <span class="form-check-label" id="approvalSwitch({{ $query->id }})">
-                                                    @if ($query->approved == '1')
-                                                        <span class="badge bg-success">อนุมัติแล้ว</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">รอตรวจสอบ</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                        @else
-                                            @if ($query->approved == '1')
-                                                <span class="badge bg-success">อนุมัติแล้ว</span>
-                                            @else
-                                                <span class="badge bg-secondary">รอตรวจสอบ</span>
-                                            @endif
-                                        @endif
-                                    </td>
 
-                                    <td class="table-cell text-center">
-                                        @if ($query->levelNo == 1)
-                                            <span class="badge bg-success">จริง</span>
-                                        @elseif($query->levelNo == 2)
-                                            <span class="badge bg-secondary">สำรอง</span>
-                                        @endif
-                                    </td>
-                                    <td class="table-cell" style="display: none;">{{ $query->id }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->budget }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->priorityNo }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->objectName }}</td>
-                                    <td class="table-cell">{{ $query->description }}</td>
-                                    <td class="table-cell" style="text-align: right;">
-                                        {{ number_format(round($query->price, 2), 2) }}
-                                    </td>
-                                    <td class="table-cell" style="text-align: right;">
-                                        @php
-                                            $filteredItems = $vwCountDetail->where('PROC_ID', $query->id);
-                                        @endphp
-                                        @if ($filteredItems->count() > 0 && $query->levelNo == 1)
-                                            @foreach ($vwCountDetail->where('PROC_ID', $query->id) as $item)
-                                                <span style="color: #53a9fa">
-                                                    {{ $item->count_detail }}
-                                                </span>
-                                            @endforeach / {{ $query->quant }}
-                                            {{ $query->package }}
-                                        @else
-                                            {{ $query->quant }}
-                                            {{ $query->package }}
-                                        @endif
-                                    </td>
-
-                                    <td class="table-cell" style="display: none;">{{ $query->package }}</td>
-
-                                    <td class="table-cell" style="text-align: right;">
-                                        {{ number_format(round($query->price * $query->quant, 2), 2) }}
-
-                                    <td class="table-cell" style="display: none;">{{ $query->reason }}</td>
-                                    <td class="table-cell ">{{ $query->TCHN_LOCAT_NAME }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->remark }}</td>
-                                    <td class="table-cell" style="display: none;">{{ $query->updated_at }} </td>
-                                    <td class="table-cell" style="text-align: right;">
-                                        <a class="btn btn-outline-primary btn-sm"
-                                            href="{{ route('detail_contract_services', ['id' => $query->id]) }}">ดูข้อมูล</a>
-
-                                        <button type="button" wire:click.prevent="deletePost({{ $query->id }})"
-                                            class="btn btn-outline-danger btn-sm">ลบ</button>
-                                    </td>
-                                    <td class="table-cell" style="display: none;">
-                                        @if ($query->approved == '1')
-                                            <button onclick="generatePdf({{ $query->id }})"
-                                                class="btn btn-danger btn-sm"><i
-                                                    class="fa-duotone fa-file-pdf fa-lg"></i> PDF</button>
-                                        @else
-                                            <span class="badge rounded-pill bg-secondary">
-                                                ไม่สามารถปริ้นได้
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="table-cell" style="display: none;">
-                                        {{ $query->quant }}</td>
-
-                                </tr>
-                            @endif
+            @if ($item->status == 'on')
+                <a class="btn btn-outline-primary" href="{{ route('creat_contract_services') }}" role="button">+
+                    เพิ่มแผนจ้างเหมาบริการ</a>
+            @endif
+        @endforeach
+    </div>
+    <div id="newButtonContainer" style="float: right;" wire:ignore>
+        <!-- ที่นี่คือตำแหน่งใหม่ของปุ่ม "Export to Excel" -->
+    </div>
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="nav-item">
+            <button class="nav-link active" id="Plan_YEAR-tab" data-bs-toggle="tab" data-bs-target="#Plan_YEAR"
+                type="button" aria-controls="Plan_YEAR" aria-selected="true">ค้นหาเลขที่แผน</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="Plan_NAME-tab" data-bs-toggle="tab" data-bs-target="#Plan_NAME" type="button"
+                aria-controls="Plan_NAME" aria-selected="false">ค้นหาชื่อแผน</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="TCHN_LOCAT_NAME-tab" data-bs-toggle="tab" data-bs-target="#TCHN_LOCAT_NAME"
+                type="button" aria-controls="TCHN_LOCAT_NAME" aria-selected="false">ค้นหาหน่วยงาน</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
+                aria-controls="approved" aria-selected="false">รายการอนุมัติ</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="Plan_YEAR" aria-labelledby="Plan_YEAR-tab">
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <select class="form-control select2" id="filterSelectID" style="width: 100%;" multiple>
+                        {{-- <option value="" selected>ทั้งหมด</option> --}}
+                        @foreach ($Plan_ID as $id)
+                            <option value="{{ $id }}">{{ $id }}</option>
                         @endforeach
-                    </tbody>
-                </table>
+                    </select>
+                </div>
             </div>
+        </div>
+        <div class="tab-pane" id="Plan_NAME" aria-labelledby="Plan_NAME-tab">
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <select class="form-control select2" id="filterSelectName" style="width: 100%;" multiple>
+                        {{-- <option value="" selected>ทั้งหมด</option> --}}
+                        @foreach ($Plan_NAME as $names)
+                            <option value="{{ $names }}">{{ $names }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="TCHN_LOCAT_NAME" aria-labelledby="TCHN_LOCAT_NAME-tab">
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <select class="form-control select2" id="filterSelectTCHN" style="width: 100%;" multiple>
+                        {{-- <option value="" selected>ทั้งหมด</option> --}}
+                        @foreach ($TCHN_LOCAT_NAME as $names)
+                            <option value="{{ $names }}">{{ $names }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="approved" aria-labelledby="approved-tab">
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <select class="form-control select2" id="filterSelectApproved" style="width: 100%;" multiple>
+                        <option value="รออนุมัติ">รออนุมัติ</option>
+                        <option value="อนุมัติแล้ว">อนุมัติแล้ว</option>
+                        <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card mb-4">
+        <div class="card-body">
+            <table id='dataTable' class="table table-bordered table-hover table-sm" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th class="text-center">ชื่อแผนงาน</th>
+                        <th class="text-center">ประเมินราคา</th>
+                        <th class="text-center">เหตุผลและความจำเป็น</th>
+                        <th class="text-center">เพิ่มเติม</th>
+                        <th class="text-center" style="width: 5%">จัดการ</th>
+                        <th style="display: none">เลขที่แผน</th>
+                        <th style="display: none">ชื่อแผน</th>
+                        <th style="display: none">ปีงบประมาณ</th>
+                        <th style="display: none">ประเภทแผน</th>
+                        <th style="display: none">แผนฯ</th>
+                        <th style="display: none">วงเงินรวม</th>
+                        <th style="display: none">เหตุผล</th>
+                        <th style="display: none">แผนก</th>
+                        <th style="display: none">เพิ่มครุภัณฑ์แล้ว</th>
+                        <th style="display: none">ราคาประเมินจริงรวมทั้งหมด</th>
+                        <th style="display: none">คงเหลือ</th>
+                        <th style="display: none;">Approved</th>
+                        <th style="display: none;">ประเภทงบ</th>
+                        <th style="display: none;">ราคาต่อหน่วย</th>
+                        <th style="display: none;">จำนวน</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($EQUIPMENT_PLAN as $item)
+                        <tr>
+                            <td
+                                style="word-break: break-all; max-width: 400px; @if ($item->Plan_LEVEL != 1) background-color: #9999; @endif">
+                                <small>เลขที่แผน: ผ.{{ $item->Plan_ID }} <br>
+                                    ชื่อแผน: {{ $item->Plan_NAME }}<br>
+                                    ปีงบประมาณ: {{ $item->Plan_YEAR }} <br>
+                                    แผนฯ: {{ $item->LEVEL_NAME }} <br>
+                                    ประเภทงบ: {{ $item->Budget }}
+
+                                </small>
+
+                            </td>
+                            <td
+                                style="white-space: nowrap; max-width: 500px;@if ($item->Plan_LEVEL != 1) background-color: #9999; @endif">
+                                <small><span style="color: rgb(42, 96, 243)">วงเงินรวม:
+                                        {{ number_format(round($item->Plan_PRICE_OVERALL * $item->Plan_AMOUNT, 2), 2) }}
+                                        บาท</span>
+                                    <br>จำนวนที่ตั้งไว้: {{ number_format(round($item->Plan_AMOUNT, 2), 0) }}
+                                    @if ($item->Total_Used === null || $item->Total_Used == 0)
+                                        <br> เพิ่มจำนวนแล้ว: -
+                                        <br> ใช้ไปแล้ว: - บาท
+                                        <br> คงเหลือ: - บาท
+                                    @else
+                                        <br> เพิ่มจำนวนแล้ว: {{ number_format(round($item->Total_Used, 2), 0) }}
+                                        <br>ใช้ไปแล้ว:<span style="color: red">
+                                            {{ number_format(round($item->Total_Current_Price, 2), 2) }}
+                                        </span>บาท
+                                        <br><span style="color: green">คงเหลือ:
+                                            {{ number_format(round($item->Remaining_Price, 2), 2) }}
+                                            บาท</span>
+                                    @endif
+                                </small>
+                            </td>
+                            <td
+                                style="word-break: break-all; max-width: 500px; @if ($item->Plan_LEVEL != 1) background-color: #9999; @endif">
+                                <small> {{ $item->Plan_REASON }}
+                                </small>
+                            </td>
+                            <td
+                                style="text-align: left; max-width: 300px; @if ($item->Plan_LEVEL != 1) background-color: #9999; @endif">
+                                <small>
+                                    วันที่สร้างแผน {{ $item->Plan_DATE }} <br>
+                                    หน่วยงานที่เบิก: {{ $item->TCHN_LOCAT_NAME }}
+                                </small>
+                            </td>
+                            <td style="white-space: nowrap; text-align: center;">
+                                <a class="btn btn-outline-primary btn-sm"
+                                    href="http://192.168.2.142/contract_services/detail?id={{ $item->Plan_ID }}">ดูข้อมูล</a>
+                                <button type="button" wire:click.prevent="deletePost({{ $item->Plan_ID }})"
+                                    class="btn btn-outline-danger btn-sm">ลบ</button>
+                                @if (Auth::user()->id == '114000041')
+                                    <br><br>
+                                    <button type="button" wire:click="approved({{ $item->Plan_ID }})"
+                                        class="btn btn-success btn-sm">อนุมัติ</button>
+                                    <button type="button" wire:click="disapproved({{ $item->Plan_ID }})"
+                                        class="btn btn-secondary btn-sm">ไม่อนุมัติ</button>
+                                @endif
+                                <br>
+                                @if ($item->Plan_ENABLE == 1)
+                                    @if (Auth::user()->id != '114000041')
+                                        @if ($item->Plan_ENABLE == 1 && $item->Plan_REQUEST_APPROVAL == 1)
+                                            <span class="badge bg-secondary">ส่งขออนุมัติแล้ว</span><br>
+                                        @elseif($item->Plan_ENABLE == 1)
+                                            {{-- <span class="badge bg-warning text-dark">รออนุมัติ</span><br> --}}
+                                            <button type="button"
+                                                wire:click="requset_approved({{ $item->Plan_ID }})"
+                                                class="btn btn-primary btn-sm">ส่งขออนุมัติ</button>
+                                        @endif
+                                    @endif
+                                @elseif($item->Plan_ENABLE == 2)
+                                    <span class="badge bg-success">อนุมัติแล้ว</span>
+                                @elseif($item->Plan_ENABLE == 3)
+                                    <span class="badge bg-danger">ไม่อนุมัติ</span>
+                                @endif
+                            </td>
+                            <td style="display: none">{{ $item->Plan_ID }}</td>
+                            <td style="display: none">{{ $item->Plan_NAME }}</td>
+                            <td style="display: none">{{ $item->Plan_YEAR }}</td>
+                            <td style="display: none">{{ $item->TYPE_NAME }}</td>
+                            <td style="display: none">{{ $item->LEVEL_NAME }}</td>
+                            <td style="display: none">
+                                {{ number_format(round($item->Plan_PRICE_OVERALL * $item->Plan_AMOUNT, 2), 2) }}
+                            </td>
+                            <td style="display: none">{{ $item->Plan_REASON }}</td>
+                            <td style="display: none">{{ $item->TCHN_LOCAT_NAME }}</td>
+                            <td style="display: none">{{ $item->Total_Used }}</td>
+                            <td style="display: none;">{{ number_format(round($item->Total_Current_Price, 2), 2) }}
+                            </td>
+                            <td style="display: none;">{{ number_format(round($item->Remaining_Price, 2), 2) }}</td>
+                            <td style="display: none;">
+                                @if ($item->Plan_ENABLE == 1)
+                                    รออนุมัติ
+                                @elseif($item->Plan_ENABLE == 2)
+                                    อนุมัติแล้ว
+                                @elseif($item->Plan_ENABLE == 3)
+                                    ไม่อนุมัติ
+                                @endif
+                            </td>
+                            <td style="display: none;">{{ $item->Budget }}</td>
+                            <td style="display: none">
+                                {{ number_format(round($item->Plan_PRICE_OVERALL, 2), 2) }}
+                            </td>
+                            <td style="display: none">
+                                {{ $item->Plan_AMOUNT }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
     <style>
-        .table-cell {
-            white-space: nowrap;
-            max-width: 200px;
-            /* ปรับขนาดตามที่ต้องการ */
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         .breadcrumb a {
             text-decoration: none;
             color: #000000;
@@ -182,13 +248,8 @@
     </style>
 
     <script>
-        function generatePdf(id) {
-            // window.location.href = '/generatePdf/' + id;
-            window.open('/contactPdf/' + id, '_blank');
-        }
-
-
         initializeDataTable()
+
         var table
 
         function initializeDataTable() {
@@ -211,20 +272,18 @@
                         "sPrevious": "ก่อนหน้า"
                     }
                 },
-                order: [],
                 autoWidth: true,
                 searching: true,
                 responsive: true,
-                scrollX: true,
-                scrollY: '65vh',
-                scrollCollapse: true,
+                // scrollX: true,
+                // scrollY: '65vh',
+                // scrollCollapse: true,
                 ordering: true,
+                order: [],
                 lengthMenu: [
-                    [-1, 20, 30, 50],
-                    ['ทั้งหมด', '20', '30', '50']
+                    [-1, 10, 50, 100],
+                    ['ทั้งหมด', '10', '50', '100']
                 ],
-
-                //   dom: 'Bfrtip',
                 buttons: [{
                     extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel"></i> Export to Excel',
@@ -232,7 +291,7 @@
                     title: `รายงานแผนฯจ้างเหมาบริการ หน่วยบริการโรงพยาบาลสมเด็จพระพุทธเลิศหล้า`,
                     autoFilter: true,
                     exportOptions: {
-                        columns: [0, 1, 3, 4, 5, 6, 7, 17, 9, 10, 11, 12, 13, 14]
+                        columns: [5, 6, 7, 17, 8, 9, 18, 19, 10, 11, 12, 13, 14, 15, 16]
                     },
                     className: 'btn btn-outline-success', // เพิ่มคลาส CSS เพื่อปรับแต่งสีปุ่ม
                     init: function(api, node, config) {
@@ -245,52 +304,6 @@
         var excelButton = table.buttons(); // 0 คือ index ของปุ่ม "Export to Excel"
         excelButton.container().appendTo(
             '#newButtonContainer'); // เปลี่ยน #newButtonContainer เป็น selector ของตำแหน่งที่ต้องการ
-
-
-        $('#resetBtn').click(function() {
-            $("#filterSelectyear").val("").trigger("change");
-            table.column(4).search("").draw();
-
-            $("#filterSelectdeptId").val("").trigger("change");
-            table.column(13).search("").draw();
-
-            $("#filterSelectobjectTypeId").val("").trigger("change");
-            table.column(6).search("").draw();
-
-        });
-        $("#filterSelectyear").on("change", function() {
-            var selectedValue = $(this).val();
-
-            if (selectedValue !== "") {
-                table.column(4).search("^" + selectedValue + "$", true, false).draw();
-
-            } else {
-                table.column(4).search("").draw();
-
-            }
-        });
-
-        $("#filterSelectobjectTypeId").on("change", function() {
-            var selectedValue = $(this).val();
-            var escapedValue = selectedValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Escape special characters
-
-            if (selectedValue !== "") {
-                table.column(6).search("^" + escapedValue + "$", true, false).draw();
-            } else {
-                table.column(6).search("").draw();
-            }
-        });
-
-        $("#filterSelectdeptId").on("change", function() {
-            var selectedValue = $(this).val();
-            var escapedValue = selectedValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Escape special characters
-
-            if (selectedValue !== "") {
-                table.column(13).search("^" + escapedValue + "$", true, false).draw();
-            } else {
-                table.column(13).search("").draw();
-            }
-        });
 
         window.addEventListener('swal:modal', event => {
             swal({
@@ -318,28 +331,98 @@
             });
         });
 
-        window.addEventListener('swal:error', event => {
-            swal({
-                title: event.detail.message,
-                text: event.detail.text,
-                icon: event.detail.type,
-                urls: event.detail.urls,
-                timer: 3000,
-            }).then(function() {
-                window.location.href = event.detail.urls;
-            });
+        $("#Plan_ID-tab").on("click", function() {
+            // ลบค่าที่เลือกใน Select2
+            $('#filterSelectID').val(null);
+            $('#filterSelectName').val(null);
+
+            // ค้นหาข้อมูลใหม่ในตาราง
+            table.search('').columns().search('').draw();
         });
 
-        window.addEventListener('DOMContentLoaded', event => {
-            // Simple-DataTables
-            // https://github.com/fiduswriter/Simple-DataTables/wiki
+        $("#Plan_NAME-tab").on("click", function() {
+            // ลบค่าที่เลือกใน Select2
+            $('#filterSelectID').val(null);
+            $('#filterSelectName').val(null);
 
-            const datatablesSimple = document.getElementById('datatablesSimple');
-            if (datatablesSimple) {
-                new simpleDatatables.DataTable(datatablesSimple);
+            // ค้นหาข้อมูลใหม่ในตาราง
+            table.search('').columns().search('').draw();
+        });
+
+        $("#TCHN_LOCAT_NAME-tab").on("click", function() {
+            // ลบค่าที่เลือกใน Select2
+
+            $('#filterSelectID').val(null);
+            $('#filterSelectName').val(null);
+            $('#filterSelectTCHN').val(null);
+            // ค้นหาข้อมูลใหม่ในตาราง
+            table.search('').columns().search('').draw();
+        });
+        $("#approved-tab").on("click", function() {
+            // ลบค่าที่เลือกใน Select2
+            $('#filterSelectID').val(null);
+            $('#filterSelectName').val(null);
+            $('#filterSelectTCHN').val(null);
+            // ค้นหาข้อมูลใหม่ในตาราง
+            table.search('').columns().search('').draw();
+        });
+        $(".select2").select2();
+        $('#filterSelectID').on('select2:select select2:unselect', function(e) {
+            var values = $('#filterSelectID').val();
+            // console.log(values);
+            var sanitizedValues = values.map(function(value) {
+                return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            });
+
+            if (sanitizedValues) {
+                table.column(5).search(sanitizedValues.join('|'), true, false).draw();
+
+            } else {
+                table.column(5).search('').draw();
+            }
+        });
+        $('#filterSelectName').on('select2:select select2:unselect', function(e) {
+            var values = $('#filterSelectName').val();
+            // console.log(values);
+            var sanitizedValues = values.map(function(value) {
+                return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            });
+
+            if (sanitizedValues) {
+                table.column(6).search(sanitizedValues.join('|'), true, false).draw();
+
+            } else {
+                table.column(6).search('').draw();
+            }
+        });
+        $('#filterSelectTCHN').on('select2:select select2:unselect', function(e) {
+            var values = $('#filterSelectTCHN').val();
+            // console.log(values);
+            var sanitizedValues = values.map(function(value) {
+                return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            });
+
+            if (sanitizedValues) {
+                table.column(12).search(sanitizedValues.join('|'), true, false).draw();
+
+            } else {
+                table.column(12).search('').draw();
+            }
+        });
+        $('#filterSelectApproved').on('select2:select select2:unselect', function(e) {
+            var values = $('#filterSelectApproved').val();
+            // console.log(values);
+            var sanitizedValues = values.map(function(value) {
+                return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            });
+
+            if (sanitizedValues) {
+                table.column(16).search(sanitizedValues.join('|'), true, false).draw();
+
+            } else {
+                table.column(16).search('').draw();
             }
         });
     </script>
-
 
 </div>

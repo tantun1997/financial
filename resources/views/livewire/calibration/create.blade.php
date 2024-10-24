@@ -1,183 +1,145 @@
-<div class="container-fluid px-4">
-    <h3 class="mt-3 mb-3"><i class="fa-solid fa-inbox "></i> เพิ่มแผนงานสอบเทียบเครื่องมือ</h3>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item "><a href="{{ route('calibration') }}">แผนฯสอบเทียบเครื่องมือ</a>
-        </li>
-        <li class="breadcrumb-item active">
-            เพิ่มแผนงานสอบเทียบเครื่องมือ</li>
-    </ol>
+<div class="container-fluid">
+    <h3 class="mt-3 mb-3"> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+            style="fill: rgb(44, 245, 121);">
+            <path
+                d="M22 7.999a1 1 0 0 0-.516-.874l-9.022-5a1.003 1.003 0 0 0-.968 0l-8.978 4.96a1 1 0 0 0-.003 1.748l9.022 5.04a.995.995 0 0 0 .973.001l8.978-5A1 1 0 0 0 22 7.999zm-9.977 3.855L5.06 7.965l6.917-3.822 6.964 3.859-6.918 3.852z">
+            </path>
+            <path d="M20.515 11.126 12 15.856l-8.515-4.73-.971 1.748 9 5a1 1 0 0 0 .971 0l9-5-.97-1.748z">
+            </path>
+            <path d="M20.515 15.126 12 19.856l-8.515-4.73-.971 1.748 9 5a1 1 0 0 0 .971 0l9-5-.97-1.748z">
+            </path>
+        </svg> เพิ่มแผนงานสอบเทียบเครื่องมือ</h3>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <a class="btn btn-danger" href="{{ route('calibration') }}" role="button">ย้อนกลับ</a>
+        <button type="button" wire:click="save" class="btn btn-success">ดำเนินการต่อ</button>
+
+    </div>
     <hr>
-    <form wire:submit.prevent="addMaintenence()">
-        @csrf
-        <div class="card">
-            <h5 class="card-header">เพิ่มแผนงานสอบเทียบเครื่องมือ</h5>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <!-- รหัส ปีงบประมาณ -->
-                        <label for="budget">ปีงบประมาณ</label>
-                        <select class="form-select @error('budget') is-invalid @enderror" wire:model.defer="budget"
-                            id="budget">
-                            @php
-                                $currentYear = date('Y');
-                                $nextYear = $currentYear + 1;
-                                $displayedNextYear = $nextYear + 543;
-                            @endphp
-                            <option value="{{ $nextYear + 543 }}">{{ $displayedNextYear }}</option>
-                            <option value="{{ $currentYear + 543 }}">{{ $currentYear + 543 }}</option>
-                        </select>
-                        @error('budget')
-                            <span class="text-danger error">โปรดเลือกปีงบประมาณ</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-3">
-                        <!-- ลำดับความสำคัญ -->
-                        <label for="priorityNo">ลำดับความสำคัญ</label>
-                        <input class="form-control @error('priorityNo') is-invalid @enderror"
-                            wire:model.defer="priorityNo" id="priorityNo" type="text" maxlength="3"
-                            autocomplete="off">
-                        @error('priorityNo')
-                            <span class="text-danger error">โปรดใส่ลำดับความสำคัญ (ตัวเลขเท่านั้น)</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-3">
-                        <!-- ประเภท -->
-                        <label for="objectTypeId">ประเภท</label>
-                        <select class="form-select @error('objectTypeId') is-invalid @enderror"
-                            wire:model.defer="objectTypeId" id="objectTypeId">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            @foreach ($procurement_object as $object)
-                                <option value="{{ $object->id }}">
-                                    {{ $object->objectName }} </option>
-                            @endforeach
-                        </select>
-                        @error('objectTypeId')
-                            <span class="text-danger error">โปรดเลือกประเภท</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-3">
-                        <!-- แผนงาน -->
-                        <label for="levelNo">แผนงาน</label>
-                        <select class="form-select @error('levelNo') is-invalid @enderror" wire:model.defer="levelNo"
-                            id="levelNo">
-                            <option value="" selected>เลือก</option>
-                            <option value="" disabled>-------------------------</option>
-                            <option value="1">จริง</option>
-                            <option value="2">สำรอง</option>
-                        </select>
-                        @error('levelNo')
-                            <span class="text-danger error">โปรดเลือกแผนงาน</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- ชื่อรายการ -->
-                        <label for="description">ชื่อรายการ</label>
-                        <input class="form-control @error('description') is-invalid @enderror" type="text"
-                            wire:model.defer="description" id="description" list="listDescription" autocomplete="off"
-                            placeholder="ชื่อรายการ" wire:change="updateFieldsFromDescription">
-                        <datalist id="listDescription">
-                            @php
-                                $usedNames = [];
-                            @endphp
-                            @if (Auth::user()->isAdmin == 'Y')
-                                @foreach ($VW_NEW_MAINPLAN as $plan)
-                                    @if (!in_array($plan->description, $usedNames))
-                                        <option value="{{ $plan->description }}">
-                                            {{ $plan->price }} </option>
-                                        @php
-                                            $usedNames[] = $plan->description;
-                                        @endphp
-                                    @endif
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg">
+                <h5 class="card-header bg-gradient-primary text-white py-3"
+                    style="background-color: #566573;color: white">
+                    <i class="far fa-edit mr-2"></i>
+                    แผนงานสอบเทียบเครื่องมือ
+                </h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 mb-3">
+                            <span>ปีงบประมาณ</span>
+                            <select class="form-select @error('Plan_YEAR') is-invalid @enderror" wire:model="Plan_YEAR"
+                                id="Plan_YEAR">
+                                <option value="" selected>เลือก</option>
+                                @php
+                                    $currentYear = date('Y');
+                                    $nextYear2 = $currentYear + 2;
+                                    $nextYear = $currentYear + 1;
+                                    $displayedNextYear = $nextYear + 543;
+                                    $displayedNextYear2 = $nextYear2 + 543;
+                                @endphp
+                                <option value="{{ $nextYear2 + 543 }}">{{ $displayedNextYear2 }}</option>
+                                <option value="{{ $nextYear + 543 }}">{{ $displayedNextYear }}</option>
+                                <option value="{{ $currentYear + 543 }}">{{ $currentYear + 543 }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 mb-3">
+                            <span>แผนฯ</span>
+                            <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input  @error('Plan_LEVEL') is-invalid @enderror"
+                                    type="radio" wire:model="Plan_LEVEL" value="1">
+                                <label class="form-check-label">จริง</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input  @error('Plan_LEVEL') is-invalid @enderror"
+                                    type="radio" wire:model="Plan_LEVEL" value="2">
+                                <label class="form-check-label">สำรอง</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 mb-3">
+                            <span>ประเภทงบ</span>
+                            <select class="form-select" wire:model="Plan_BUDGET" id="Plan_BUDGET">
+                                <option value="" selected>เลือก</option>
+                                @foreach ($DimBudget as $item)
+                                    <option value="{{ $item->BudgetID }}">
+                                        {{ $item->Budget }} </option>
                                 @endforeach
-                            @else
-                                @foreach ($VW_NEW_MAINPLAN as $plan)
-                                    @if ($plan->TCHN_LOCAT_ID == Auth::user()->deptId)
-                                        @if ($plan->objectTypeId == '01' && !in_array($plan->objectTypeId, $usedNames))
-                                            <option value="{{ $plan->description }}">
-                                                {{ $plan->price }} </option>
-                                            @php
-                                                $usedNames[] = $plan->description;
-                                            @endphp
-                                        @endif
-                                    @endif
+                            </select>
+                        </div>
+                        <div class="col-lg-3 mb-3">
+                            <span>ประเภทแผน</span>
+                            <select class="form-select @error('Plan_TYPE_ID') is-invalid @enderror"
+                                wire:model="Plan_TYPE_ID" id="Plan_TYPE_ID">
+                                <option value="" selected>เลือก</option>
+                                @foreach ($EQUIPMENT_TYPE as $item)
+                                    <option value="{{ $item->TYPE_ID }}">
+                                        {{ $item->TYPE_NAME }} </option>
                                 @endforeach
-                            @endif
-                        </datalist>
-                        @error('description')
-                            <span class="text-danger error">โปรดเพิ่มชื่อรายการ</span>
-                        @enderror
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- ราคาต่อหน่วย -->
-                        <label for="price">ราคาต่อหน่วย</label>
-                        <input class="form-control @error('price') is-invalid @enderror" wire:model.defer="price"
-                            id="price" type="text" autocomplete="off" placeholder="ราคาต่อหน่วย">
-                        @error('price')
-                            <span class="text-danger error">โปรดใส่ราคาต่อหน่วย</span>
-                        @enderror
+                    <div class="row ">
+                        <div class="col-lg-12 mb-3">
+                            <span>ชื่อแผนงาน</span>
+                            <input class="form-control @error('Plan_NAME') is-invalid @enderror" type="text"
+                                wire:model="Plan_NAME" id="Plan_NAME" placeholder="ชื่อแผนงาน">
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <!-- จำนวน -->
-                        <label for="quant">จำนวน</label>
-                        <input class="form-control @error('quant') is-invalid @enderror" wire:model.defer="quant"
-                            min="1" id="quant" type="number" autocomplete="off">
-
-                        @error('quant')
-                            <span class="text-danger error">โปรดใส่จำนวน</span>
-                        @enderror
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <span>ราคาต่อหน่วย </span>
+                            <input class="form-control @error('Plan_PRICE_OVERALL') is-invalid @enderror" type="number"
+                                wire:model="Plan_PRICE_OVERALL" id="Plan_PRICE_OVERALL" placeholder="ราคาต่อหน่วย">
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <span>จำนวนครุภัณฑ์</span>
+                            <input class="form-control @error('Plan_AMOUNT') is-invalid @enderror" type="number"
+                                wire:model="Plan_AMOUNT" id="Plan_AMOUNT" placeholder="จำนวนครุภัณฑ์">
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <!-- ชื่อหน่วยนับ -->
-                        <label for="package">ชื่อหน่วยนับ</label>
-                        <input class="form-control @error('package') is-invalid @enderror" wire:model.defer="package"
-                            id="package" type="text" maxlength="250" autocomplete="off" placeholder="หน่วย">
-                        @error('package')
-                            <span class="text-danger error">โปรดใส่ชื่อหน่วยนับและห้ามใส่ตัวเลข</span>
-                        @enderror
+                    <div class="row">
+                        <div class="col-lg-12 mb-3">
+                            <span>เหตุผลและความจำเป็น</span>
+                            <textarea class="form-control @error('Plan_REASON') is-invalid @enderror" id="Plan_REASON" wire:model="Plan_REASON"
+                                placeholder="เหตุผลและความจำเป็น"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- เหตุผลและความจำเป็น -->
-                        <label for="reason">เหตุผลและความจำเป็น</label>
-                        <textarea class="form-control @error('reason') is-invalid @enderror" wire:model.defer="reason" id="reason"
-                            rows="2" maxlength="250" autocomplete="off" placeholder="เหตุผลและความจำเป็น"></textarea>
-
-                        @error('reason')
-                            <span class="text-danger error">โปรดพิมพ์เหตุผลและความจำเป็น</span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <!-- หมายเหตุ -->
-                        <label for="remark">หมายเหตุ</label>
-                        <textarea class="form-control" wire:model.defer="remark" id="remark" type="text" maxlength="250"
-                            autocomplete="off" placeholder="หมายเหตุ(ถ้ามี)"></textarea>
-
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span>หมายเหตุ</span>
+                            <textarea class="form-control" id="Plan_REMARK" wire:model="Plan_REMARK" placeholder="หมายเหตุ (ถ้ามี)"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mt-4" style="text-align: center ">
-            <a class="btn btn-danger" href="{{ route('calibration') }}" role="button">ยกเลิก</a>
-            <input type="submit" class="btn btn-success" value="ยืนยันข้อมูล">
-        </div>
-    </form>
-    <script>
-        window.addEventListener('swal:modal', event => {
-            swal({
-                title: event.detail.message,
-                text: event.detail.text,
-                icon: event.detail.type,
-                urls: event.detail.urls,
-                timer: 2000,
-            }).then(function() {
-                window.location.href = event.detail.urls;
-            });
-        });
-    </script>
+    </div>
+</div>
+<script>
+    window.addEventListener('alert', event => {
+        toastr[event.detail.type](event.detail.message, event.detail.title ?? '');
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+        };
+        if (event.detail.refresh) {
+            setTimeout(function() {
+                // รับค่าไอดีจาก URL โดยใช้ query string parameter
+                const id = event.detail.id ?? ''; // ถ้าไม่มีค่า id ให้กำหนดให้เป็นค่าว่าง
+                const url = `http://192.168.2.142/maintenance_equip/detail?id=${id}`;
+                window.location.href = url;
+            }, 2000); // รอให้ progressBar จบเป็นเวลา 2 วินาที (2000 มิลลิวินาที)
+        }
+    });
+
+
+    window.addEventListener('alert_select', event => {
+        toastr[event.detail.type](event.detail.message, event.detail.title ?? '');
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+        };
+    });
+</script>
 </div>

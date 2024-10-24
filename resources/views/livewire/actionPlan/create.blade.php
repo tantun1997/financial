@@ -26,7 +26,7 @@
         @if ($planType == 'strategic')
             <form wire:submit.prevent="confirmData()">
                 @csrf
-                @include('layouts.actionPlan.createPage2')
+                @include('livewire.actionPlan.createPage2')
                 <div style="text-align: left">
                     <input type="submit" class="btn btn-success" value="ยืนยันข้อมูล">
                 </div>
@@ -34,7 +34,7 @@
         @elseif($planType == 'regular')
             <form wire:submit.prevent="confirmData()">
                 @csrf
-                @include('layouts.actionPlan.createPage2')
+                @include('livewire.actionPlan.createPage2')
                 <div style="text-align: left">
                     <input type="submit" class="btn btn-success" value="ยืนยันข้อมูล">
                 </div>

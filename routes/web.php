@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     ErrorController,
     PDFController,
 };
+
 use App\Http\Middleware\isAdmin;
 
 /*
@@ -54,23 +55,89 @@ Route::middleware(['auth'])->group(function () {
         Route::get('detail', [MainPageController::class, 'detailCalibration'])->name('detail_calibration');
     });
 
-    Route::prefix('purchasing_plan')->group(function () {
-        Route::get('/', [MainPageController::class, 'purchasingPlan'])->name('purchasing_plan');
-        Route::get('create', [MainPageController::class, 'createPurchasingPlan'])->name('creat_purchasing_plan');
-        Route::get('detail', [MainPageController::class, 'detailpurchasingPlan'])->name('detail_purchasing_plan');
+    Route::prefix('replacement_plan')->group(function () {
+        Route::get('/', [MainPageController::class, 'replacementPlan'])->name('replacement_plan');
+        Route::get('create', [MainPageController::class, 'createReplacementPlan'])->name('creat_replacement_plan');
+        Route::get('detail', [MainPageController::class, 'detailReplacementPlan'])->name('detail_replacement_plan');
     });
 
+    Route::prefix('potential_plan')->group(function () {
+        Route::get('/', [MainPageController::class, 'potentialPlan'])->name('potential_plan');
+        Route::get('create', [MainPageController::class, 'createPotentialPlan'])->name('creat_potential_plan');
+        Route::get('detail', [MainPageController::class, 'detailPotentialPlan'])->name('detail_potential_plan');
+    });
+
+    Route::prefix('noserial_plan')->group(function () {
+        Route::get('/', [MainPageController::class, 'noserialPlan'])->name('noserial_plan');
+        Route::get('create', [MainPageController::class, 'createNoserialPlan'])->name('creat_noserial_plan');
+        Route::get('detail', [MainPageController::class, 'detailNoserialPlan'])->name('detail_noserial_plan');
+    });
+
+    Route::prefix('POutsidewarehouse')->group(function () {
+        Route::get('/', [MainPageController::class, 'POutsidewarehouse'])->name('POutsidewarehouse');
+        Route::get('create', [MainPageController::class, 'createPOutsidewarehouse'])->name('creat_outsidewarehouse_plan');
+        Route::get('detail', [MainPageController::class, 'detailPOutsidewarehouse'])->name('detail_outsidewarehouse_plan');
+    });
+
+    Route::prefix('PInsidewarehouse')->group(function () {
+        Route::get('/', [MainPageController::class, 'PInsidewarehouse'])->name('PInsidewarehouse');
+        Route::get('create', [MainPageController::class, 'createPInsidewarehouse'])->name('creat_insidewarehouse_plan');
+        Route::get('detail', [MainPageController::class, 'detailPInsidewarehouse'])->name('detail_insidewarehouse_plan');
+    });
+
+
+
+
+    Route::get('financial_report', [MainPageController::class, 'FinancialReport'])->name('financial_report');
+
+    Route::get('approved_items', [MainPageController::class, 'ApprovedItems'])->name('approved_items');
+
+    Route::prefix('administration_report')->group(function () {
+        Route::get('/', [MainPageController::class, 'AdministrationReport'])->name('administration_report');
+    });
+    Route::prefix('nursing_report')->group(function () {
+        Route::get('/', [MainPageController::class, 'NursingReport'])->name('nursing_report');
+    });
+    Route::prefix('secondary_report')->group(function () {
+        Route::get('/', [MainPageController::class, 'SecondaryReport'])->name('secondary_report');
+    });
+    Route::prefix('primary_report')->group(function () {
+        Route::get('/', [MainPageController::class, 'PrimaryReport'])->name('primary_report');
+    });
+    Route::prefix('supporting_report')->group(function () {
+        Route::get('/', [MainPageController::class, 'SupportingReport'])->name('supporting_report');
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Route::get('equipment', [MainPageController::class, 'equipment'])->name('equipment');
-    Route::get('approval_plans', [MainPageController::class, 'approvalPlans'])->name('approval_plans');
 
     Route::get('/home', [MainPageController::class, 'home'])->name('home');
 
     // Generate-PDF Zone
-    Route::get('/generatePdf/{id}', [PDFController::class, 'generateProcurement'])->name('generateProcurement');
-    Route::get('/contactPdf/{id}', [PDFController::class, 'generateContactService']);
-    Route::get('/replaceEquipPdf/{id}', [PDFController::class, 'generateReplaceEquip']);
-    Route::get('/replaceEquipPdf2/{id}', [PDFController::class, 'generateReplaceEquip2']);
-    Route::get('/actionPlanPdf/{id}', [PDFController::class, 'generateActionPlan'])->name('actionPlanPdf');
+    Route::get('/MaintenancePDF/{id}', [PDFController::class, 'MaintenancePDF'])->name('MaintenancePDF');
+    Route::get('/RepairPDF/{id}', [PDFController::class, 'RepairPDF'])->name('RepairPDF');
+    Route::get('/ReplacementPDF/{id}', [PDFController::class, 'ReplacementPDF'])->name('ReplacementPDF');
+    Route::get('/ContactPDF/{id}', [PDFController::class, 'ContactPdf'])->name('ContactPdf');
+    Route::get('/CalibrationPDF/{id}', [PDFController::class, 'CalibrationPdf'])->name('CalibrationPdf');
+    Route::get('/PotentialPDF/{id}', [PDFController::class, 'PotentialPDF'])->name('PotentialPDF');
+    Route::get('/NoserialPDF/{id}', [PDFController::class, 'NoserialPDF'])->name('NoserialPDF');
+    Route::get('/POutsidewarehousePDF/{id}', [PDFController::class, 'POutsidewarehousePDF'])->name('POutsidewarehousePDF');
+    Route::get('/PInsidewarehousePDF/{id}', [PDFController::class, 'PInsidewarehousePDF'])->name('PInsidewarehousePDF');
 
     //Administrator Zone
     Route::prefix('administrator')->middleware(['isAdmin'])->group(function () {
